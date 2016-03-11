@@ -1,0 +1,49 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SkyView" x:Class="SkyView.SkyViewWindow"
+        mc:Ignorable="d"
+        x:Name="this"
+        Height="720" Width="1280" ResizeMode="CanResizeWithGrip" MinHeight="100" MinWidth="100" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="0" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}">
+    <Window.Resources>
+        <Image x:Key="IconMaximize" Source="Resources/Icons/Icon_Maximize.png" Height="20" Width="20"/>
+        <Image x:Key="IconMinimize" Source="Resources/Icons/Icon_Minimize.png" Height="20" Width="20"/>
+    </Window.Resources>
+    <Grid x:Name="MainGrid" Background="{DynamicResource BackgroundTheme}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="64"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Rectangle x:Name="WindowBar" Style="{DynamicResource RectangleStyle}" Height="24" VerticalAlignment="Top" MouseDown="WindowBar_MouseDown" StrokeThickness="1" Stroke="{x:Null}" Grid.Column="1"/>
+        <Rectangle x:Name="MenuBar" Style="{DynamicResource RectangleStyle}" Height="20" VerticalAlignment="Top" Grid.Row="0" Margin="63,24,0,0" StrokeThickness="1" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="ToolBar" Style="{DynamicResource RectangleStyle}" Margin="0,43,0,23" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" StrokeThickness="1" Width="32" HorizontalAlignment="Left" />
+        <Rectangle x:Name="InfoBar" Style="{DynamicResource RectangleStyle}" Height="24                            " Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" StrokeThickness="1" />
+        <Grid Height="44" VerticalAlignment="Top" HorizontalAlignment="Left" Width="64">
+            <Rectangle x:Name="Logo" Fill="{DynamicResource FillTheme}" StrokeThickness="1" Stroke="{DynamicResource StrokeTheme}" />
+            <Image Source="Resources/Icons/SkyView.png" MouseDown="Logo_MouseDown" />
+        </Grid>
+        <Button x:Name="Close" Style="{DynamicResource DefaultButtonStyle}" Content="X" Grid.Row="0" Grid.Column="1" Height="22" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#FFC02020" FontWeight="SemiBold" Click="Close_Click" Margin="0,1,1,0"/>
+        <Button x:Name="Maximize" Style="{DynamicResource DefaultButtonStyle}" Grid.Row="0" Grid.Column="1" Height="22" Width="24" Margin="0,1,38,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Maximize_Click" Content="{DynamicResource IconMaximize}"/>
+        <Button x:Name="Minimize" Style="{DynamicResource DefaultButtonStyle}" Content="__" Grid.Row="0" Grid.Column="1" Height="22" Width="24" Margin="0,1,67,0" HorizontalAlignment="Right"  VerticalAlignment="Top" FontWeight="Bold" Click="Minimize_Click" Padding="5"/>
+        <Grid Margin="32,44,0,0" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="3"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="3"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <GridSplitter x:Name="horizontalSplitter" Grid.Row="1" Grid.ColumnSpan="3" ResizeDirection="Rows" Cursor="ScrollNS" HorizontalAlignment="Stretch" Background="{DynamicResource FillTheme}" Foreground="{x:Null}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="1"/>
+            <GridSplitter x:Name="verticalSplitter" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns" Background="{DynamicResource FillTheme}" Foreground="{x:Null}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="1,0" Margin="0,0,0,2" Grid.RowSpan="2"/>
+        </Grid>
+    </Grid>
+</Window>

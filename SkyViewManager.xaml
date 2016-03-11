@@ -1,0 +1,13 @@
+﻿<Window x:Class="SkyView.SkyViewManager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SkyView"
+        mc:Ignorable="d"
+        Title="SkyViewManager" Height="320" Width="640" WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Grid Background="{DynamicResource BackgroundTheme}">
+        <ProgressBar Height="20" Margin="0" VerticalAlignment="Bottom" Style="{DynamicResource DefaultProgressBarStyle}" Value="50"/>
+
+    </Grid>
+</Window>
