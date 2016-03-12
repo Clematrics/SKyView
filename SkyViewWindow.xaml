@@ -42,7 +42,7 @@
                 <ColumnDefinition Width="3"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <GridSplitter x:Name="horizontalSplitter" Grid.Row="1" Grid.ColumnSpan="3" ResizeDirection="Rows" Cursor="ScrollNS" HorizontalAlignment="Stretch" Background="{DynamicResource FillTheme}" Foreground="{x:Null}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="1"/>
+            <GridSplitter x:Name="horizontalSplitter" Grid.Row="1" Grid.ColumnSpan="3" ResizeDirection="Rows" Cursor="SizeNS" HorizontalAlignment="Stretch" Background="{DynamicResource FillTheme}" Foreground="{x:Null}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="1"/>
             <GridSplitter x:Name="verticalSplitter" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns" Background="{DynamicResource FillTheme}" Foreground="{x:Null}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="1,0" Margin="0,0,0,2" Grid.RowSpan="2"/>
         </Grid>
     </Grid>
