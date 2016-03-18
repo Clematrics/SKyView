@@ -8,9 +8,13 @@
              d:DesignHeight="100" d:DesignWidth="150">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
+            <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Rectangle  x:Name="RectTitle" Fill="{DynamicResource StrokeTheme}" RadiusX="5" RadiusY="5"/>
+            <TextBox    x:Name="TitleContainer" Margin="2" HorizontalAlignment="Left" Text="Titre de la node" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource FontTheme}" SelectionBrush="{DynamicResource SelectionTheme}" TextChanged="TitleContainer_TextChanged" MaxLength="1024"/>
+        </Grid>
         <Grid Grid.Row="1" Margin="5, -10, 5, 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -31,10 +35,6 @@
             <Label x:Name="entree3" Grid.Column="0" Content="Entrée 3" HorizontalAlignment="Left" Grid.Row="3" Foreground="{DynamicResource FontTheme}" FontSize="10.667" Margin="5,0,0,0"/>
             <Polygon Grid.Row="1" Grid.Column="1" Margin="-5, 0" Points="0,0 8,5, 0,10" Stroke="{DynamicResource StrokeTheme}" Fill="{DynamicResource FillTheme}" HorizontalAlignment="Right" VerticalAlignment="Center" />
             <Label x:Name="sortie" Grid.Column="1" Content="Sortie" HorizontalAlignment="Right" Grid.Row="1" Foreground="{DynamicResource FontTheme}" FontSize="10.667" Margin="0,0,5,0"/>
-        </Grid>
-        <Grid Grid.Row="0">
-            <Rectangle Grid.Row="1" Fill="{DynamicResource StrokeTheme}" RadiusX="5" RadiusY="5"/>
-            <TextBox x:Name="textBox" Margin="2"  HorizontalAlignment="Left" Text="Titre de la node" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource FontTheme}" SelectionBrush="{DynamicResource SelectionTheme}" TextChanged="textBox_TextChanged" MaxHeight="16" MaxLength="64" MaxLines="1"/>
         </Grid>
     </Grid>
 </UserControl>
