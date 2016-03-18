@@ -22,8 +22,12 @@ namespace SkyView {
             InitializeComponent();
         }
 
-        private void textBox_TextChanged(object sender, TextChangedEventArgs e) {
-
+        private void TitleContainer_TextChanged(object sender, TextChangedEventArgs e) {
+            Size size = TextRenderer.MeasureText(TitleContainer.Text, TitleContainer.Font);
+            TitleContainer.Width = size.Width;
+            TitleContainer.Heigth = size.Height;
+            RectTitle.Width = size.Width + 4;
+            RectTitle.Height = size.Height + 4;
         }
     }
 }
