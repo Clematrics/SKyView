@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Canvas ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" ClipToBounds="True">
-        <Canvas Width="4096" Height="4096" Background="{StaticResource NodeEditorBackgroundTiled}">
+        <Canvas x:Name="container" Width="4096" Height="4096" Background="{StaticResource NodeEditorBackgroundTiled}">
             
         </Canvas>
     </Canvas>
