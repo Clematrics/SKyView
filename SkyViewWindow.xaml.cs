@@ -24,6 +24,8 @@ namespace SkyView
             System.Windows.Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             // Ajout d'un événement lorsque WindowState change d'état
             DependencyPropertyDescriptor.FromProperty(WindowStateProperty, typeof(Window)).AddValueChanged(this, OnWindowStateChanged);
+
+
         }
         #endregion
 

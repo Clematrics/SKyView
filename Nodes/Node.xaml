@@ -6,16 +6,12 @@
              xmlns:local="clr-namespace:SkyView"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="150">
-    <Grid>
+    <Grid MinWidth="150">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MinHeight="20"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Rectangle  x:Name="RectTitle"      Height="20" Width="150"     Fill="{DynamicResource StrokeTheme}" RadiusX="5" RadiusY="5"/>
-                <TextBox    x:Name="TitleContainer" Margin="2" HorizontalAlignment="Left"         Text="Titre de la node" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource FontTheme}" SelectionBrush="{DynamicResource SelectionTheme}" TextChanged="TitleContainer_TextChanged" MaxLength="1024"/>
-            </Grid>
-            <Grid Grid.Row="1" Margin="5, -10, 5, 0">
+        <Grid Grid.Row="1" Margin="5, -1, 5, 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -36,5 +32,9 @@
                     <Polygon Grid.Row="1" Grid.Column="1" Margin="-5, 0" Points="0,0 8,5, 0,10" Stroke="{DynamicResource StrokeTheme}" Fill="{DynamicResource FillTheme}" HorizontalAlignment="Right" VerticalAlignment="Center" />
                     <Label x:Name="sortie" Grid.Column="1" Content="Sortie" HorizontalAlignment="Right" Grid.Row="1" Foreground="{DynamicResource FontTheme}" FontSize="10.667" Margin="0,0,5,0"/>
             </Grid>
+            <Grid Grid.Row="0">
+                <Rectangle  x:Name="RectTitle"      Fill="{DynamicResource StrokeTheme}" RadiusX="5" RadiusY="5"/>
+                <TextBox    x:Name="TitleContainer" Margin="2" HorizontalAlignment="Left"         Text="Titre de la node" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource FontTheme}" SelectionBrush="{DynamicResource SelectionTheme}" TextChanged="TitleContainer_TextChanged" MaxLength="1024"/>
+            </Grid> 
     </Grid>
 </UserControl>
