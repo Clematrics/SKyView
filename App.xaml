@@ -9,6 +9,8 @@
         <SolidColorBrush x:Key="FontTheme" Color="Silver"/>
         <SolidColorBrush x:Key="SelectionTheme" Color="#2080FF"/>
 
+        <ImageBrush x:Key="NodeEditorBackgroundTiled" ImageSource="pack://application:,,,/SkyView;component/Resources/Backgrounds/NodeEditorBackgroundTiled.png" AlignmentX="Left" AlignmentY="Top" Viewport="0,0,16,16" TileMode="FlipXY" ViewportUnits="Absolute" Stretch="UniformToFill"/>
+
         <Style x:Key="RectangleStyle" TargetType="Rectangle">
             <Setter Property="Fill" Value="{DynamicResource FillTheme}"/>
             <Setter Property="Stroke" Value="{DynamicResource StrokeTheme}"/>
