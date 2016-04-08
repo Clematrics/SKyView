@@ -963,16 +963,11 @@ namespace SkyView {
 
         public struct AllocationCallbacks {
             public void* pUserData;
-            [MarshalAs(UnmanagedType.FunctionPtr)]
-            public PFN_vkAllocationFunction pfnAllocation;
-            [MarshalAs(UnmanagedType.FunctionPtr)]
-            public PFN_vkReallocationFunction pfnReallocation;
-            [MarshalAs(UnmanagedType.FunctionPtr)]
-            public PFN_vkFreeFunction pfnFree;
-            [MarshalAs(UnmanagedType.FunctionPtr)]
-            public PFN_vkInternalAllocationNotification pfnInternalAllocation;
-            [MarshalAs(UnmanagedType.FunctionPtr)]
-            public PFN_vkInternalFreeNotification pfnInternalFree;
+            public UIntPtr PFN_vkAllocationFunction_pfnAllocation;
+            public UIntPtr PFN_vkReallocationFunction_pfnReallocation;
+            public UIntPtr PFN_vkFreeFunction_pfnFree;
+            public UIntPtr PFN_vkInternalAllocationNotification_pfnInternalAllocation;
+            public UIntPtr PFN_vkInternalFreeNotification_pfnInternalFree;
         }
 
         public struct PhysicalDeviceFeatures {
@@ -1199,14 +1194,11 @@ namespace SkyView {
             public uint VkMemoryHeapFlags_flags;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct PhysicalDeviceMemoryProperties {
+        public class PhysicalDeviceMemoryProperties {
             public uint memoryTypeCount;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = MAX_MEMORY_TYPES)]
-            public MemoryType[] memoryTypes;
+            public MemoryType[] memoryTypes;    //Size : MAX_MEMORY_TYPES = 32
             public uint memoryHeapCount;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = MAX_MEMORY_HEAPS)]
-            public MemoryHeap[] memoryHeaps;
+            public MemoryHeap[] memoryHeaps;    //Size : MAX_MEMORY_HEAPS = 16
         }
 
         public struct DeviceQueueCreateInfo {
@@ -1907,14 +1899,11 @@ namespace SkyView {
             public Extent3D extent;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct ImageBlit {
+        public class ImageBlit {
             public ImageSubresourceLayers srcSubresource;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-            public Offset3D[] srcOffsets;
+            public Offset3D[] srcOffsets;   //Size : 2
             public ImageSubresourceLayers dstSubresource;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-            public Offset3D[] dstOffsets;
+            public Offset3D[] dstOffsets;   //Size : 2
         }
 
         public struct BufferImageCopy {
@@ -2032,7 +2021,7 @@ namespace SkyView {
             public uint firstInstance;
         }
 
-        /*
+        
         public delegate Result PFN_vkCreateInstance(InstanceCreateInfo* pCreateInfo, AllocationCallbacks* pAllocator, Instance* pInstance);
         public delegate void PFN_vkDestroyInstance(Instance instance, AllocationCallbacks* pAllocator);
         public delegate Result PFN_vkEnumeratePhysicalDevices(Instance instance, uint* pPhysicalDeviceCount, PhysicalDevice* pPhysicalDevices);
@@ -2041,7 +2030,7 @@ namespace SkyView {
         public delegate Result PFN_vkGetPhysicalDeviceImageFormatProperties(PhysicalDevice physicalDevice, Format format, ImageType type, ImageTiling tiling, uint VkImageUsageFlags_usage, uint VkImageCreateFlags_flags, ImageFormatProperties* pImageFormatProperties);
         public delegate void PFN_vkGetPhysicalDeviceProperties(PhysicalDevice physicalDevice, PhysicalDeviceProperties* pProperties);
         public delegate void PFN_vkGetPhysicalDeviceQueueFamilyProperties(PhysicalDevice physicalDevice, uint* pQueueFamilyPropertyCount, QueueFamilyProperties* pQueueFamilyProperties);
-        public delegate void PFN_vkGetPhysicalDeviceMemoryProperties(PhysicalDevice physicalDevice, PhysicalDeviceMemoryProperties* pMemoryProperties);
+        public delegate void PFN_vkGetPhysicalDeviceMemoryProperties(PhysicalDevice physicalDevice, PhysicalDeviceMemoryProperties pMemoryProperties);
         public delegate PFN_vkVoidFunction PFN_vkGetInstanceProcAddr(Instance instance, char* pName);
         public delegate PFN_vkVoidFunction PFN_vkGetDeviceProcAddr(Device device, char* pName);
         public delegate Result PFN_vkCreateDevice(PhysicalDevice physicalDevice, DeviceCreateInfo* pCreateInfo, AllocationCallbacks* pAllocator, Device* pDevice);
@@ -2131,7 +2120,7 @@ namespace SkyView {
         public delegate void PFN_vkCmdSetScissor(CommandBuffer commandBuffer, uint firstScissor, uint scissorCount, Rect2D* pScissors);
         public delegate void PFN_vkCmdSetLineWidth(CommandBuffer commandBuffer, float lineWidth);
         public delegate void PFN_vkCmdSetDepthBias(CommandBuffer commandBuffer, float depthBiasConstantFactor, float depthBiasClamp, float depthBiasSlopeFactor);
-        public delegate void PFN_vkCmdSetBlendConstants(CommandBuffer commandBuffer, float[4] blendConstants);
+        public delegate void PFN_vkCmdSetBlendConstants(CommandBuffer commandBuffer, float[] blendConstants);    //float[4] blendConstants
         public delegate void PFN_vkCmdSetDepthBounds(CommandBuffer commandBuffer, float minDepthBounds, float maxDepthBounds);
         public delegate void PFN_vkCmdSetStencilCompareMask(CommandBuffer commandBuffer, uint VkStencilFaceFlags_faceMask, uint compareMask);
         public delegate void PFN_vkCmdSetStencilWriteMask(CommandBuffer commandBuffer, uint VkStencilFaceFlags_faceMask, uint writeMask);
@@ -2147,7 +2136,7 @@ namespace SkyView {
         public delegate void PFN_vkCmdDispatchIndirect(CommandBuffer commandBuffer, Buffer buffer, ulong VkDeviceSize_offset);
         public delegate void PFN_vkCmdCopyBuffer(CommandBuffer commandBuffer, Buffer srcBuffer, Buffer dstBuffer, uint regionCount, BufferCopy* pRegions);
         public delegate void PFN_vkCmdCopyImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, uint regionCount, ImageCopy* pRegions);
-        public delegate void PFN_vkCmdBlitImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, uint regionCount, ImageBlit* pRegions, Filter filter);
+        public delegate void PFN_vkCmdBlitImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, uint regionCount, ImageBlit pRegions, Filter filter);
         public delegate void PFN_vkCmdCopyBufferToImage(CommandBuffer commandBuffer, Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout, uint regionCount, BufferImageCopy* pRegions);
         public delegate void PFN_vkCmdCopyImageToBuffer(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Buffer dstBuffer, uint regionCount, BufferImageCopy* pRegions);
         public delegate void PFN_vkCmdUpdateBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, ulong VkDeviceSize_dstOffset, ulong VkDeviceSize_dataSize, uint* pData);
@@ -2171,35 +2160,35 @@ namespace SkyView {
         public delegate void PFN_vkCmdEndRenderPass(CommandBuffer commandBuffer);
         public delegate void PFN_vkCmdExecuteCommands(CommandBuffer commandBuffer, uint commandBufferCount, CommandBuffer* pCommandBuffers);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateInstance")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateInstance")]
         public extern static Result CreateInstance(
             InstanceCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             Instance* pInstance);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyInstance")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyInstance")]
         public extern static void DestroyInstance(
              Instance instance,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkEnumeratePhysicalDevices")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkEnumeratePhysicalDevices")]
         public extern static Result EnumeratePhysicalDevices(
             Instance instance,
            uint* pPhysicalDeviceCount,
             PhysicalDevice* pPhysicalDevices);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceFeatures")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceFeatures")]
         public extern static void GetPhysicalDeviceFeatures(
              PhysicalDevice physicalDevice,
              PhysicalDeviceFeatures* pFeatures);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceFormatProperties")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceFormatProperties")]
         public extern static void GetPhysicalDeviceFormatProperties(
              PhysicalDevice physicalDevice,
              Format format,
              FormatProperties* pFormatProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceImageFormatProperties")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceImageFormatProperties")]
         public extern static Result GetPhysicalDeviceImageFormatProperties(
             PhysicalDevice physicalDevice,
             Format format,
@@ -2209,104 +2198,104 @@ namespace SkyView {
             uint VkImageCreateFlags_flags,
             ImageFormatProperties* pImageFormatProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceProperties")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceProperties")]
         public extern static void GetPhysicalDeviceProperties(
              PhysicalDevice physicalDevice,
              PhysicalDeviceProperties* pProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceQueueFamilyProperties")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceQueueFamilyProperties")]
         public extern static void GetPhysicalDeviceQueueFamilyProperties(
              PhysicalDevice physicalDevice,
             uint* pQueueFamilyPropertyCount,
              QueueFamilyProperties* pQueueFamilyProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceMemoryProperties")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceMemoryProperties")]
         public extern static void GetPhysicalDeviceMemoryProperties(
              PhysicalDevice physicalDevice,
-             PhysicalDeviceMemoryProperties* pMemoryProperties);
+             PhysicalDeviceMemoryProperties pMemoryProperties); //Originalement un pointeur
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetInstanceProcAddr")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetInstanceProcAddr")]
         public extern static PFN_vkVoidFunction GetInstanceProcAddr(
              Instance instance,
             char* pName);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetDeviceProcAddr")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetDeviceProcAddr")]
         public extern static PFN_vkVoidFunction GetDeviceProcAddr(
              Device device,
             char* pName);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateDevice")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateDevice")]
         public extern static Result CreateDevice(
             PhysicalDevice physicalDevice,
             DeviceCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             Device* pDevice);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyDevice")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyDevice")]
         public extern static void DestroyDevice(
              Device device,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkEnumerateInstanceExtensionProperties")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkEnumerateInstanceExtensionProperties")]
         public extern static Result EnumerateInstanceExtensionProperties(
            char* pLayerName,
            uint* pPropertyCount,
             ExtensionProperties* pProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkEnumerateDeviceExtensionProperties")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkEnumerateDeviceExtensionProperties")]
         public extern static Result EnumerateDeviceExtensionProperties(
             PhysicalDevice physicalDevice,
            char* pLayerName,
            uint* pPropertyCount,
             ExtensionProperties* pProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkEnumerateInstanceLayerProperties")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkEnumerateInstanceLayerProperties")]
         public extern static Result EnumerateInstanceLayerProperties(
            uint* pPropertyCount,
             LayerProperties* pProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkEnumerateDeviceLayerProperties")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkEnumerateDeviceLayerProperties")]
         public extern static Result EnumerateDeviceLayerProperties(
             PhysicalDevice physicalDevice,
            uint* pPropertyCount,
             LayerProperties* pProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetDeviceQueue")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetDeviceQueue")]
         public extern static void GetDeviceQueue(
              Device device,
             uint queueFamilyIndex,
             uint queueIndex,
              Queue* pQueue);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkQueueSubmit")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkQueueSubmit")]
         public extern static Result QueueSubmit(
             Queue queue,
            uint submitCount,
             SubmitInfo* pSubmits,
             Fence fence);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkQueueWaitIdle")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkQueueWaitIdle")]
         public extern static Result QueueWaitIdle(
             Queue queue);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDeviceWaitIdle")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDeviceWaitIdle")]
         public extern static Result DeviceWaitIdle(
             Device device);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkAllocateMemory")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkAllocateMemory")]
         public extern static Result AllocateMemory(
             Device device,
             MemoryAllocateInfo* pAllocateInfo,
             AllocationCallbacks* pAllocator,
             DeviceMemory* pMemory);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkFreeMemory")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkFreeMemory")]
         public extern static void FreeMemory(
              Device device,
              DeviceMemory memory,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkMapMemory")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkMapMemory")]
         public extern static Result MapMemory(
             Device device,
             DeviceMemory memory,
@@ -2315,63 +2304,63 @@ namespace SkyView {
             uint VkMemoryMapFlags_flags,
            void** ppData);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkUnmapMemory")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkUnmapMemory")]
         public extern static void UnmapMemory(
              Device device,
              DeviceMemory memory);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkFlushMappedMemoryRanges")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkFlushMappedMemoryRanges")]
         public extern static Result FlushMappedMemoryRanges(
             Device device,
            uint memoryRangeCount,
             MappedMemoryRange* pMemoryRanges);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkInvalidateMappedMemoryRanges")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkInvalidateMappedMemoryRanges")]
         public extern static Result InvalidateMappedMemoryRanges(
             Device device,
            uint memoryRangeCount,
             MappedMemoryRange* pMemoryRanges);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetDeviceMemoryCommitment")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetDeviceMemoryCommitment")]
         public extern static void GetDeviceMemoryCommitment(
              Device device,
              DeviceMemory memory,
              ulong* VkDeviceSize_pCommittedMemoryInBytes);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkBindBufferMemory")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkBindBufferMemory")]
         public extern static Result BindBufferMemory(
             Device device,
             Buffer buffer,
             DeviceMemory memory,
             ulong VkDeviceSize_memoryOffset);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkBindImageMemory")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkBindImageMemory")]
         public extern static Result BindImageMemory(
             Device device,
             Image image,
             DeviceMemory memory,
             ulong VkDeviceSize_memoryOffset);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetBufferMemoryRequirements")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetBufferMemoryRequirements")]
         public extern static void GetBufferMemoryRequirements(
              Device device,
              Buffer buffer,
              MemoryRequirements* pMemoryRequirements);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetImageMemoryRequirements")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetImageMemoryRequirements")]
         public extern static void GetImageMemoryRequirements(
              Device device,
              Image image,
              MemoryRequirements* pMemoryRequirements);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetImageSparseMemoryRequirements")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetImageSparseMemoryRequirements")]
         public extern static void GetImageSparseMemoryRequirements(
              Device device,
              Image image,
             uint* pSparseMemoryRequirementCount,
              SparseImageMemoryRequirements* pSparseMemoryRequirements);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceSparseImageFormatProperties")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceSparseImageFormatProperties")]
         public extern static void GetPhysicalDeviceSparseImageFormatProperties(
              PhysicalDevice physicalDevice,
              Format format,
@@ -2382,38 +2371,38 @@ namespace SkyView {
             uint* pPropertyCount,
              SparseImageFormatProperties* pProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkQueueBindSparse")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkQueueBindSparse")]
         public extern static Result QueueBindSparse(
             Queue queue,
            uint bindInfoCount,
             BindSparseInfo* pBindInfo,
             Fence fence);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateFence")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateFence")]
         public extern static Result CreateFence(
             Device device,
             FenceCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             Fence* pFence);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyFence")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyFence")]
         public extern static void DestroyFence(
              Device device,
              Fence fence,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkResetFences")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkResetFences")]
         public extern static Result ResetFences(
             Device device,
            uint fenceCount,
             Fence* pFences);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetFenceStatus")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetFenceStatus")]
         public extern static Result GetFenceStatus(
             Device device,
             Fence fence);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkWaitForFences")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkWaitForFences")]
         public extern static Result WaitForFences(
             Device device,
            uint fenceCount,
@@ -2421,61 +2410,61 @@ namespace SkyView {
             uint VkBool32_waitAll,
            ulong timeout);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateSemaphore")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateSemaphore")]
         public extern static Result CreateSemaphore(
             Device device,
             SemaphoreCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             Semaphore* pSemaphore);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroySemaphore")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroySemaphore")]
         public extern static void DestroySemaphore(
              Device device,
              Semaphore semaphore,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateEvent")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateEvent")]
         public extern static Result CreateEvent(
             Device device,
             EventCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             Event* pEvent);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyEvent")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyEvent")]
         public extern static void DestroyEvent(
              Device device,
              Event                                     _event,
              AllocationCallbacks*                pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetEventStatus")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetEventStatus")]
         public extern static Result GetEventStatus(
              Device device,
              Event                                     _event);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkSetEvent")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkSetEvent")]
         public extern static Result SetEvent(
              Device device,
              Event                                     _event);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkResetEvent")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkResetEvent")]
         public extern static Result ResetEvent(
              Device device,
              Event                                     _event);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateQueryPool")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateQueryPool")]
         public extern static Result CreateQueryPool(
              Device device,
              QueryPoolCreateInfo*                pCreateInfo,
              AllocationCallbacks*                pAllocator,
              QueryPool*                                pQueryPool);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyQueryPool")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyQueryPool")]
         public extern static void DestroyQueryPool(
              Device device,
              QueryPool queryPool,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetQueryPoolResults")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetQueryPoolResults")]
         public extern static Result GetQueryPoolResults(
             Device device,
             QueryPool queryPool,
@@ -2486,106 +2475,106 @@ namespace SkyView {
             ulong VkDeviceSize_stride,
             uint VkQueryResultFlags_flags);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateBuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateBuffer")]
         public extern static Result CreateBuffer(
             Device device,
             BufferCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             Buffer* pBuffer);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyBuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyBuffer")]
         public extern static void DestroyBuffer(
              Device device,
              Buffer buffer,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateBufferView")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateBufferView")]
         public extern static Result CreateBufferView(
             Device device,
             BufferViewCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             BufferView* pView);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyBufferView")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyBufferView")]
         public extern static void DestroyBufferView(
              Device device,
              BufferView bufferView,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateImage")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateImage")]
         public extern static Result CreateImage(
             Device device,
             ImageCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             Image* pImage);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyImage")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyImage")]
         public extern static void DestroyImage(
              Device device,
              Image image,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetImageSubresourceLayout")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetImageSubresourceLayout")]
         public extern static void GetImageSubresourceLayout(
              Device device,
              Image image,
              ImageSubresource* pSubresource,
              SubresourceLayout* pLayout);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateImageView")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateImageView")]
         public extern static Result CreateImageView(
             Device device,
             ImageViewCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             ImageView* pView);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyImageView")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyImageView")]
         public extern static void DestroyImageView(
              Device device,
              ImageView imageView,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateShaderModule")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateShaderModule")]
         public extern static Result CreateShaderModule(
             Device device,
             ShaderModuleCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             ShaderModule* pShaderModule);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyShaderModule")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyShaderModule")]
         public extern static void DestroyShaderModule(
              Device device,
              ShaderModule shaderModule,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreatePipelineCache")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreatePipelineCache")]
         public extern static Result CreatePipelineCache(
             Device device,
             PipelineCacheCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             PipelineCache* pPipelineCache);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyPipelineCache")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyPipelineCache")]
         public extern static void DestroyPipelineCache(
              Device device,
              PipelineCache pipelineCache,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPipelineCacheData")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetPipelineCacheData")]
         public extern static Result GetPipelineCacheData(
             Device device,
             PipelineCache pipelineCache,
            uint* pDataSize,
            void* pData);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkMergePipelineCaches")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkMergePipelineCaches")]
         public extern static Result MergePipelineCaches(
             Device device,
             PipelineCache dstCache,
            uint srcCacheCount,
             PipelineCache* pSrcCaches);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateGraphicsPipelines")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateGraphicsPipelines")]
         public extern static Result CreateGraphicsPipelines(
             Device device,
             PipelineCache pipelineCache,
@@ -2594,7 +2583,7 @@ namespace SkyView {
             AllocationCallbacks* pAllocator,
             Pipeline* pPipelines);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateComputePipelines")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateComputePipelines")]
         public extern static Result CreateComputePipelines(
             Device device,
             PipelineCache pipelineCache,
@@ -2603,84 +2592,84 @@ namespace SkyView {
             AllocationCallbacks* pAllocator,
             Pipeline* pPipelines);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyPipeline")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyPipeline")]
         public extern static void DestroyPipeline(
              Device device,
              Pipeline pipeline,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreatePipelineLayout")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreatePipelineLayout")]
         public extern static Result CreatePipelineLayout(
             Device device,
             PipelineLayoutCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             PipelineLayout* pPipelineLayout);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyPipelineLayout")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyPipelineLayout")]
         public extern static void DestroyPipelineLayout(
              Device device,
              PipelineLayout pipelineLayout,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateSampler")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateSampler")]
         public extern static Result CreateSampler(
             Device device,
             SamplerCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             Sampler* pSampler);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroySampler")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroySampler")]
         public extern static void DestroySampler(
              Device device,
              Sampler sampler,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateDescriptorSetLayout")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateDescriptorSetLayout")]
         public extern static Result CreateDescriptorSetLayout(
             Device device,
             DescriptorSetLayoutCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             DescriptorSetLayout* pSetLayout);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyDescriptorSetLayout")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyDescriptorSetLayout")]
         public extern static void DestroyDescriptorSetLayout(
              Device device,
              DescriptorSetLayout descriptorSetLayout,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateDescriptorPool")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateDescriptorPool")]
         public extern static Result CreateDescriptorPool(
             Device device,
             DescriptorPoolCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             DescriptorPool* pDescriptorPool);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyDescriptorPool")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyDescriptorPool")]
         public extern static void DestroyDescriptorPool(
              Device device,
              DescriptorPool descriptorPool,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkResetDescriptorPool")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkResetDescriptorPool")]
         public extern static Result ResetDescriptorPool(
             Device device,
             DescriptorPool descriptorPool,
             uint VkDescriptorPoolResetFlags_flags);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkAllocateDescriptorSets")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkAllocateDescriptorSets")]
         public extern static Result AllocateDescriptorSets(
             Device device,
             DescriptorSetAllocateInfo* pAllocateInfo,
             DescriptorSet* pDescriptorSets);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkFreeDescriptorSets")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkFreeDescriptorSets")]
         public extern static Result FreeDescriptorSets(
             Device device,
             DescriptorPool descriptorPool,
            uint descriptorSetCount,
             DescriptorSet* pDescriptorSets);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkUpdateDescriptorSets")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkUpdateDescriptorSets")]
         public extern static void UpdateDescriptorSets(
              Device device,
             uint descriptorWriteCount,
@@ -2688,146 +2677,146 @@ namespace SkyView {
             uint descriptorCopyCount,
              CopyDescriptorSet* pDescriptorCopies);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateFramebuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateFramebuffer")]
         public extern static Result CreateFramebuffer(
             Device device,
             FramebufferCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             Framebuffer* pFramebuffer);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyFramebuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyFramebuffer")]
         public extern static void DestroyFramebuffer(
              Device device,
              Framebuffer framebuffer,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateRenderPass")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateRenderPass")]
         public extern static Result CreateRenderPass(
             Device device,
             RenderPassCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             RenderPass* pRenderPass);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyRenderPass")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyRenderPass")]
         public extern static void DestroyRenderPass(
              Device device,
              RenderPass renderPass,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetRenderAreaGranularity")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkGetRenderAreaGranularity")]
         public extern static void GetRenderAreaGranularity(
              Device device,
              RenderPass renderPass,
              Extent2D* pGranularity);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateCommandPool")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateCommandPool")]
         public extern static Result CreateCommandPool(
             Device device,
             CommandPoolCreateInfo* pCreateInfo,
             AllocationCallbacks* pAllocator,
             CommandPool* pCommandPool);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyCommandPool")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyCommandPool")]
         public extern static void DestroyCommandPool(
              Device device,
              CommandPool commandPool,
              AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkResetCommandPool")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkResetCommandPool")]
         public extern static Result ResetCommandPool(
             Device device,
             CommandPool commandPool,
             uint VkCommandPoolResetFlags_flags);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkAllocateCommandBuffers")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkAllocateCommandBuffers")]
         public extern static Result AllocateCommandBuffers(
             Device device,
             CommandBufferAllocateInfo* pAllocateInfo,
             CommandBuffer* pCommandBuffers);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkFreeCommandBuffers")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkFreeCommandBuffers")]
         public extern static void FreeCommandBuffers(
              Device device,
              CommandPool commandPool,
             uint commandBufferCount,
              CommandBuffer* pCommandBuffers);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkBeginCommandBuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkBeginCommandBuffer")]
         public extern static Result BeginCommandBuffer(
             CommandBuffer commandBuffer,
             CommandBufferBeginInfo* pBeginInfo);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkEndCommandBuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkEndCommandBuffer")]
         public extern static Result EndCommandBuffer(
             CommandBuffer commandBuffer);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkResetCommandBuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkResetCommandBuffer")]
         public extern static Result ResetCommandBuffer(
             CommandBuffer commandBuffer,
             uint VkCommandBufferResetFlags_flags);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdBindPipeline")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdBindPipeline")]
         public extern static void CmdBindPipeline(
              CommandBuffer commandBuffer,
              PipelineBindPoint pipelineBindPoint,
              Pipeline pipeline);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdSetViewport")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdSetViewport")]
         public extern static void CmdSetViewport(
              CommandBuffer commandBuffer,
             uint firstViewport,
             uint viewportCount,
              Viewport* pViewports);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdSetScissor")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdSetScissor")]
         public extern static void CmdSetScissor(
              CommandBuffer commandBuffer,
             uint firstScissor,
             uint scissorCount,
              Rect2D* pScissors);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdSetLineWidth")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdSetLineWidth")]
         public extern static void CmdSetLineWidth(
              CommandBuffer commandBuffer,
             float lineWidth);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdSetDepthBias")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdSetDepthBias")]
         public extern static void CmdSetDepthBias(
              CommandBuffer commandBuffer,
             float depthBiasConstantFactor,
             float depthBiasClamp,
             float depthBiasSlopeFactor);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdSetBlendConstants")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdSetBlendConstants")]
         public extern static void CmdSetBlendConstants(
              CommandBuffer commandBuffer,
-            float[4] blendConstants);
+             float[] blendConstants);      //float[4] blendConstants
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdSetDepthBounds")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdSetDepthBounds")]
         public extern static void CmdSetDepthBounds(
              CommandBuffer commandBuffer,
             float minDepthBounds,
             float maxDepthBounds);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdSetStencilCompareMask")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdSetStencilCompareMask")]
         public extern static void CmdSetStencilCompareMask(
              CommandBuffer commandBuffer,
              uint VkStencilFaceFlags_faceMask,
             uint compareMask);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdSetStencilWriteMask")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdSetStencilWriteMask")]
         public extern static void CmdSetStencilWriteMask(
              CommandBuffer commandBuffer,
              uint VkStencilFaceFlags_faceMask,
             uint writeMask);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdSetStencilReference")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdSetStencilReference")]
         public extern static void CmdSetStencilReference(
              CommandBuffer commandBuffer,
              uint VkStencilFaceFlags_faceMask,
             uint reference);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdBindDescriptorSets")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdBindDescriptorSets")]
         public extern static void CmdBindDescriptorSets(
              CommandBuffer commandBuffer,
              PipelineBindPoint pipelineBindPoint,
@@ -2838,14 +2827,14 @@ namespace SkyView {
             uint dynamicOffsetCount,
             uint* pDynamicOffsets);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdBindIndexBuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdBindIndexBuffer")]
         public extern static void CmdBindIndexBuffer(
              CommandBuffer commandBuffer,
              Buffer buffer,
              ulong VkDeviceSize_offset,
              IndexType indexType);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdBindVertexBuffers")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdBindVertexBuffers")]
         public extern static void CmdBindVertexBuffers(
              CommandBuffer commandBuffer,
             uint firstBinding,
@@ -2853,7 +2842,7 @@ namespace SkyView {
              Buffer* pBuffers,
              ulong* VkDeviceSize_pOffsets);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdDraw")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdDraw")]
         public extern static void CmdDraw(
              CommandBuffer commandBuffer,
             uint vertexCount,
@@ -2861,7 +2850,7 @@ namespace SkyView {
             uint firstVertex,
             uint firstInstance);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdDrawIndexed")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdDrawIndexed")]
         public extern static void CmdDrawIndexed(
              CommandBuffer commandBuffer,
             uint indexCount,
@@ -2870,7 +2859,7 @@ namespace SkyView {
             int vertexOffset,
             uint firstInstance);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdDrawIndirect")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdDrawIndirect")]
         public extern static void CmdDrawIndirect(
              CommandBuffer commandBuffer,
              Buffer buffer,
@@ -2878,7 +2867,7 @@ namespace SkyView {
             uint drawCount,
             uint stride);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdDrawIndexedIndirect")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdDrawIndexedIndirect")]
         public extern static void CmdDrawIndexedIndirect(
              CommandBuffer commandBuffer,
              Buffer buffer,
@@ -2886,20 +2875,20 @@ namespace SkyView {
             uint drawCount,
             uint stride);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdDispatch")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdDispatch")]
         public extern static void CmdDispatch(
              CommandBuffer commandBuffer,
             uint x,
             uint y,
             uint z);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdDispatchIndirect")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdDispatchIndirect")]
         public extern static void CmdDispatchIndirect(
              CommandBuffer commandBuffer,
              Buffer buffer,
              ulong VkDeviceSize_offset);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdCopyBuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdCopyBuffer")]
         public extern static void CmdCopyBuffer(
              CommandBuffer commandBuffer,
              Buffer srcBuffer,
@@ -2907,7 +2896,7 @@ namespace SkyView {
             uint regionCount,
              BufferCopy* pRegions);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdCopyImage")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdCopyImage")]
         public extern static void CmdCopyImage(
              CommandBuffer commandBuffer,
              Image srcImage,
@@ -2917,7 +2906,7 @@ namespace SkyView {
             uint regionCount,
              ImageCopy* pRegions);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdBlitImage")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdBlitImage")]
         public extern static void CmdBlitImage(
              CommandBuffer commandBuffer,
              Image srcImage,
@@ -2925,10 +2914,10 @@ namespace SkyView {
              Image dstImage,
              ImageLayout dstImageLayout,
             uint regionCount,
-             ImageBlit* pRegions,
+             ImageBlit pRegions,                   //Originalement un pointeur
              Filter filter);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdCopyBufferToImage")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdCopyBufferToImage")]
         public extern static void CmdCopyBufferToImage(
              CommandBuffer commandBuffer,
              Buffer srcBuffer,
@@ -2937,7 +2926,7 @@ namespace SkyView {
             uint regionCount,
              BufferImageCopy* pRegions);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdCopyImageToBuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdCopyImageToBuffer")]
         public extern static void CmdCopyImageToBuffer(
              CommandBuffer commandBuffer,
              Image srcImage,
@@ -2946,7 +2935,7 @@ namespace SkyView {
             uint regionCount,
              BufferImageCopy* pRegions);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdUpdateBuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdUpdateBuffer")]
         public extern static void CmdUpdateBuffer(
              CommandBuffer commandBuffer,
              Buffer dstBuffer,
@@ -2954,7 +2943,7 @@ namespace SkyView {
              ulong VkDeviceSize_dataSize,
             uint* pData);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdFillBuffer")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdFillBuffer")]
         public extern static void CmdFillBuffer(
              CommandBuffer commandBuffer,
              Buffer dstBuffer,
@@ -2962,7 +2951,7 @@ namespace SkyView {
              ulong VkDeviceSize_size,
             uint data);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdClearColorImage")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdClearColorImage")]
         public extern static void CmdClearColorImage(
              CommandBuffer commandBuffer,
              Image image,
@@ -2971,7 +2960,7 @@ namespace SkyView {
             uint rangeCount,
              ImageSubresourceRange* pRanges);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdClearDepthStencilImage")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdClearDepthStencilImage")]
         public extern static void CmdClearDepthStencilImage(
              CommandBuffer commandBuffer,
              Image image,
@@ -2980,7 +2969,7 @@ namespace SkyView {
             uint rangeCount,
              ImageSubresourceRange* pRanges);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdClearAttachments")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdClearAttachments")]
         public extern static void CmdClearAttachments(
              CommandBuffer commandBuffer,
             uint attachmentCount,
@@ -2988,7 +2977,7 @@ namespace SkyView {
             uint rectCount,
              ClearRect* pRects);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdResolveImage")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdResolveImage")]
         public extern static void CmdResolveImage(
              CommandBuffer commandBuffer,
              Image srcImage,
@@ -2998,19 +2987,19 @@ namespace SkyView {
             uint regionCount,
              ImageResolve* pRegions);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdSetEvent")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdSetEvent")]
         public extern static void CmdSetEvent(
              CommandBuffer commandBuffer,
              Event                                     _event,
              uint VkPipelineStageFlags_stageMask);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdResetEvent")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdResetEvent")]
         public extern static void CmdResetEvent(
              CommandBuffer commandBuffer,
              Event                                     _event,
              uint VkPipelineStageFlags_stageMask);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdWaitEvents")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdWaitEvents")]
         public extern static void CmdWaitEvents(
              CommandBuffer commandBuffer,
             uint eventCount,
@@ -3024,7 +3013,7 @@ namespace SkyView {
             uint imageMemoryBarrierCount,
              ImageMemoryBarrier* pImageMemoryBarriers);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdPipelineBarrier")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdPipelineBarrier")]
         public extern static void CmdPipelineBarrier(
              CommandBuffer commandBuffer,
              uint VkPipelineStageFlags_srcStageMask,
@@ -3037,34 +3026,34 @@ namespace SkyView {
             uint imageMemoryBarrierCount,
              ImageMemoryBarrier* pImageMemoryBarriers);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdBeginQuery")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdBeginQuery")]
         public extern static void CmdBeginQuery(
              CommandBuffer commandBuffer,
              QueryPool queryPool,
             uint query,
              uint VkQueryControlFlags_flags);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdEndQuery")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdEndQuery")]
         public extern static void CmdEndQuery(
              CommandBuffer commandBuffer,
              QueryPool queryPool,
             uint query);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdResetQueryPool")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdResetQueryPool")]
         public extern static void CmdResetQueryPool(
              CommandBuffer commandBuffer,
              QueryPool queryPool,
             uint firstQuery,
             uint queryCount);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdWriteTimestamp")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdWriteTimestamp")]
         public extern static void CmdWriteTimestamp(
              CommandBuffer commandBuffer,
              PipelineStageFlagBits pipelineStage,
              QueryPool queryPool,
             uint query);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdCopyQueryPoolResults")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdCopyQueryPoolResults")]
         public extern static void CmdCopyQueryPoolResults(
              CommandBuffer commandBuffer,
              QueryPool queryPool,
@@ -3075,7 +3064,7 @@ namespace SkyView {
              ulong VkDeviceSize_stride,
              uint VkQueryResultFlags_flags);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdPushConstants")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdPushConstants")]
         public extern static void CmdPushConstants(
              CommandBuffer commandBuffer,
              PipelineLayout layout,
@@ -3084,22 +3073,22 @@ namespace SkyView {
             uint size,
             void* pValues);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdBeginRenderPass")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdBeginRenderPass")]
         public extern static void CmdBeginRenderPass(
              CommandBuffer commandBuffer,
              RenderPassBeginInfo* pRenderPassBegin,
              SubpassContents contents);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdNextSubpass")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdNextSubpass")]
         public extern static void CmdNextSubpass(
              CommandBuffer commandBuffer,
              SubpassContents contents);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdEndRenderPass")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdEndRenderPass")]
         public extern static void CmdEndRenderPass(
              CommandBuffer commandBuffer);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCmdExecuteCommands")]
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCmdExecuteCommands")]
         public extern static void CmdExecuteCommands(
              CommandBuffer commandBuffer,
             uint commandBufferCount,
@@ -3176,33 +3165,33 @@ namespace SkyView {
         public delegate Result PFN_vkGetPhysicalDeviceSurfaceFormatsKHR(PhysicalDevice physicalDevice, SurfaceKHR surface, uint* pSurfaceFormatCount, SurfaceFormatKHR* pSurfaceFormats);
         public delegate Result PFN_vkGetPhysicalDeviceSurfacePresentModesKHR(PhysicalDevice physicalDevice, SurfaceKHR surface, uint* pPresentModeCount, PresentModeKHR* pPresentModes);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroySurfaceKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkDestroySurfaceKHR")]
         public extern static void DestroySurfaceKHR(
             Instance instance,
             SurfaceKHR surface,
             AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceSurfaceSupportKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceSurfaceSupportKHR")]
         public extern static Result GetPhysicalDeviceSurfaceSupportKHR(
             PhysicalDevice physicalDevice,
             uint queueFamilyIndex,
             SurfaceKHR surface,
             uint* VkBool32_pSupported);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceSurfaceCapabilitiesKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceSurfaceCapabilitiesKHR")]
         public extern static Result GetPhysicalDeviceSurfaceCapabilitiesKHR(
             PhysicalDevice physicalDevice,
             SurfaceKHR surface,
             SurfaceCapabilitiesKHR* pSurfaceCapabilities);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceSurfaceFormatsKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceSurfaceFormatsKHR")]
         public extern static Result GetPhysicalDeviceSurfaceFormatsKHR(
             PhysicalDevice physicalDevice,
             SurfaceKHR surface,
             uint* pSurfaceFormatCount,
             SurfaceFormatKHR* pSurfaceFormats);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceSurfacePresentModesKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceSurfacePresentModesKHR")]
         public extern static Result GetPhysicalDeviceSurfacePresentModesKHR(
             PhysicalDevice physicalDevice,
             SurfaceKHR surface,
@@ -3253,27 +3242,27 @@ namespace SkyView {
         public delegate Result PFN_vkAcquireNextImageKHR(Device device, SwapchainKHR swapchain, ulong timeout, Semaphore semaphore, Fence fence, uint* pImageIndex);
         public delegate Result PFN_vkQueuePresentKHR(Queue queue, PresentInfoKHR* pPresentInfo);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateSwapchainKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkCreateSwapchainKHR")]
         public extern static Result CreateSwapchainKHR(
             Device device,
             SwapchainCreateInfoKHR* pCreateInfo,
             AllocationCallbacks* pAllocator,
             SwapchainKHR* pSwapchain);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroySwapchainKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkDestroySwapchainKHR")]
         public extern static void DestroySwapchainKHR(
             Device device,
             SwapchainKHR swapchain,
             AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetSwapchainImagesKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkGetSwapchainImagesKHR")]
         public extern static Result GetSwapchainImagesKHR(
             Device device,
             SwapchainKHR swapchain,
             uint* pSwapchainImageCount,
             Image* pSwapchainImages);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkAcquireNextImageKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkAcquireNextImageKHR")]
         public extern static Result AcquireNextImageKHR(
             Device device,
             SwapchainKHR swapchain,
@@ -3282,7 +3271,7 @@ namespace SkyView {
             Fence fence,
             uint* pImageIndex);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkQueuePresentKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkQueuePresentKHR")]
         public extern static Result QueuePresentKHR(
             Queue queue,
             PresentInfoKHR* pPresentInfo);
@@ -3368,33 +3357,33 @@ namespace SkyView {
         public delegate Result PFN_vkGetDisplayPlaneCapabilitiesKHR(PhysicalDevice physicalDevice, DisplayModeKHR mode, uint planeIndex, DisplayPlaneCapabilitiesKHR* pCapabilities);
         public delegate Result PFN_vkCreateDisplayPlaneSurfaceKHR(Instance instance, DisplaySurfaceCreateInfoKHR* pCreateInfo, AllocationCallbacks* pAllocator, SurfaceKHR* pSurface);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceDisplayPropertiesKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceDisplayPropertiesKHR")]
         public extern static Result GetPhysicalDeviceDisplayPropertiesKHR(
             PhysicalDevice physicalDevice,
             uint* pPropertyCount,
             DisplayPropertiesKHR* pProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceDisplayPlanePropertiesKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkGetPhysicalDeviceDisplayPlanePropertiesKHR")]
         public extern static Result GetPhysicalDeviceDisplayPlanePropertiesKHR(
             PhysicalDevice physicalDevice,
             uint* pPropertyCount,
             DisplayPlanePropertiesKHR* pProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetDisplayPlaneSupportedDisplaysKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkGetDisplayPlaneSupportedDisplaysKHR")]
         public extern static Result GetDisplayPlaneSupportedDisplaysKHR(
             PhysicalDevice physicalDevice,
             uint planeIndex,
             uint* pDisplayCount,
             DisplayKHR* pDisplays);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetDisplayModePropertiesKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkGetDisplayModePropertiesKHR")]
         public extern static Result GetDisplayModePropertiesKHR(
             PhysicalDevice physicalDevice,
             DisplayKHR display,
             uint* pPropertyCount,
             DisplayModePropertiesKHR* pProperties);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateDisplayModeKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkCreateDisplayModeKHR")]
         public extern static Result CreateDisplayModeKHR(
             PhysicalDevice physicalDevice,
             DisplayKHR display,
@@ -3402,14 +3391,14 @@ namespace SkyView {
             AllocationCallbacks* pAllocator,
             DisplayModeKHR* pMode);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkGetDisplayPlaneCapabilitiesKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkGetDisplayPlaneCapabilitiesKHR")]
         public extern static Result GetDisplayPlaneCapabilitiesKHR(
             PhysicalDevice physicalDevice,
             DisplayModeKHR mode,
             uint planeIndex,
             DisplayPlaneCapabilitiesKHR* pCapabilities);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateDisplayPlaneSurfaceKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkCreateDisplayPlaneSurfaceKHR")]
         public extern static Result CreateDisplayPlaneSurfaceKHR(
             Instance instance,
             DisplaySurfaceCreateInfoKHR* pCreateInfo,
@@ -3431,7 +3420,7 @@ namespace SkyView {
 
         public delegate Result PFN_vkCreateSharedSwapchainsKHR(Device device, uint swapchainCount, SwapchainCreateInfoKHR* pCreateInfos, AllocationCallbacks* pAllocator, SwapchainKHR* pSwapchains);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateSharedSwapchainsKHR")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkCreateSharedSwapchainsKHR")]
         public extern static Result CreateSharedSwapchainsKHR(
             Device device,
             uint swapchainCount,
@@ -3543,29 +3532,29 @@ namespace SkyView {
             public StructureType sType;
             public void* pNext;
             public uint VkDebugReportFlagsEXT_flags;
-            public PFN_vkDebugReportCallbackEXT pfnCallback;
+            public UIntPtr PFN_vkDebugReportCallbackEXT_pfnCallback;
             public void* pUserData;
         }
 
-        /*
+
         public delegate Result PFN_vkCreateDebugReportCallbackEXT(Instance instance, DebugReportCallbackCreateInfoEXT* pCreateInfo, AllocationCallbacks* pAllocator, DebugReportCallbackEXT* pCallback);
         public delegate void PFN_vkDestroyDebugReportCallbackEXT(Instance instance, DebugReportCallbackEXT callback, AllocationCallbacks* pAllocator);
         public delegate void PFN_vkDebugReportMessageEXT(Instance instance, uint VkDebugReportFlagsEXT_flags, DebugReportObjectTypeEXT objectType, ulong _object, uint location, int messageCode, char* pLayerPrefix, char* pMessage);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkCreateDebugReportCallbackEXT")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkCreateDebugReportCallbackEXT")]
         public extern static Result CreateDebugReportCallbackEXT(
             Instance instance,
             DebugReportCallbackCreateInfoEXT* pCreateInfo,
             AllocationCallbacks* pAllocator,
             DebugReportCallbackEXT* pCallback);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDestroyDebugReportCallbackEXT")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkDestroyDebugReportCallbackEXT")]
         public extern static void DestroyDebugReportCallbackEXT(
             Instance instance,
             DebugReportCallbackEXT callback,
             AllocationCallbacks* pAllocator);
 
-        [DllImport("Dll\vulkan-1.dll", EntryPoint = "VkDebugReportMessageEXT")]
+        [DllImport("vulkan-1.dll", EntryPoint = "VkDebugReportMessageEXT")]
         public extern static void DebugReportMessageEXT(
             Instance instance,
             uint VkDebugReportFlagsEXT_flags,
@@ -3575,6 +3564,5 @@ namespace SkyView {
             int messageCode,
             char* pLayerPrefix,
             char* pMessage);
-            */
     }
 }

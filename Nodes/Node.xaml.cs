@@ -33,7 +33,7 @@ namespace SkyView {
         }
 
         private void TitleContainer_TextChanged(object sender, TextChangedEventArgs e) {
-            l_node.name = (sender as TextBox).Text;
+            //l_node.name = (sender as TextBox).Text;
         }
     }
 }

@@ -2,13 +2,12 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using WinInterop = System.Windows.Interop;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 
-namespace SkyView
-{
+namespace SkyView {
     /// <summary>
     /// Logique d'interaction pour SkyViewWindow.xaml
     /// </summary>
@@ -25,8 +24,12 @@ namespace SkyView
             // Ajout d'un événement lorsque WindowState change d'état
             DependencyPropertyDescriptor.FromProperty(WindowStateProperty, typeof(Window)).AddValueChanged(this, OnWindowStateChanged);
 
-
+            renderer = new RenderEngine.RenderEngine();
         }
+        #endregion
+
+        #region Gestion du rendu
+        RenderEngine.RenderEngine renderer;
         #endregion
 
         #region Gestion du clic sur le logo ou la barre de fenêtre
@@ -168,8 +171,8 @@ namespace SkyView
         }
 
         void win_SourceInitialized(object sender, EventArgs e) {
-            System.IntPtr handle = (new WinInterop.WindowInteropHelper(this)).Handle;
-            WinInterop.HwndSource.FromHwnd(handle).AddHook(new WinInterop.HwndSourceHook(WindowProc));
+            System.IntPtr handle = (new WindowInteropHelper(this)).Handle;
+            HwndSource.FromHwnd(handle).AddHook(new HwndSourceHook(WindowProc));
         }
 
         private static void WmGetMinMaxInfo(System.IntPtr hwnd, System.IntPtr lParam) {

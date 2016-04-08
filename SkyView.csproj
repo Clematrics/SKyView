@@ -77,6 +77,7 @@
       <DependentUpon>Node.xaml</DependentUpon>
     </Compile>
     <Compile Include="Nodes\NodeProperty.cs" />
+    <Compile Include="RenderEngine\RenderEngine.cs" />
     <Compile Include="SkyViewManager.xaml.cs">
       <DependentUpon>SkyViewManager.xaml</DependentUpon>
     </Compile>
@@ -89,7 +90,7 @@
     <Compile Include="Tabs\PropertiesEditor.xaml.cs">
       <DependentUpon>PropertiesEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Vk.cs" />
+    <Compile Include="RenderEngine\Vk.cs" />
     <Page Include="Nodes\Node.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
