@@ -6,5 +6,9 @@
              xmlns:local="clr-namespace:SkyView.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Canvas/>
+    <Canvas x:Name="imageCanvas">
+        <Image x:Name="image" >
+
+        </Image>
+    </Canvas>
 </UserControl>
