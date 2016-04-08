@@ -55,21 +55,21 @@ namespace SkyView.Tabs {
             IsGraphMoving = false;
         }
 
-        private void NodeEditor_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void ImageViewer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             CheckAndUpdateImage();
         }
 
         private void CheckAndUpdateImage()
         {
-            if (currentGraphPoint.X > 0)
+            if (currentGraphPoint.X < 0)
                 currentGraphPoint.X = 0;
-            if (currentGraphPoint.X < imageCanvas.ActualWidth - 4096)
-                currentGraphPoint.X = imageCanvas.ActualWidth - 4096;
-            if (currentGraphPoint.Y > 0)
+            if (currentGraphPoint.X > imageCanvas.ActualWidth)
+                currentGraphPoint.X = imageCanvas.ActualWidth;
+            if (currentGraphPoint.Y < 0)
                 currentGraphPoint.Y = 0;
-            if (currentGraphPoint.Y < imageCanvas.ActualHeight - 4096)
-                currentGraphPoint.Y = imageCanvas.ActualHeight - 4096;
+            if (currentGraphPoint.Y > imageCanvas.ActualHeight)
+                currentGraphPoint.Y = imageCanvas.ActualHeight;
             Canvas.SetTop(image, currentGraphPoint.Y);
             Canvas.SetLeft(image, currentGraphPoint.X);
         }

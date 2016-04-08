@@ -1,13 +1,15 @@
-﻿<UserControl x:Class="SkyView.Tabs.ImageViewer"
+﻿<UserControl 
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SkyView.Tabs"
+             xmlns:SkyView="clr-namespace:SkyView" x:Class="SkyView.Tabs.ImageViewer"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             SizeChanged="ImageViewer_SizeChanged">
     <Canvas x:Name="imageCanvas">
-        <Image x:Name="image" >
+        <Image x:Name="image" MouseDown="image_MouseDown" MouseUp="image_MouseUp" MouseMove="image_MouseMove" Source="pack://application:,,,/SkyView;component/Resources/Icons/SkyView.png">
 
         </Image>
     </Canvas>
