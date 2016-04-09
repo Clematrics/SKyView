@@ -11,6 +11,12 @@ namespace SkyView.Tabs {
             InitializeComponent();
         }
 
+        #region Ajout des nodes
+        public void AddElement(UIElement element) {
+            container.Children.Add(element);
+        }
+        #endregion
+
         #region Déplacement du container dans l'éditeur
 
         private Point currentGraphPoint = new Point(0,0);
@@ -19,9 +25,7 @@ namespace SkyView.Tabs {
         private bool IsGraphMoving = false;
 
         private void container_MouseDown(object sender, MouseButtonEventArgs e) {
-            if (e.LeftButton != MouseButtonState.Pressed) return;
-
-            container.CaptureMouse();
+            background.CaptureMouse();
             startDragPoint = Mouse.GetPosition(this);
             IsGraphMoving = true;
         }
@@ -35,10 +39,8 @@ namespace SkyView.Tabs {
             startDragPoint = Mouse.GetPosition(this);
         }
         private void container_MouseUp(object sender, MouseButtonEventArgs e) {
-            if (e.LeftButton != MouseButtonState.Released) return;
-
-            container.ReleaseMouseCapture();
-            IsGraphMoving = false;
+             background.ReleaseMouseCapture();
+             IsGraphMoving = false;
         }
 
         private void NodeEditor_SizeChanged(object sender, SizeChangedEventArgs e) {

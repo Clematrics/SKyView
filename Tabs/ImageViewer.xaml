@@ -9,7 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300"
              SizeChanged="ImageViewer_SizeChanged">
     <Canvas x:Name="imageCanvas" ClipToBounds="True">
-        <Image x:Name="image" MouseDown="image_MouseDown" MouseUp="image_MouseUp" MouseMove="image_MouseMove" MouseWheel="image_MouseWheel" Source="pack://application:,,,/SkyView;component/Resources/Icons/SkyView.png">
+        <Image x:Name="image" MouseDown="image_MouseDown" MouseUp="image_MouseUp" MouseMove="image_MouseMove" MouseWheel="image_MouseWheel" Source="pack://application:,,,/SkyView;component/Resources/Icons/SkyView.png" RenderTransformOrigin="0,4">
 
         </Image>
     </Canvas>

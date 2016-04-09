@@ -97,15 +97,12 @@
                           Background="{DynamicResource FillTheme}" Foreground="{x:Null}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="1,0"/>
             <Tabs:ImageViewer 
                                Grid.Column="0" Grid.Row="0"/>
-            <Tabs:NodeEditor 
+            <Tabs:NodeEditor x:Name="Editor"
                              Grid.ColumnSpan="3" Grid.Row="2" 
                              Margin="1" 
                              BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="2"/>
             <Tabs:PropertiesEditor 
                                    Grid.Column="2" Grid.Row="0"/>
-            <local:Node 
-                        Grid.Row="2"
-                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,120,0,0"/>
             <Grid x:Name="InsertNodeTool">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="32"/>

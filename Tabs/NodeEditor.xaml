@@ -8,7 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" SizeChanged="NodeEditor_SizeChanged">
     <Canvas x:Name="graphCanvas" ClipToBounds="True">
-        <Canvas x:Name="container" Width="4096" Height="4096" Background="{StaticResource NodeEditorBackgroundTiled}" MouseMove="container_MouseMove" MouseDown="container_MouseDown" MouseUp="container_MouseUp">
+        <Canvas x:Name="container" Width="4096" Height="4096" Background="{StaticResource NodeEditorBackgroundTiled}">
+            <Border x:Name="background" Width="4096" Height="4096" Background="{StaticResource NodeEditorBackgroundTiled}"  MouseMove="container_MouseMove" MouseLeftButtonDown="container_MouseDown" MouseLeftButtonUp="container_MouseUp"/>
         </Canvas>
     </Canvas>
 </UserControl>

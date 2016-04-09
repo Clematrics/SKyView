@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -25,6 +26,8 @@ namespace SkyView {
             DependencyPropertyDescriptor.FromProperty(WindowStateProperty, typeof(Window)).AddValueChanged(this, OnWindowStateChanged);
 
             renderer = new RenderEngine.RenderEngine();
+
+            Editor.AddElement(new Node());
         }
         #endregion
 

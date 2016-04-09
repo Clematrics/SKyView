@@ -75,12 +75,20 @@ namespace SkyView.Tabs {
         }
         #endregion
 
+
+        #region Gestion du zoom de l'image
+
+        private double zoom = 1;
         private void image_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            var transform = (ScaleTransform)image.RenderTransform;
-            double zoom = e.Delta > 0 ? 0.2 : -0.2;
-            transform.ScaleX += zoom;
-            transform.ScaleY += zoom;
+            zoom += e.Delta > 0 ? 0.1 : -0.1 ;
+            Matrix matrix = image.RenderTransform.Value;
+
+            matrix.ScaleAt(zoom, zoom, 0.5, 0.5);
+
+            image.RenderTransform = new MatrixTransform(matrix);
+            CheckAndUpdateImage();
         }
+        #endregion
     }
 }
