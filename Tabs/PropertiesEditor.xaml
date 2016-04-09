@@ -6,5 +6,30 @@
              xmlns:local="clr-namespace:SkyView.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="True"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="True">
+        <ItemsControl>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0"/>
+                        <TextBox Grid.Column="1" x:Name="ADDRESS_BOX"/>
+                    </Grid>
+                    <DataTemplate.Triggers>
+                        <DataTrigger>
+                            <Setter/> 
+                            <Setter/>
+                        </DataTrigger>
+                        <DataTrigger>
+                            <Setter/>
+                            <Setter/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
 </UserControl>
