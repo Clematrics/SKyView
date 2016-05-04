@@ -77,6 +77,8 @@ namespace SkyView.Nodes {
                     break;
                 case NodeType.Channels:
                     break;
+                case NodeType.GrayScale:
+                    break;
                 case NodeType.Blur:
                     newProperties.Add(new NodeProperty("Horizontal blur", PropertyType.Number));
                     newProperties.Add(new NodeProperty("Vertical blur", PropertyType.Number));
@@ -147,7 +149,11 @@ namespace SkyView.Nodes {
                     break;
                 case NodeType.Channels:
                     break;
+                case NodeType.GrayScale:
+                    newInputPins.Add(new LogicalInputPin("Image"));
+                    break;
                 case NodeType.Blur:
+                    newInputPins.Add(new LogicalInputPin("Image"));
                     break;
                 case NodeType.Luminosity:
                     newInputPins.Add(new LogicalInputPin("Image"));
@@ -190,7 +196,7 @@ namespace SkyView.Nodes {
                     newOutputPins.Add(new LogicalOutputPin("Image"));
                     break;
                 case NodeType.Invert:
-                    newOutputPins.Add(new LogicalOutputPin("Image"));
+                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.InvertFilter));
                     break;
                 case NodeType.Replace:
                     newOutputPins.Add(new LogicalOutputPin("Image"));
@@ -213,17 +219,20 @@ namespace SkyView.Nodes {
                     newOutputPins.Add(new LogicalOutputPin("Blue", Filters.GetBlueChannel));
                     newOutputPins.Add(new LogicalOutputPin("Alpha", Filters.GetAlphaChannel));
                     break;
+                case NodeType.GrayScale:
+                    newOutputPins.Add(new LogicalOutputPin("GrayScale", Filters.GrayScaleFilter));
+                    break;
                 case NodeType.Blur:
                     newOutputPins.Add(new LogicalOutputPin("Blur"));
                     break;
                 case NodeType.Luminosity:
-                    newOutputPins.Add(new LogicalOutputPin("Image"));
+                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.LuminosityFilter));
                     break;
                 case NodeType.Threshold:
-                    newOutputPins.Add(new LogicalOutputPin("Image"));
+                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.ThresholdFilter));
                     break;
                 case NodeType.ColorSelection:
-                    newOutputPins.Add(new LogicalOutputPin("Image"));
+                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.ColorSelectionFilter));
                     break;
                 default:
                     break;

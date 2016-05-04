@@ -26,6 +26,7 @@ namespace SkyView.Nodes {
 
         Channels,
 
+        GrayScale,
         Blur,
         Luminosity,
         Threshold,
