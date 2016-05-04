@@ -1,4 +1,5 @@
-﻿using SkyView.Utils;
+﻿using SkyView.Image;
+using SkyView.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -79,6 +80,7 @@ namespace SkyView.Nodes {
                 case NodeType.Blur:
                     newProperties.Add(new NodeProperty("Horizontal blur", PropertyType.Number));
                     newProperties.Add(new NodeProperty("Vertical blur", PropertyType.Number));
+                    newProperties.Add(new NodeProperty("Method", PropertyType.Number));
                     break;
                 case NodeType.Luminosity:
                     newProperties.Add(new NodeProperty("Luminosity", PropertyType.Number));
@@ -168,21 +170,21 @@ namespace SkyView.Nodes {
                 case NodeType.Unknown:
                     break;
                 case NodeType.Image:
-                    newOutputPins.Add( new LogicalOutputPin("Image") );
+                    newOutputPins.Add( new LogicalOutputPin("Image", Filters.LoadImage) );
                     break;
                 case NodeType.Output:
                     break;
                 case NodeType.Add:
-                    newOutputPins.Add(new LogicalOutputPin("Image"));
+                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.AddFilter));
                     break;
                 case NodeType.Substract:
-                    newOutputPins.Add(new LogicalOutputPin("Image"));
+                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.SubstractFilter));
                     break;
                 case NodeType.Multiply:
-                    newOutputPins.Add(new LogicalOutputPin("Image"));
+                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.MultiplyFilter));
                     break;
                 case NodeType.Divide:
-                    newOutputPins.Add(new LogicalOutputPin("Image"));
+                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.DivideFilter));
                     break;
                 case NodeType.Blend:
                     newOutputPins.Add(new LogicalOutputPin("Image"));
@@ -194,7 +196,7 @@ namespace SkyView.Nodes {
                     newOutputPins.Add(new LogicalOutputPin("Image"));
                     break;
                 case NodeType.Constant:
-                    newOutputPins.Add(new LogicalOutputPin("Constant"));
+                    newOutputPins.Add(new LogicalOutputPin("Constant", Filters.ConstantFilter));
                     break;
                 case NodeType.Noise:
                     newOutputPins.Add(new LogicalOutputPin("Noise"));
@@ -206,10 +208,10 @@ namespace SkyView.Nodes {
                     newOutputPins.Add(new LogicalOutputPin("Ramp"));
                     break;
                 case NodeType.Channels:
-                    newOutputPins.Add(new LogicalOutputPin("Red"));
-                    newOutputPins.Add(new LogicalOutputPin("Green"));
-                    newOutputPins.Add(new LogicalOutputPin("Blue"));
-                    newOutputPins.Add(new LogicalOutputPin("Alpha"));
+                    newOutputPins.Add(new LogicalOutputPin("Red", Filters.GetRedChannel));
+                    newOutputPins.Add(new LogicalOutputPin("Green", Filters.GetGreenChannel));
+                    newOutputPins.Add(new LogicalOutputPin("Blue", Filters.GetBlueChannel));
+                    newOutputPins.Add(new LogicalOutputPin("Alpha", Filters.GetAlphaChannel));
                     break;
                 case NodeType.Blur:
                     newOutputPins.Add(new LogicalOutputPin("Blur"));
