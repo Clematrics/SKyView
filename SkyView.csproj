@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Image\Image.cs" />
     <Compile Include="Nodes\InputPin.xaml.cs">
       <DependentUpon>InputPin.xaml</DependentUpon>
     </Compile>
