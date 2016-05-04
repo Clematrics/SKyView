@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="SkyView.Nodes.Link"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SkyView.Nodes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Line x:Name="line" StrokeThickness="3" Stroke="White" X1="{Binding startPoint.X}" Y1="{Binding startPoint.Y}" X2="{Binding finishPoint.X}" Y2="{Binding finishPoint.Y}"/>
+</UserControl>

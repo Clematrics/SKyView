@@ -73,11 +73,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Nodes\InputPin.xaml.cs">
+      <DependentUpon>InputPin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Nodes\Link.xaml.cs">
+      <DependentUpon>Link.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Nodes\LogicalInputPin.cs" />
+    <Compile Include="Nodes\LogicalNode.cs" />
+    <Compile Include="Nodes\LogicalOutputPin.cs" />
     <Compile Include="Nodes\Node.xaml.cs">
       <DependentUpon>Node.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Nodes\NodeEventArgs.cs" />
     <Compile Include="Nodes\NodeProperty.cs" />
+    <Compile Include="Nodes\NodesAssembly.cs" />
+    <Compile Include="Nodes\NodeType.cs" />
+    <Compile Include="Nodes\OutputPin.xaml.cs">
+      <DependentUpon>OutputPin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RenderEngine\RenderEngine.cs" />
+    <Compile Include="RenderEngine\UnsafeVk.cs" />
     <Compile Include="SkyViewManager.xaml.cs">
       <DependentUpon>SkyViewManager.xaml</DependentUpon>
     </Compile>
@@ -91,7 +107,21 @@
       <DependentUpon>PropertiesEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="RenderEngine\Vk.cs" />
+    <Compile Include="Utils\Bindable.cs" />
+    <Compile Include="Utils\Collection.cs" />
+    <Page Include="Nodes\InputPin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Nodes\Link.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Nodes\Node.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Nodes\OutputPin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

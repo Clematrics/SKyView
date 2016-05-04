@@ -3,10 +3,12 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
+
+using SkyView.Utils;
+using SkyView.Nodes;
 
 namespace SkyView {
     /// <summary>
@@ -19,16 +21,29 @@ namespace SkyView {
         /// Constructeur de la fenêtre principale de travail
         /// </summary>
         public SkyViewWindow() {
+            
             InitializeComponent();
             this.SourceInitialized += new EventHandler(win_SourceInitialized);
-            System.Windows.Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             // Ajout d'un événement lorsque WindowState change d'état
             DependencyPropertyDescriptor.FromProperty(WindowStateProperty, typeof(Window)).AddValueChanged(this, OnWindowStateChanged);
+            System.Windows.Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            shared_nodes_assembly = new NodesAssembly();
+            shared_nodes_assembly.OnNodeAdded += Editor.AddNode;
+            shared_nodes_assembly.OnNodeRemoved += Editor.RemoveNode;
+
+            shared_nodes_assembly.AddNode(NodeType.Output);
+            outputId = shared_nodes_assembly.idSelected;
 
             renderer = new RenderEngine.RenderEngine();
 
-            Editor.AddElement(new Node());
+            DataContext = this;
         }
+        #endregion
+
+        #region Propriétés partagées
+        public NodesAssembly shared_nodes_assembly { get; set; }
+        public long outputId { get; }
         #endregion
 
         #region Gestion du rendu
@@ -303,6 +318,82 @@ namespace SkyView {
                 return !(rect1 == rect2);
             }
         }
-    #endregion
+        #endregion
+
+        #region implémentation des ajouts de nouvelles nodes via l'InsertNodeTool
+
+        private void Img_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Image);
+        }
+
+        private void Add_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Add);
+        }
+
+        private void Sub_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Substract);
+        }
+
+        private void Mul_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Multiply);
+        }
+
+        private void Div_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Divide);
+        }
+
+        private void Ble_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Blend);
+        }
+
+        private void Inv_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Invert);
+        }
+
+        private void Rep_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Replace);
+        }
+
+        private void Con_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Constant);
+        }
+
+        private void Noi_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Noise);
+        }
+
+        private void Lrp_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.LinearRamp);
+        }
+
+        private void Rrp_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.RadialRamp);
+        }
+
+        private void Chn_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Channels);
+        }
+
+        private void Blr_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Blur);
+        }
+
+        private void Lum_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Luminosity);
+        }
+
+        private void Thr_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.Threshold);
+        }
+
+        private void Sel_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.AddNode(NodeType.ColorSelection);
+        }
+
+        #endregion implémentation des ajouts de nouvelles nodes via l'InsertNodeTool
+
+        private void Del_Click(object sender, RoutedEventArgs e) {
+            shared_nodes_assembly.RemoveNode();
+        }
     }
 }

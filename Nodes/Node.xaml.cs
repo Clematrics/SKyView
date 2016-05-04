@@ -1,5 +1,6 @@
 ﻿using SkyView.Nodes;
-using System.Collections.Generic;
+using SkyView.Utils;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,35 +10,43 @@ namespace SkyView {
     /// Logique d'interaction pour Node.xaml
     /// </summary>
     public partial class Node : UserControl {
-        public Node() {
+        public Node (LogicalNode node, UIElement container) {
             InitializeComponent();
-        }
+            id = node.id;
+            name = node.name;
+            type = node.type;
+            this.container = container;
 
-        class LogicalNode {
-            internal List<NodeProperty> properties;
-            internal List<LogicalInputPin> inPins;
-            internal List<LogicalOutputPin> outPins;
-            internal string name;
-        };
-        LogicalNode l_node;
-
-        class LogicalOutputPin {
-            LogicalOutputPin() {
-
+            foreach (CollectionItem<LogicalInputPin> input in node.inPins) {
+                InputPin pin = new InputPin(input.Member);
+                pin.DragFrom += DraggingLink;
+                pin.DragOn += DraggingLink;
+                positionChanged += pin.OnPositionChanged;
+                inputs.Children.Add(pin);
             }
-            string shader;
-            List<LogicalInputPin> target_pins;
-            string name;
-        }
-        class LogicalInputPin {
-            LogicalOutputPin source_pin;
-            string name;
-        }
-
-        private void TitleContainer_TextChanged(object sender, TextChangedEventArgs e) {
-            //l_node.name = (sender as TextBox).Text;
+            foreach (CollectionItem<LogicalOutputPin> output in node.outPins) {
+                OutputPin pin = new OutputPin(output.Member);
+                pin.DragFrom += DraggingLink;
+                pin.DragOn += DraggingLink;
+                positionChanged += pin.OnPositionChanged;
+                outputs.Children.Add(pin);
+            }
+            TitleContainer.DataContext = this;
         }
 
+        public long id;
+        public string name { get; set; }
+        public NodeType type { get; }
+        private UIElement container { get; set; }
+
+        public event DragLinkEventHandler DraggingLinkEvent;
+        public delegate void DragLinkEventHandler(object sender, DragInfo info);
+        private void DraggingLink(object sender, DragInfo info) {
+            DraggingLinkEvent(sender, info);
+        }
+
+        public event NodeEventHandler MustBeSelected;
+        public delegate void NodeEventHandler(object sender, NodeEventArgs e);
 
         #region Gestion du déplacement de la node
 
@@ -49,6 +58,7 @@ namespace SkyView {
             Navigator.CaptureMouse();
             offset = Mouse.GetPosition(this);
             IsGraphMoving = true;
+            MustBeSelected(this, new NodeEventArgs(id, NodeType.Unknown));
         }
 
         private void Navigator_MouseUp(object sender, MouseButtonEventArgs e) {
@@ -72,7 +82,10 @@ namespace SkyView {
             Canvas.SetTop(this, currentGraphPoint.Y);
             Canvas.SetLeft(this, currentGraphPoint.X);
 
+            positionChanged(this, container);
         }
+        private event PositionChangedEventHandler positionChanged;
+        private delegate void PositionChangedEventHandler(object sender, UIElement ancestor);
         #endregion
     }
 }

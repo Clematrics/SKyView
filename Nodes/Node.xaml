@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SkyView"
+             xmlns:Nodes="clr-namespace:SkyView.Nodes"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="150">
     <Grid MinWidth="150">
@@ -11,32 +12,20 @@
             <RowDefinition Height="Auto" MinHeight="20"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1" Margin="5, -1, 5, 0">
+        <Grid Grid.Row="1" Margin="5, -1, 5, 0" Background="{DynamicResource FillTheme}" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Rectangle x:Name="NodeBackground" Grid.RowSpan="4" Grid.ColumnSpan="2" Fill="{DynamicResource FillTheme}"/>
-            <Polygon Grid.Row="1" Margin="-5, 0" Points="0,0 8,5, 0,10" Stroke="{DynamicResource StrokeTheme}" Fill="{DynamicResource FillTheme}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <Label x:Name="entree1" Grid.Column="0" Content="Entrée 1" HorizontalAlignment="Left" Grid.Row="1" Foreground="{DynamicResource FontTheme}" FontSize="10.667" Margin="5,0,0,0"/>
-            <Polygon Grid.Row="2" Margin="-5, 0" Points="0,0 8,5, 0,10" Stroke="{DynamicResource StrokeTheme}" Fill="{DynamicResource FillTheme}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <Label x:Name="entree2" Grid.Column="0" Content="Entrée 2" HorizontalAlignment="Left" Grid.Row="2" Foreground="{DynamicResource FontTheme}" FontSize="10.667" Margin="5,0,0,0"/>
-            <Polygon Grid.Row="3" Margin="-5, 0" Points="0,0 8,5, 0,10" Stroke="{DynamicResource StrokeTheme}" Fill="{DynamicResource FillTheme}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <Label x:Name="entree3" Grid.Column="0" Content="Entrée 3" HorizontalAlignment="Left" Grid.Row="3" Foreground="{DynamicResource FontTheme}" FontSize="10.667" Margin="5,0,0,0"/>
-            <Polygon Grid.Row="1" Grid.Column="1" Margin="-5, 0" Points="0,0 8,5, 0,10" Stroke="{DynamicResource StrokeTheme}" Fill="{DynamicResource FillTheme}" HorizontalAlignment="Right" VerticalAlignment="Center" />
-            <Label x:Name="sortie" Grid.Column="1" Content="Sortie" HorizontalAlignment="Right" Grid.Row="1" Foreground="{DynamicResource FontTheme}" FontSize="10.667" Margin="0,0,5,0"/>
+            <WrapPanel x:Name="inputs"  Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left"/>
+            <WrapPanel x:Name="outputs" Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Right" />
         </Grid>
         <Grid Grid.Row="0">
             <Rectangle  x:Name="RectTitle"      Fill="{DynamicResource StrokeTheme}"                    RadiusX="5" RadiusY="5"/>
             <Rectangle  x:Name="Navigator"      Margin="2" Fill="{DynamicResource FontTheme}"           HorizontalAlignment="Left" Width="18"            Cursor="SizeAll"
-                        MouseLeftButtonDown="Navigator_MouseDown"     MouseLeftButtonUp="Navigator_MouseUp"        MouseMove="Navigator_MouseMove"/>
-            <TextBox    x:Name="TitleContainer" Margin="20, 2, 2, 2" HorizontalAlignment="Left"         Text="Titre de la node" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource FontTheme}" SelectionBrush="{DynamicResource SelectionTheme}" TextChanged="TitleContainer_TextChanged" MaxLength="1024"/>
+                        MouseLeftButtonDown="Navigator_MouseDown"     MouseLeftButtonUp="Navigator_MouseUp"        MouseMove="Navigator_MouseMove" />
+            <TextBox    x:Name="TitleContainer" Margin="20, 2, 2, 2"  HorizontalAlignment="Left"        Text="{Binding name, Mode=TwoWay}" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource FontTheme}" SelectionBrush="{DynamicResource SelectionTheme}" MaxLength="1024"/>
         </Grid>
     </Grid>
 </UserControl>

@@ -2,7 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SkyView" xmlns:Tabs="clr-namespace:SkyView.Tabs" x:Class="SkyView.SkyViewWindow"
+        xmlns:local="clr-namespace:SkyView" xmlns:Tabs="clr-namespace:SkyView.Tabs" xmlns:Utils="clr-namespace:SkyView.Utils" xmlns:Nodes="clr-namespace:SkyView.Nodes"
+        x:Class="SkyView.SkyViewWindow"
         mc:Ignorable="d"
         x:Name="this"
         Height="720" Width="1280"
@@ -48,29 +49,158 @@
                    Height="24"
                    VerticalAlignment="Bottom"
                    StrokeThickness="0" />
+        <Grid Grid.Column="1" Grid.Row="0"
+                   Height="20"
+                   VerticalAlignment="Top" Margin="0,24,0,0">
+            <Menu x:Name="menu" VerticalAlignment="Top" Foreground="{x:Null}" Background="{x:Null}">
+                <MenuItem Header="Rendering" BorderBrush="{DynamicResource StrokeTheme}" Background="{DynamicResource FillTheme}" Foreground="{DynamicResource FontTheme}" Width="70" Template="{DynamicResource ResourceKey=MenuItemStyle}">
+                    <MenuItem Header="Render" Background="{DynamicResource FillTheme}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="0" Width="70" Template="{DynamicResource MenuItemStyle}" Foreground="{DynamicResource FontTheme}"/>
+                </MenuItem>
+            </Menu>
+
+        </Grid>
+        <Grid x:Name="InsertNodeTool" Grid.Column="0" Grid.Row="0"
+                   Width="32"
+                   HorizontalAlignment="Left" Margin="0,43,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="Img" 
+                    Grid.Row="0"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                    Content="Img"
+                    Click="Img_Click" />
+            <Button x:Name="Add" 
+                    Grid.Row="1"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                    Content="Add"
+                    Click="Add_Click" />
+            <Button x:Name="Sub"
+                    Grid.Row="2"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Sub" 
+                	Click="Sub_Click" />
+            <Button x:Name="Mul"
+                    Grid.Row="3"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Mul" 
+                	Click="Mul_Click" />
+            <Button x:Name="Div"
+                    Grid.Row="4"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Div" 
+                	Click="Div_Click" />
+            <Button x:Name="Ble"
+                    Grid.Row="5"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Ble" 
+                	Click="Ble_Click" />
+            <Button x:Name="Inv"
+                    Grid.Row="6"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Inv" 
+                	Click="Inv_Click" />
+            <Button x:Name="Rep"
+                    Grid.Row="7"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Rep" 
+                	Click="Rep_Click" />
+            <Button x:Name="Con"
+                    Grid.Row="8"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Con" 
+                	Click="Con_Click" />
+            <Button x:Name="Noi"
+                    Grid.Row="9"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Noi" 
+                	Click="Noi_Click" />
+            <Button x:Name="Lrp"
+                    Grid.Row="10"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Lrp" 
+                	Click="Lrp_Click" />
+            <Button x:Name="Rrp"
+                    Grid.Row="11"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Rrp" 
+                	Click="Rrp_Click" />
+            <Button x:Name="Chn"
+                    Grid.Row="12"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Chn" 
+                	Click="Chn_Click" />
+            <Button x:Name="Blr"
+                    Grid.Row="13"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Blr" 
+                	Click="Blr_Click" />
+            <Button x:Name="Lum"
+                    Grid.Row="14"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Lum" 
+                	Click="Lum_Click" />
+            <Button x:Name="Thr"
+                    Grid.Row="15"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Thr" 
+                	Click="Thr_Click" />
+            <Button x:Name="Sel"
+                    Grid.Row="16"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                	Content="Sel" 
+                	Click="Sel_Click" />
+            <Button x:Name="Del"
+                    Grid.Row="17"
+                    Style="{DynamicResource AddNodeButtonStyle}"
+                    Foreground="{DynamicResource SelectionTheme}"
+                	Content="Del" 
+                	Click="Del_Click" />
+        </Grid>
         <Grid 
               Height="44" Width="64"
               HorizontalAlignment="Left" VerticalAlignment="Top">
             <Rectangle x:Name="Logo" 
-                       Fill="{DynamicResource FillTheme}" StrokeThickness="1" Stroke="{DynamicResource StrokeTheme}" />
-            <Image 
+                       Fill="{DynamicResource FillTheme}" StrokeThickness="0" Stroke="{DynamicResource StrokeTheme}" />
+            <Image Margin="5"
                    Source="Resources/Icons/SkyView.png" 
                    MouseDown="Logo_MouseDown"/>
         </Grid>
         <Button x:Name="CloseButton"    
-                Style="{DynamicResource DefaultButtonStyle}" Content="X" 
+                Style="{DynamicResource WindowButtonStyle}" Content="X" 
                 Grid.Row="0" Grid.Column="1" 
                 Height="22" Width="32" 
                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,1,0"
                 Background="#FFC02020" FontWeight="SemiBold" Click="Close_Click"/>
         <Button x:Name="Maximize"       
-                Style="{DynamicResource DefaultButtonStyle}" Content="{DynamicResource IconMaximize}" 
+                Style="{DynamicResource WindowButtonStyle}" Content="{DynamicResource IconMaximize}" 
                 Grid.Row="0" Grid.Column="1" 
                 Height="22" Width="24" 
                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,38,0" 
                 Click="Maximize_Click" />
         <Button x:Name="Minimize"       
-                Style="{DynamicResource DefaultButtonStyle}" Content="__" 
+                Style="{DynamicResource WindowButtonStyle}" Content="__" 
                 Grid.Row="0" Grid.Column="1"
                 Height="22" Width="24"
                 HorizontalAlignment="Right"  VerticalAlignment="Top" Margin="0,1,67,0" Padding="5"
@@ -82,9 +212,9 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="545*"/>
                 <ColumnDefinition Width="5"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="621*"/>
             </Grid.ColumnDefinitions>
             <GridSplitter x:Name="horizontalSplitter" 
                           Grid.Row="1" Grid.ColumnSpan="3"
@@ -96,25 +226,19 @@
                           HorizontalAlignment="Stretch" ResizeDirection="Columns" Margin="0,0,0,4"
                           Background="{DynamicResource FillTheme}" Foreground="{x:Null}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="1,0"/>
             <Tabs:ImageViewer 
-                               Grid.Column="0" Grid.Row="0"/>
+                             Grid.Column="0" Grid.Row="0"/>
             <Tabs:NodeEditor x:Name="Editor"
                              Grid.ColumnSpan="3" Grid.Row="2" 
                              Margin="1" 
-                             BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="2"/>
-            <Tabs:PropertiesEditor 
-                                   Grid.Column="2" Grid.Row="0"/>
-            <Grid x:Name="InsertNodeTool">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="32"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Button x:Name="button" 
-                        Content="Button" 
-                        Width="75"
-                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-28,0,0,0" />
-            </Grid>
+                             BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="2"
+                             nodes="{Binding shared_nodes_assembly.nodes_collection, Mode=TwoWay}"
+                             idSelected="{Binding shared_nodes_assembly.idSelected, Mode=TwoWay}"/>
+            <Tabs:PropertiesEditor x:Name="Properties"
+                                   Grid.Column="2" Grid.Row="0"
+                                   Margin="1" 
+                                   BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="2"
+                                   nodes_collection="{Binding shared_nodes_assembly.nodes_collection, Mode=TwoWay}"
+                                   idSelected="{Binding shared_nodes_assembly.idSelected}"/>
         </Grid>
     </Grid>
 </Window>
