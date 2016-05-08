@@ -12,65 +12,50 @@ namespace SkyView.Tabs {
     /// </summary>
     public partial class PropertiesEditor : UserControl {
         public PropertiesEditor() {
-            properties = new Collection<NodeProperty>( () => new NodeProperty() );
-            nodes_collection = new Collection<LogicalNode>( () => new LogicalNode() );
-            idSelected = 0;
+            Properties = new Collection<NodeProperty>( () => new NodeProperty() );
+            nodesAssemblyPropertiesEditor = new NodesAssembly();
 
-            idSelected_descriptor.AddValueChanged(this, idSelected_PropertyChanged);
-            properties_descriptor.AddValueChanged(this, properties_PropertyChanged);
+            propertiesDescriptor.AddValueChanged(this, Properties_PropertyChanged);
 
             InitializeComponent();
 
             ItemsControlScroller.DataContext = this;
         }
 
-        private void properties_PropertyChanged(object sender, EventArgs e) {
-            if (idSelected != 0) nodes_collection.Find(x => x.id == idSelected).properties = properties;
+        private void Properties_PropertyChanged(object sender, EventArgs e) {
+            if (nodesAssemblyPropertiesEditor.IdSelected != 0) nodesAssemblyPropertiesEditor.NodesCollection.Find(x => x.Id == nodesAssemblyPropertiesEditor.IdSelected).Properties = Properties;
         }
 
-        private void idSelected_PropertyChanged(object sender, EventArgs e) {
-                    if (idSelected == 0)
-                        properties = new Collection<NodeProperty>( () => new NodeProperty() );
-                    else properties = nodes_collection.Find(x => x.id == idSelected).properties;
+        public void IdChanged(object sender, PropertyChangedEventArgs e) {
+            if (nodesAssemblyPropertiesEditor.IdSelected == 0)
+                Properties = new Collection<NodeProperty>( () => new NodeProperty() );
+            else Properties = nodesAssemblyPropertiesEditor.NodesCollection.Find(x => x.Id == nodesAssemblyPropertiesEditor.IdSelected).Properties;
         }
 
-        #region properties
-        public Collection<NodeProperty> properties {
-            get { return (Collection<NodeProperty>)GetValue(properties_property); }
-            set { SetValue(properties_property, value); }
+        #region PropertiesProperty
+        public Collection<NodeProperty> Properties {
+            get { return (Collection<NodeProperty>)GetValue(PropertiesProperty); }
+            set { SetValue(PropertiesProperty, value); }
         }
-        public static readonly DependencyProperty properties_property = DependencyProperty.Register(
-                "properties",
+        public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register(
+                "Properties",
                 typeof(Collection<NodeProperty>),
                 typeof(PropertiesEditor),
                 new PropertyMetadata(new Collection<NodeProperty>( () => new NodeProperty() ) ) );
-        DependencyPropertyDescriptor properties_descriptor = DependencyPropertyDescriptor.FromProperty(properties_property, typeof(PropertiesEditor));
-        #endregion properties
+        DependencyPropertyDescriptor propertiesDescriptor = DependencyPropertyDescriptor.FromProperty(PropertiesProperty, typeof(PropertiesEditor));
+        #endregion PropertiesProperty
 
-        #region nodes_collection
-        public Collection<LogicalNode> nodes_collection {
-            get { return (Collection<LogicalNode>)GetValue(nodes_collection_property); }
-            set { SetValue(nodes_collection_property, value); }
+        #region nodesAssembly Property
+        public NodesAssembly nodesAssemblyPropertiesEditor {
+            get { return (NodesAssembly)GetValue(nodesAssemblyPropertiesEditorProperty); }
+            set { SetValue(nodesAssemblyPropertiesEditorProperty, value); }
         }
-        public static readonly DependencyProperty nodes_collection_property = DependencyProperty.Register(
-                "nodes_collection",
-                typeof(Collection<LogicalNode>),
-                typeof(PropertiesEditor),
-                new PropertyMetadata( new Collection<LogicalNode>( () => new LogicalNode() ) ));
-        #endregion nodes_collection
-
-        #region idSelected
-        public long idSelected {
-            get { return (long)GetValue(idSelected_property); }
-            set { SetValue(idSelected_property, value); }
-        }
-        public static readonly DependencyProperty idSelected_property = DependencyProperty.Register(
-                "idSelected",
-                typeof(long),
-                typeof(PropertiesEditor),
-                new PropertyMetadata( (long)0 ) );
-        DependencyPropertyDescriptor idSelected_descriptor = DependencyPropertyDescriptor.FromProperty(idSelected_property, typeof(PropertiesEditor));
-        #endregion idSelected
+        public static readonly DependencyProperty nodesAssemblyPropertiesEditorProperty = DependencyProperty.Register(
+            "nodesAssemblyPropertiesEditor",
+            typeof(NodesAssembly),
+            typeof(PropertiesEditor),
+            new PropertyMetadata(new NodesAssembly()));
+        #endregion nodesAssembly Property
     }
 
 }

@@ -4,12 +4,17 @@ using System.Drawing;
 
 namespace SkyView.Image {
 
+    [Serializable]
     public delegate Image Filter(int height, int width, Image[] inputImages, NodeProperty[] parameters);
 
     public static class Filters {
 
+        public static Image NoFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+            return new Image(height, width);
+        }
+
         public static Image LoadImage(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
-            return new Image(parameters[0].value);
+            return new Image(parameters[0].Value);
         }
 
         public static Image AddFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
@@ -84,7 +89,7 @@ namespace SkyView.Image {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
-                    Color colorA = inputImages[0].Getcolor(x, y, 0);
+                    Color colorA = inputImages[0].Getcolor(x, y, 1);
 
                     int A = 255 - colorA.A;
                     int R = 255 - colorA.R;
@@ -100,10 +105,10 @@ namespace SkyView.Image {
             Image finalImage = new Image(height, width);
             int A, R, G, B;
             try {
-                A = int.Parse(parameters[0].value);
-                R = int.Parse(parameters[1].value);
-                G = int.Parse(parameters[2].value);
-                B = int.Parse(parameters[3].value);
+                A = int.Parse(parameters[0].Value);
+                R = int.Parse(parameters[1].Value);
+                G = int.Parse(parameters[2].Value);
+                B = int.Parse(parameters[3].Value);
             }
             catch (Exception e) {
                 throw e;
@@ -114,13 +119,64 @@ namespace SkyView.Image {
             return finalImage;
         }
 
+        public static Image LinearRampFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+            Image finalImage = new Image(height, width);
+            int x1, y1, x0, y0;
+            try {
+                x1 = int.Parse(parameters[0].Value);
+                y1 = int.Parse(parameters[1].Value);
+                x0 = int.Parse(parameters[2].Value);
+                y0 = int.Parse(parameters[3].Value);
+            }
+            catch (Exception e) {
+                throw e;
+            }
+            double norm = Math.Sqrt(Math.Pow((x0 - x1), 2) + Math.Pow((y0 - y1), 2));
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++) {
+
+                    double scalaire = x*(x0 - x1) + y*(y0 - y1);
+                    int color = (int)(255 - (255 * scalaire / (norm * norm)) );
+                    color = (color > 255) ? 255 : color;
+                    color = (color < 0) ? 0 : color;
+
+                    finalImage.data[y * width + x] = Color.FromArgb(color, color, color, color);
+                }
+            return finalImage;
+        }
+
+        public static Image RadialRampFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+            Image finalImage = new Image(height, width);
+            int x1, y1, x0, y0;
+            try {
+                x1 = int.Parse(parameters[0].Value);
+                y1 = int.Parse(parameters[1].Value);
+                x0 = int.Parse(parameters[2].Value);
+                y0 = int.Parse(parameters[3].Value); 
+            }
+            catch (Exception e) {
+                throw e;
+            }
+            double norm = Math.Sqrt( Math.Pow((x0 - x1), 2) + Math.Pow((y0 - y1), 2));
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++) {
+
+                    double normPixel = Math.Sqrt(Math.Pow((x - x1), 2) + Math.Pow((y - y1), 2));
+                    int color = (int)( 255 - (255*normPixel/norm) );
+                    color = (color < 0) ? 0 : color;
+
+                    finalImage.data[y * width + x] = Color.FromArgb(color, color, color, color);
+                }
+            return finalImage;
+        }
+
         public static Image GetAlphaChannel(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
 
-                    finalImage.data[y * width + x] = Color.FromArgb(colorA.A, 0, 0, 0);
+                    finalImage.data[y * width + x] = Color.FromArgb(colorA.A, colorA.A, colorA.A, colorA.A);
                 }
             return finalImage;
         }
@@ -131,7 +187,7 @@ namespace SkyView.Image {
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
 
-                    finalImage.data[y * width + x] = Color.FromArgb(0, colorA.R, 0, 0);
+                    finalImage.data[y * width + x] = Color.FromArgb(colorA.R, colorA.R, colorA.R, colorA.R);
                 }
             return finalImage;
         }
@@ -142,7 +198,7 @@ namespace SkyView.Image {
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
 
-                    finalImage.data[y * width + x] = Color.FromArgb(0, 0, colorA.G, 0);
+                    finalImage.data[y * width + x] = Color.FromArgb(colorA.G, colorA.G, colorA.G, colorA.G);
                 }
             return finalImage;
         }
@@ -153,7 +209,21 @@ namespace SkyView.Image {
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
 
-                    finalImage.data[y * width + x] = Color.FromArgb(0, 0, 0, colorA.B);
+                    finalImage.data[y * width + x] = Color.FromArgb(colorA.B, colorA.B, colorA.B, colorA.B);
+                }
+            return finalImage;
+        }
+
+        public static Image CombineChannels(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+            Image finalImage = new Image(height, width);
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++) {
+                    Color colorA = inputImages[0].Getcolor(x, y, 0);
+                    Color colorR = inputImages[0].Getcolor(x, y, 0);
+                    Color colorG = inputImages[0].Getcolor(x, y, 0);
+                    Color colorB = inputImages[0].Getcolor(x, y, 0);
+
+                    finalImage.data[y * width + x] = Color.FromArgb(colorA.A, colorR.R, colorG.G, colorB.B);
                 }
             return finalImage;
         }
@@ -176,7 +246,7 @@ namespace SkyView.Image {
 
             int brightness;
             try {
-                brightness = int.Parse(parameters[0].value);
+                brightness = int.Parse(parameters[0].Value);
             }
             catch (Exception e) {
                 throw e;
@@ -205,7 +275,7 @@ namespace SkyView.Image {
 
             int threshold;
             try {
-                threshold = int.Parse(parameters[0].value);
+                threshold = int.Parse(parameters[0].Value);
             }
             catch (Exception e) {
                 throw e;

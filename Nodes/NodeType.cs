@@ -15,9 +15,8 @@ namespace SkyView.Nodes {
         Substract, 
         Multiply, 
         Divide, 
-        Blend, 
+        Over, 
         Invert,
-        Replace,
 
         Constant,
         Noise,
@@ -25,6 +24,7 @@ namespace SkyView.Nodes {
         RadialRamp,
 
         Channels,
+        CombineChannels,
 
         GrayScale,
         Blur,

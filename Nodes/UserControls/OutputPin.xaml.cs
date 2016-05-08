@@ -1,4 +1,5 @@
-﻿using SkyView.Utils;
+﻿using SkyView.Image;
+using SkyView.Utils;
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,11 +9,8 @@ namespace SkyView.Nodes {
     /// Logique d'interaction pour OutputPin.xaml
     /// </summary>
     public partial class OutputPin : UserControl {
-        public OutputPin(LogicalOutputPin pin) {
-            InitializeComponent();
-            name.Content = pin.name;
-            links = new Collection<Link>(() => new Link());
-        }
+
+        public OutputPin() { InitializeComponent(); GlobalOutputPin.DataContext = this; }
 
         public Collection<Link> links { get; set; }
         public delegate void PositionChangedEventHandler(object sender, UIElement e);
@@ -23,16 +21,21 @@ namespace SkyView.Nodes {
                 (it.Current as CollectionItem<Link>).Member.startPoint = slot.TransformToAncestor(e).Transform(new Point(4, 5));
         }
 
-        public event DragLinkEventHandler DragFrom;
-        public event DragLinkEventHandler DragOn;
-        public delegate void DragLinkEventHandler(object sender, DragInfo info);
+        public event DragLinkEventHandler Drag;
+        public delegate void DragLinkEventHandler(UserControl sender, int type);
 
         private void slot_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            DragFrom(this, DragInfo.FromOutput);
+            Drag?.Invoke(this, 1);
         }
 
-        private void slot_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            DragOn(this, DragInfo.ToOutput);
+        public LogicalOutputPin OutputPinData {
+            get { return (LogicalOutputPin)GetValue(OutputPinDataProperty); }
+            set { SetValue(OutputPinDataProperty, value); }
         }
+        public static readonly DependencyProperty OutputPinDataProperty = DependencyProperty.Register(
+            "OutputPinData",
+            typeof(LogicalOutputPin),
+            typeof(OutputPin),
+            new PropertyMetadata(new LogicalOutputPin("", Filters.NoFilter)));
     }
 }

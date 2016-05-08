@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace SkyView.Nodes {
     public class NodeEventArgs : EventArgs {
-        public NodeEventArgs(long id, NodeType type) {
-            this.id = id;
+        public NodeEventArgs(NodeType type) {
             this.type = type;
         }
-        public long id;
         public NodeType type;
     }
 }

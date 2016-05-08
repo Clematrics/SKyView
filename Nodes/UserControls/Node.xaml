@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="SkyView.Node"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:SkyView="clr-namespace:SkyView"
+             xmlns:SkyView.Nodes="clr-namespace:SkyView.Nodes"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="150">
+    <Grid x:Name="GlobalNode" MinWidth="150">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="20"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Margin="5, -1, 5, 0" Background="{DynamicResource FillTheme}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <ItemsControl x:Name="InputPinsContainer" ItemsSource="{Binding NodeData.InputPins.List}" Grid.Column="0">
+                <ItemsControl.ItemTemplate>
+                    <ItemContainerTemplate>
+                        <SkyView.Nodes:InputPin InputPinData="{Binding Member}"/>
+                    </ItemContainerTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ItemsControl x:Name="OutputPinsContainer" ItemsSource="{Binding NodeData.OutputPins.List}" Grid.Column="2">
+                <ItemsControl.ItemTemplate>
+                    <ItemContainerTemplate>
+                        <SkyView.Nodes:OutputPin OutputPinData="{Binding Member}"/>
+                    </ItemContainerTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        <Grid Grid.Row="0">
+            <Rectangle  x:Name="RectTitle"      Fill="{DynamicResource StrokeTheme}"                    RadiusX="5" RadiusY="5"/>
+            <Rectangle  x:Name="Navigator"      Margin="2" Fill="{DynamicResource FontTheme}"           HorizontalAlignment="Left" Width="18"            Cursor="SizeAll"
+                        MouseLeftButtonDown="Navigator_MouseDown"     MouseLeftButtonUp="Navigator_MouseUp"        MouseMove="Navigator_MouseMove" />
+            <TextBox    x:Name="TitleContainer" Margin="20, 2, 2, 2"  HorizontalAlignment="Left"        Text="{Binding NodeData.Name, Mode=TwoWay}" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource FontTheme}" SelectionBrush="{DynamicResource SelectionTheme}" MaxLength="1024"/>
+        </Grid>
+    </Grid>
+</UserControl>
