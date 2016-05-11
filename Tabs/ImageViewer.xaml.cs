@@ -24,9 +24,9 @@ namespace SkyView.Tabs {
 
         #region Déplacement de l'image dans l'éditeur
 
-        private Point currentGraphPoint = new Point(0, 0);
-        private Point startDragPoint;
-        private Point vectorDragPoint;
+        private Point CurrentGraphPoint = new Point(0, 0);
+        private Point StartDragPoint;
+        private Point VectorDragPoint;
         private bool IsGraphMoving = false;
 
         private void image_MouseDown(object sender, MouseButtonEventArgs e)
@@ -34,18 +34,18 @@ namespace SkyView.Tabs {
             if (e.LeftButton != MouseButtonState.Pressed) return;
 
             image.CaptureMouse();
-            startDragPoint = Mouse.GetPosition(this);
+            StartDragPoint = Mouse.GetPosition(this);
             IsGraphMoving = true;
         }
         private void image_MouseMove(object sender, MouseEventArgs e)
         {
             if (!IsGraphMoving) return;
 
-            vectorDragPoint = (Point)(Mouse.GetPosition(this) - startDragPoint);
-            currentGraphPoint = currentGraphPoint + (Vector)vectorDragPoint;
+            VectorDragPoint = (Point)(Mouse.GetPosition(this) - StartDragPoint);
+            CurrentGraphPoint = CurrentGraphPoint + (Vector)VectorDragPoint;
             CheckAndUpdateImage();
 
-            startDragPoint = Mouse.GetPosition(this);
+            StartDragPoint = Mouse.GetPosition(this);
         }
         private void image_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -62,32 +62,31 @@ namespace SkyView.Tabs {
 
         private void CheckAndUpdateImage()
         {
-            if (currentGraphPoint.X < 0)
-                currentGraphPoint.X = 0;
-            if (currentGraphPoint.X > imageCanvas.ActualWidth)
-                currentGraphPoint.X = imageCanvas.ActualWidth;
-            if (currentGraphPoint.Y < 0)
-                currentGraphPoint.Y = 0;
-            if (currentGraphPoint.Y > imageCanvas.ActualHeight)
-                currentGraphPoint.Y = imageCanvas.ActualHeight;
-            Canvas.SetTop(image, currentGraphPoint.Y);
-            Canvas.SetLeft(image, currentGraphPoint.X);
+            if (CurrentGraphPoint.X < 0)
+                CurrentGraphPoint.X = 0;
+            if (CurrentGraphPoint.X > imageCanvas.ActualWidth)
+                CurrentGraphPoint.X = imageCanvas.ActualWidth;
+            if (CurrentGraphPoint.Y < 0)
+                CurrentGraphPoint.Y = 0;
+            if (CurrentGraphPoint.Y > imageCanvas.ActualHeight)
+                CurrentGraphPoint.Y = imageCanvas.ActualHeight;
+            Canvas.SetTop(image, CurrentGraphPoint.Y);
+            Canvas.SetLeft(image, CurrentGraphPoint.X);
         }
         #endregion
 
 
         #region Gestion du zoom de l'image
 
-        private double zoom = 1;
+        private double Zoom = 1;
         private void image_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            zoom += e.Delta > 0 ? 0.1 : -0.1 ;
+            Zoom += e.Delta > 0 ? 0.1 : -0.1 ;
             Matrix matrix = image.RenderTransform.Value;
 
-            matrix.ScaleAt(zoom, zoom, 0.5, 0.5);
+            matrix.ScaleAt(Zoom, Zoom, 0.5, 0.5);
 
             image.RenderTransform = new MatrixTransform(matrix);
-            CheckAndUpdateImage();
         }
         #endregion
     }

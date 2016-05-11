@@ -75,23 +75,23 @@
     </ApplicationDefinition>
     <Compile Include="Image\Filters.cs" />
     <Compile Include="Image\Image.cs" />
-    <Compile Include="Nodes\InputPin.xaml.cs">
+    <Compile Include="Nodes\UserControls\InputPin.xaml.cs">
       <DependentUpon>InputPin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Nodes\Link.xaml.cs">
+    <Compile Include="Nodes\UserControls\Link.xaml.cs">
       <DependentUpon>Link.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Nodes\LogicalInputPin.cs" />
-    <Compile Include="Nodes\LogicalNode.cs" />
-    <Compile Include="Nodes\LogicalOutputPin.cs" />
-    <Compile Include="Nodes\Node.xaml.cs">
+    <Compile Include="Nodes\Logical\LogicalInputPin.cs" />
+    <Compile Include="Nodes\Logical\LogicalLink.cs" />
+    <Compile Include="Nodes\Logical\LogicalNode.cs" />
+    <Compile Include="Nodes\Logical\LogicalOutputPin.cs" />
+    <Compile Include="Nodes\UserControls\Node.xaml.cs">
       <DependentUpon>Node.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Nodes\NodeEventArgs.cs" />
     <Compile Include="Nodes\NodeProperty.cs" />
     <Compile Include="Nodes\NodesAssembly.cs" />
     <Compile Include="Nodes\NodeType.cs" />
-    <Compile Include="Nodes\OutputPin.xaml.cs">
+    <Compile Include="Nodes\UserControls\OutputPin.xaml.cs">
       <DependentUpon>OutputPin.xaml</DependentUpon>
     </Compile>
     <Compile Include="RenderEngine\RenderEngine.cs" />
@@ -111,19 +111,19 @@
     <Compile Include="RenderEngine\Vk.cs" />
     <Compile Include="Utils\Bindable.cs" />
     <Compile Include="Utils\Collection.cs" />
-    <Page Include="Nodes\InputPin.xaml">
+    <Page Include="Nodes\UserControls\InputPin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Nodes\Link.xaml">
+    <Page Include="Nodes\UserControls\Link.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Nodes\Node.xaml">
+    <Page Include="Nodes\UserControls\Node.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Nodes\OutputPin.xaml">
+    <Page Include="Nodes\UserControls\OutputPin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SkyView.Nodes.OutputPin"
+﻿<UserControl x:Class="SkyView.Nodes.InputPin"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,11 +6,11 @@
              xmlns:local="clr-namespace:SkyView.Nodes"
              mc:Ignorable="d" 
              d:DesignHeight="24" d:DesignWidth="70">
-    <Grid HorizontalAlignment="Right">
+    <Grid x:Name="GlobalInputPin">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Polygon x:Name="slot" Margin="-5, 0" Points="0,0 8,5, 0,10" Stroke="{DynamicResource StrokeTheme}" Fill="{DynamicResource FillTheme}" HorizontalAlignment="Right" VerticalAlignment="Center" MouseDown="slot_MouseDown" MouseUp="slot_MouseUp" />
-        <Label x:Name="name" Content="Sortie" HorizontalAlignment="Right" Foreground="{DynamicResource FontTheme}" FontSize="10.667" Margin="0,0,5,0" HorizontalContentAlignment="Stretch"/>
+        <Polygon x:Name="slot" Margin="-5, 0" Points="0,0 8,5, 0,10" Stroke="{DynamicResource StrokeTheme}" Fill="{DynamicResource FillTheme}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Label x:Name="name" Content="{Binding InputPinData.Name}" HorizontalAlignment="Left" Foreground="{DynamicResource FontTheme}" FontSize="10.667" Margin="5,0,0,0"/>
     </Grid>
 </UserControl>

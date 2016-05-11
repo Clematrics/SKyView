@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <ScrollViewer x:Name="ItemsControlScroller" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="True">
-        <ItemsControl ItemsSource="{Binding properties.List}" Margin="5" HorizontalContentAlignment="Stretch">
+        <ItemsControl ItemsSource="{Binding Properties.List}" Margin="5" HorizontalContentAlignment="Stretch">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid Height="30" Margin="1">
@@ -16,7 +16,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Label   Grid.Column="0" x:Name="propertyTitle" Content="{Binding Member.PropertyName}" Height="30" Foreground="{DynamicResource FontTheme}" FontSize="15"/>
-                        <TextBox Grid.Column="1" x:Name="valueBox" Text="{Binding Member.value, Mode=TwoWay}" FontSize="20" Foreground="{DynamicResource FontTheme}" BorderBrush="{DynamicResource StrokeTheme}" Background="{DynamicResource FillTheme}" />
+                        <TextBox Grid.Column="1" x:Name="valueBox" Text="{Binding Member.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="20" Foreground="{DynamicResource FontTheme}" BorderBrush="{DynamicResource StrokeTheme}" Background="{DynamicResource FillTheme}"/>
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

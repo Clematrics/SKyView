@@ -1,43 +1,51 @@
 ﻿using SkyView.Utils;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace SkyView.Nodes {
 
+    [Serializable]
     public class NodesAssembly : INotifyPropertyChanged {
 
         public NodesAssembly() {
-            nodes_collection = new Collection<LogicalNode>( () => new LogicalNode() );
-            idSelected = 0;
+            NodesCollection = new Collection<LogicalNode>( () => new LogicalNode() );
+            IdSelected = 0;
         }
 
-        public Collection<LogicalNode> nodes_collection { get; set; }
-        private long _idSelected;
-        public long idSelected {
-            get { return _idSelected; }
-            set { if (_idSelected != value) {
-                    _idSelected = value;
-                    RaisePropertyChanged("idSelected");
-                }
-            }
+        public Collection<LogicalNode> NodesCollection {
+            get { return _NodesCollection; }
+            set { _NodesCollection = value; RaisePropertyChanged("NodesCollection"); }
+        }
+        public Collection<LogicalLink> LinksCollection {
+            get { return _LinksCollection; }
+            set { _LinksCollection = value; RaisePropertyChanged("LinksCollection"); }
+        }
+        public long IdSelected {
+            get { return _IdSelected; }
+            set { _IdSelected = value; RaisePropertyChanged("IdSelected"); }
+        }
+        public Size ProjectSize {
+            get { return _ProjectSize; }
+            set { _ProjectSize = value; RaisePropertyChanged("ProjectSize"); }
         }
 
-        public void AddNode(NodeType type) {
-            LogicalNode newLogicalNode = new LogicalNode(type);
-            nodes_collection.Add(newLogicalNode);
-            idSelected = newLogicalNode.id;
-            OnNodeAdded(this, new NodeEventArgs(idSelected, type));
+        private Collection<LogicalNode> _NodesCollection;
+        private Collection<LogicalLink> _LinksCollection;
+        private long _IdSelected;
+        private Size _ProjectSize;
+
+        public void AddNode(NodeType type, double x, double y) {
+            LogicalNode newLogicalNode = new LogicalNode(type, x, y);
+            NodesCollection.Add(newLogicalNode);
+            IdSelected = newLogicalNode.Id;
         }
 
         public void RemoveNode() {
-            OnNodeRemoved(this, new NodeEventArgs(idSelected, NodeType.Unknown));
-            nodes_collection.Remove(
-                nodes_collection.Find(x => x.id == idSelected));
+            NodesCollection.Remove(
+                NodesCollection.FindAtIndex(x => x.Id == IdSelected && x.Type != NodeType.Output));
+            IdSelected = 0;
         }
-
-        public event NodeEventHandler OnNodeAdded;
-        public event NodeEventHandler OnNodeRemoved;
-        public delegate void NodeEventHandler(object sender, NodeEventArgs e);
 
         #region INotifyPropertyChanged
         protected void RaisePropertyChanged(string propertyName) {

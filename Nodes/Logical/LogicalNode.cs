@@ -2,29 +2,74 @@
 using SkyView.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace SkyView.Nodes {
 
-    public class LogicalNode {
+    [Serializable]
+    public class LogicalNode : INotifyPropertyChanged {
 
         public LogicalNode() {
-            id = DateTime.Now.ToBinary();
+            Id = DateTime.Now.ToBinary();
         }
-        public LogicalNode(NodeType type) {
-            id = DateTime.Now.ToBinary();
-            this.type = type;
-            name = getNameFromType(type);
-            properties = getPropertiesFromType(type);
-            inPins = getInputPinsFromType(type);
-            outPins = getOutputPinsFromType(type);
+        public LogicalNode(NodeType type, double x, double y) {
+            Id = DateTime.Now.ToBinary();
+            Type = type;
+            Name = getNameFromType(type);
+            Properties = getPropertiesFromType(type);
+            InputPins = getInputPinsFromType(type);
+            OutputPins = getOutputPinsFromType(type);
+            X = x; Y = y;
         }
 
-        public Collection<NodeProperty> properties { get; set; }
-        public Collection<LogicalInputPin> inPins { get; set; }
-        public Collection<LogicalOutputPin> outPins { get; set; }
-        public string name { get; set; }
-        public long id { get; set; }
-        public NodeType type { get; }
+        public Collection<NodeProperty> Properties {
+            get { return _Properties; }
+            set { _Properties = value; RaisePropertyChanged("Properties"); }
+        }
+        public Collection<LogicalInputPin> InputPins {
+            get { return _InputPins; }
+            set { _InputPins = value; RaisePropertyChanged("InputPins"); }
+        }
+        public Collection<LogicalOutputPin> OutputPins {
+            get { return _OutputPins; }
+            set { _OutputPins = value; RaisePropertyChanged("OutputPins"); }
+        }
+        public string Name {
+            get { return _Name; }
+            set { _Name = value; RaisePropertyChanged("Name"); }
+        }
+        public long Id {
+            get { return _Id; }
+            set { _Id = value; RaisePropertyChanged("Id"); }
+        }
+        public NodeType Type {
+            get { return _Type; }
+            set { _Type = value; RaisePropertyChanged("Type"); }
+        }
+        public double X {
+            get { return _X; }
+            set { _X = value; RaisePropertyChanged("X"); }
+        }
+        public double Y {
+            get { return _Y; }
+            set { _Y = value; RaisePropertyChanged("Y"); }
+        }
+
+        private Collection<NodeProperty> _Properties;
+        private Collection<LogicalInputPin> _InputPins;
+        private Collection<LogicalOutputPin> _OutputPins;
+        private string _Name;
+        private long _Id;
+        private NodeType _Type;
+        private double _X;
+        private double _Y;
+
+        #region INotifyPropertyChanged
+        protected void RaisePropertyChanged(string propertyName) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
 
         public string getNameFromType(NodeType type) {
             return type.ToString();
@@ -48,11 +93,9 @@ namespace SkyView.Nodes {
                     break;
                 case NodeType.Divide:
                     break;
-                case NodeType.Blend:
+                case NodeType.Over:
                     break;
                 case NodeType.Invert:
-                    break;
-                case NodeType.Replace:
                     break;
                 case NodeType.Constant:
                     newProperties.Add(new NodeProperty("Red constant", PropertyType.Number));
@@ -76,6 +119,8 @@ namespace SkyView.Nodes {
                     newProperties.Add(new NodeProperty("Black pixel Y", PropertyType.Number));
                     break;
                 case NodeType.Channels:
+                    break;
+                case NodeType.CombineChannels:
                     break;
                 case NodeType.GrayScale:
                     break;
@@ -128,16 +173,12 @@ namespace SkyView.Nodes {
                     newInputPins.Add(new LogicalInputPin("A"));
                     newInputPins.Add(new LogicalInputPin("B"));
                     break;
-                case NodeType.Blend:
+                case NodeType.Over:
                     newInputPins.Add(new LogicalInputPin("A"));
                     newInputPins.Add(new LogicalInputPin("B"));
                     break;
                 case NodeType.Invert:
                     newInputPins.Add(new LogicalInputPin("Image"));
-                    break;
-                case NodeType.Replace:
-                    newInputPins.Add(new LogicalInputPin("Image"));
-                    newInputPins.Add(new LogicalInputPin("Mask"));
                     break;
                 case NodeType.Constant:
                     break;
@@ -148,6 +189,12 @@ namespace SkyView.Nodes {
                 case NodeType.RadialRamp:
                     break;
                 case NodeType.Channels:
+                    break;
+                case NodeType.CombineChannels:
+                    newInputPins.Add(new LogicalInputPin("Red"));
+                    newInputPins.Add(new LogicalInputPin("Green"));
+                    newInputPins.Add(new LogicalInputPin("Blue"));
+                    newInputPins.Add(new LogicalInputPin("Alpha"));
                     break;
                 case NodeType.GrayScale:
                     newInputPins.Add(new LogicalInputPin("Image"));
@@ -171,7 +218,7 @@ namespace SkyView.Nodes {
         }
 
         public Collection<LogicalOutputPin> getOutputPinsFromType(NodeType type) {
-            Collection<LogicalOutputPin> newOutputPins = new Collection<LogicalOutputPin>(() => new LogicalOutputPin(""));
+            Collection<LogicalOutputPin> newOutputPins = new Collection<LogicalOutputPin>(() => new LogicalOutputPin("", Filters.NoFilter));
             switch (type) {
                 case NodeType.Unknown:
                     break;
@@ -192,26 +239,23 @@ namespace SkyView.Nodes {
                 case NodeType.Divide:
                     newOutputPins.Add(new LogicalOutputPin("Image", Filters.DivideFilter));
                     break;
-                case NodeType.Blend:
-                    newOutputPins.Add(new LogicalOutputPin("Image"));
+                case NodeType.Over:
+                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.NoFilter));
                     break;
                 case NodeType.Invert:
                     newOutputPins.Add(new LogicalOutputPin("Image", Filters.InvertFilter));
-                    break;
-                case NodeType.Replace:
-                    newOutputPins.Add(new LogicalOutputPin("Image"));
                     break;
                 case NodeType.Constant:
                     newOutputPins.Add(new LogicalOutputPin("Constant", Filters.ConstantFilter));
                     break;
                 case NodeType.Noise:
-                    newOutputPins.Add(new LogicalOutputPin("Noise"));
+                    newOutputPins.Add(new LogicalOutputPin("Noise", Filters.NoFilter));
                     break;
                 case NodeType.LinearRamp:
-                    newOutputPins.Add(new LogicalOutputPin("Ramp"));
+                    newOutputPins.Add(new LogicalOutputPin("Ramp", Filters.LinearRampFilter));
                     break;
                 case NodeType.RadialRamp:
-                    newOutputPins.Add(new LogicalOutputPin("Ramp"));
+                    newOutputPins.Add(new LogicalOutputPin("Ramp", Filters.RadialRampFilter));
                     break;
                 case NodeType.Channels:
                     newOutputPins.Add(new LogicalOutputPin("Red", Filters.GetRedChannel));
@@ -219,11 +263,14 @@ namespace SkyView.Nodes {
                     newOutputPins.Add(new LogicalOutputPin("Blue", Filters.GetBlueChannel));
                     newOutputPins.Add(new LogicalOutputPin("Alpha", Filters.GetAlphaChannel));
                     break;
+                case NodeType.CombineChannels:
+                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.CombineChannels));
+                    break;
                 case NodeType.GrayScale:
                     newOutputPins.Add(new LogicalOutputPin("GrayScale", Filters.GrayScaleFilter));
                     break;
                 case NodeType.Blur:
-                    newOutputPins.Add(new LogicalOutputPin("Blur"));
+                    newOutputPins.Add(new LogicalOutputPin("Blur", Filters.NoFilter));
                     break;
                 case NodeType.Luminosity:
                     newOutputPins.Add(new LogicalOutputPin("Image", Filters.LuminosityFilter));
