@@ -21,37 +21,6 @@ namespace SkyView.Tabs {
             GlobalCanvas.DataContext = this;
         }
 
-        //public void AddNode(object sender, NodeEventArgs e) {
-        //    NodesAssembly assembly = (NodesAssembly)sender;
-        //    LogicalNode logicalNode = assembly.nodesCollection.Find(x => x.id == e.id);
-        //    Node node = new Node(logicalNode, container);
-        //    Canvas.SetTop(node as UIElement, Canvas.GetTop(container as UIElement) + graphCanvas.ActualHeight / 2);
-        //    Canvas.SetLeft(node as UIElement, Canvas.GetLeft(container as UIElement) + graphCanvas.ActualWidth / 2);
-
-        //    node.DraggingLinkEvent += linkConnection;
-        //    node.MustBeSelected += changeSelection;
-
-        //    container.Children.Add(node);
-        //}
-        //public void RemoveNode(object sender, NodeEventArgs e) {
-        //    IEnumerator it = container.Children.GetEnumerator();
-        //    it.MoveNext();
-        //    it.MoveNext();
-        //    do {
-        //        if ((it.Current as Node).id == e.id && (it.Current as Node).type != NodeType.Output) {
-        //            container.Children.Remove(it.Current as UIElement);
-        //            return;
-        //        }
-        //    } while (it.MoveNext());
-        //}
-
-        //private void changeSelection(object sender, NodeEventArgs e) {
-        //    foreach (UIElement element in container.Children)
-        //        Canvas.SetZIndex(element, 0);
-        //    nodesAssemblyNodeEditor.idSelected = e.id;
-        //    Canvas.SetZIndex(sender as UIElement, 10);
-        //}
-
         private List<UserControl> TempLink;
         private int TypeFirstPin;
 
@@ -81,7 +50,7 @@ namespace SkyView.Tabs {
 
         #region Déplacement du container dans l'éditeur
 
-        private Point CurrentPosition = new Point(0,0);
+        public Point CurrentPosition = new Point(0,0);
         private Point StartDraggingPoint;
         private Point VectorDraggingPoint;
         private bool IsGraphMoving = false;
@@ -129,7 +98,7 @@ namespace SkyView.Tabs {
 
         #endregion
 
-        private void Node_MustBeSelected(object sender, NodeEventArgs e) {
+        private void Node_MustBeSelected(object sender) {
             NodesAssemblyNodeEditor.IdSelected = (sender as LogicalNode).Id;
         }
     }

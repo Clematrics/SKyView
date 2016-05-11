@@ -12,13 +12,14 @@ namespace SkyView.Nodes {
         public LogicalNode() {
             Id = DateTime.Now.ToBinary();
         }
-        public LogicalNode(NodeType type, int x, int y) {
+        public LogicalNode(NodeType type, double x, double y) {
             Id = DateTime.Now.ToBinary();
-            this.Type = type;
+            Type = type;
             Name = getNameFromType(type);
             Properties = getPropertiesFromType(type);
             InputPins = getInputPinsFromType(type);
             OutputPins = getOutputPinsFromType(type);
+            X = x; Y = y;
         }
 
         public Collection<NodeProperty> Properties {

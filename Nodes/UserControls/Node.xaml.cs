@@ -12,23 +12,6 @@ namespace SkyView {
     public partial class Node : UserControl {
 
         public Node() { InitializeComponent(); GlobalNode.DataContext = this; }
-        public Node (LogicalNode node) {
-            InitializeComponent();
-
-            //foreach (CollectionItem<LogicalInputPin> input in node.InPins) {
-            //    InputPin pin = new InputPin(input.Member);
-            //    pin.Drag += DraggingLink;
-            //    positionChanged += pin.OnPositionChanged;
-            //    inputs.Children.Add(pin);
-            //}
-            //foreach (CollectionItem<LogicalOutputPin> output in node.OutPins) {
-            //    OutputPin pin = new OutputPin(output.Member);
-            //    pin.Drag += DraggingLink;
-            //    positionChanged += pin.OnPositionChanged;
-            //    outputs.Children.Add(pin);
-            //}
-            GlobalNode.DataContext = this;
-        }
 
         #region NodeData
         public LogicalNode NodeData {
@@ -50,19 +33,19 @@ namespace SkyView {
         }
 
         public event NodeEventHandler MustBeSelected;
-        public delegate void NodeEventHandler(object sender, NodeEventArgs e);
+        public delegate void NodeEventHandler(object sender);
 
         #region Gestion du déplacement de la node
 
-        private Point currentGraphPoint;
-        private Point offset;
+        private Point CurrentGraphPoint;
+        private Point Offset;
         private bool IsGraphMoving = false;
 
         private void Navigator_MouseDown(object sender, MouseButtonEventArgs e) {
             Navigator.CaptureMouse();
-            offset = Mouse.GetPosition(this);
+            Offset = Mouse.GetPosition(this);
             IsGraphMoving = true;
-            MustBeSelected?.Invoke(NodeData, new NodeEventArgs(NodeType.Unknown));
+            MustBeSelected?.Invoke(NodeData);
         }
 
         private void Navigator_MouseUp(object sender, MouseButtonEventArgs e) {
@@ -73,22 +56,20 @@ namespace SkyView {
         private void Navigator_MouseMove(object sender, MouseEventArgs e) {
             if (!IsGraphMoving) return;
 
-            currentGraphPoint = new Point(NodeData.X, NodeData.Y) + (Vector)Mouse.GetPosition(this) - (Vector)offset;
+            CurrentGraphPoint = new Point(NodeData.X, NodeData.Y) + (Vector)Mouse.GetPosition(this) - (Vector)Offset;
 
-            if (currentGraphPoint.X < 0)
-                currentGraphPoint.X = 0;
-            if (currentGraphPoint.X > 4096 - ActualWidth)
-                currentGraphPoint.X = 4096 - ActualWidth;
-            if (currentGraphPoint.Y < 0)
-                currentGraphPoint.Y = 0;
-            if (currentGraphPoint.Y > 4096 - ActualHeight)
-                currentGraphPoint.Y = 4096 - ActualHeight;
-            NodeData.X = currentGraphPoint.X;
-            NodeData.Y = currentGraphPoint.Y;
+            if (CurrentGraphPoint.X < 0)
+                CurrentGraphPoint.X = 0;
+            if (CurrentGraphPoint.X > 4096 - ActualWidth)
+                CurrentGraphPoint.X = 4096 - ActualWidth;
+            if (CurrentGraphPoint.Y < 0)
+                CurrentGraphPoint.Y = 0;
+            if (CurrentGraphPoint.Y > 4096 - ActualHeight)
+                CurrentGraphPoint.Y = 4096 - ActualHeight;
+            NodeData.X = CurrentGraphPoint.X;
+            NodeData.Y = CurrentGraphPoint.Y;
 
         }
-        private event PositionChangedEventHandler positionChanged;
-        private delegate void PositionChangedEventHandler(object sender, UIElement ancestor);
         #endregion
     }
 }

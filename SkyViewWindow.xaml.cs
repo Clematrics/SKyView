@@ -326,74 +326,110 @@ namespace SkyView {
         #region implémentation des ajouts de nouvelles nodes via l'InsertNodeTool
 
         private void Img_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Image, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Image, x, y);
         }
 
         private void Add_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Add, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Add, x, y);
         }
 
         private void Sub_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Substract, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Substract, x, y);
         }
 
         private void Mul_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Multiply, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Multiply, x, y);
         }
 
         private void Div_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Divide, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Divide, x, y);
         }
 
         private void Ovr_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Over, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Over, x, y);
         }
 
         private void Inv_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Invert, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Invert, x, y);
         }
 
         private void Con_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Constant, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Constant, x, y);
         }
 
         private void Noi_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Noise, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Noise, x, y);
         }
 
         private void Lrp_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.LinearRamp, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.LinearRamp, x, y);
         }
 
         private void Rrp_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.RadialRamp, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.RadialRamp, x, y);
         }
 
         private void Chn_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Channels, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Channels, x, y);
         }
 
         private void Com_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.CombineChannels, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.CombineChannels, x, y);
         }
 
         private void Grs_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.GrayScale, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.GrayScale, x, y);
         }
         private void Blr_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Blur, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Blur, x, y);
         }
 
         private void Lum_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Luminosity, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Luminosity, x, y);
         }
 
         private void Thr_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.Threshold, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.Threshold, x, y);
         }
 
         private void Sel_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.AddNode(NodeType.ColorSelection, 0, 0);
+            double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.ColorSelection, x, y);
         }
 
         #endregion implémentation des ajouts de nouvelles nodes via l'InsertNodeTool

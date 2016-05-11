@@ -35,7 +35,7 @@ namespace SkyView.Nodes {
         private long _IdSelected;
         private Size _ProjectSize;
 
-        public void AddNode(NodeType type, int x, int y) {
+        public void AddNode(NodeType type, double x, double y) {
             LogicalNode newLogicalNode = new LogicalNode(type, x, y);
             NodesCollection.Add(newLogicalNode);
             IdSelected = newLogicalNode.Id;

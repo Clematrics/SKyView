@@ -3,13 +3,6 @@ using System.ComponentModel;
 
 namespace SkyView.Nodes {
 
-    public enum DragInfo {
-        FromInput,
-        FromOutput,
-        ToInput,
-        ToOutput
-    }
-
     public enum PropertyType {
         FilePath,
         Number
