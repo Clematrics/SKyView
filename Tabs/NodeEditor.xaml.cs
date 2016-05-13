@@ -22,16 +22,20 @@ namespace SkyView.Tabs {
         }
 
         private List<UserControl> TempLink;
-        private int TypeFirstPin;
+        private int IndexFirstPin;
+        private PinType TypeFirstPin;
 
-        private void LinkConnection(UserControl sender, int type) {
-            TempLink.Add(sender);
-            if (TempLink.Count == 1)
+        private void Node_PinSelection(object sender, PinType type, int index) {
+            TempLink.Add(sender as UserControl);
+            if (TempLink.Count == 1) {
                 TypeFirstPin = type;
-            if (TempLink.Count == 2) {
-                if (TypeFirstPin != type) {
-
-                }
+                IndexFirstPin = index;
+            }
+            if (TempLink.Count == 2 && TypeFirstPin != type) {
+                if (TypeFirstPin == PinType.Input)
+                    NodesAssemblyNodeEditor.Love((TempLink[0] as InputPin).InputPinData, IndexFirstPin, (TempLink[1] as OutputPin).OutputPinData, index);
+                else if (TypeFirstPin == PinType.Output)
+                    NodesAssemblyNodeEditor.Love((TempLink[1] as InputPin).InputPinData, IndexFirstPin, (TempLink[0] as OutputPin).OutputPinData, index);
             }
             TempLink = new List<UserControl>();
         }

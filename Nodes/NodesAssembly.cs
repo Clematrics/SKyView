@@ -47,6 +47,15 @@ namespace SkyView.Nodes {
             IdSelected = 0;
         }
 
+        public void Love(LogicalInputPin input, int indexInput, LogicalOutputPin output, int indexOutput) {
+            LogicalLink link = new LogicalLink();
+            link.input = input;
+            link.output = output;
+            LinksCollection.Add(link);
+            input.SourcePin = link;
+            output.TargetPins.Add(link);
+        }
+
         #region INotifyPropertyChanged
         protected void RaisePropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

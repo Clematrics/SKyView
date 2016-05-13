@@ -24,7 +24,7 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <SkyView:Node NodeData="{Binding Member, Mode=TwoWay}" MustBeSelected="Node_MustBeSelected"/>
+                    <SkyView:Node NodeData="{Binding Member, Mode=TwoWay}" MustBeSelected="Node_MustBeSelected" PinSelection="Node_PinSelection"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

@@ -10,7 +10,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Polygon x:Name="slot" Margin="-5, 0" Points="0,0 8,5, 0,10" Stroke="{DynamicResource StrokeTheme}" Fill="{DynamicResource FillTheme}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <Polygon x:Name="slot" Margin="-5, 0" Points="0,0 8,5, 0,10" Stroke="{DynamicResource StrokeTheme}" Fill="{DynamicResource FillTheme}" HorizontalAlignment="Right" VerticalAlignment="Center" MouseDown="slot_MouseDown"/>
         <Label x:Name="name" Content="{Binding OutputPinData.Name}" HorizontalAlignment="Right" Foreground="{DynamicResource FontTheme}" FontSize="10.667" Margin="0,0,5,0" HorizontalContentAlignment="Stretch"/>
     </Grid>
 </UserControl>

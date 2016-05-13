@@ -21,14 +21,14 @@
             <ItemsControl x:Name="InputPinsContainer" ItemsSource="{Binding NodeData.InputPins.List}" Grid.Column="0">
                 <ItemsControl.ItemTemplate>
                     <ItemContainerTemplate>
-                        <SkyView.Nodes:InputPin InputPinData="{Binding Member}"/>
+                        <SkyView.Nodes:InputPin InputPinData="{Binding Member}" Index="{Binding Path=Items.Count, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" PinSelected="AnnouncePinSelection"/>
                     </ItemContainerTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             <ItemsControl x:Name="OutputPinsContainer" ItemsSource="{Binding NodeData.OutputPins.List}" Grid.Column="2">
                 <ItemsControl.ItemTemplate>
                     <ItemContainerTemplate>
-                        <SkyView.Nodes:OutputPin OutputPinData="{Binding Member}"/>
+                        <SkyView.Nodes:OutputPin OutputPinData="{Binding Member}" Index="{Binding Path=Items.Count, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" PinSelected="AnnouncePinSelection"/>
                     </ItemContainerTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

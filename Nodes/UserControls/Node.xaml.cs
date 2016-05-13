@@ -1,6 +1,5 @@
 ﻿using SkyView.Nodes;
 using SkyView.Utils;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -34,6 +33,11 @@ namespace SkyView {
 
         public event NodeEventHandler MustBeSelected;
         public delegate void NodeEventHandler(object sender);
+
+        public event PinSelectionEventHandler PinSelection;
+        private void AnnouncePinSelection( object sender, PinType type, int index ) {
+            PinSelection?.Invoke(sender, type, index);
+        }
 
         #region Gestion du déplacement de la node
 
