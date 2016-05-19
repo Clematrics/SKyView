@@ -4,13 +4,14 @@ using System.Drawing;
 namespace SkyView.Image {
 
     public class Image {
-        int width;
-        int height;
+        public int Width;
+        public int Height;
         public Color[] data;
 
-        public Image(int height, int width) {
-            this.height = height;
-            this.width = width;
+        public Image(int width, int height) {
+            Width = width;
+            Height = height;
+            data = new Color[Width * Height];
         }
         public Image(string path) {
             Bitmap image;
@@ -21,15 +22,16 @@ namespace SkyView.Image {
                 throw e;
             }
 
-            height = image.Height;
-            width = image.Width;
-            for (int i = 0; i < height; i++)
-                for (int j = 0; j < width; j++)
-                    data[i * width + j] = image.GetPixel(j, i);
+            Width = image.Width;
+            Height = image.Height;
+            data = new Color[Width * Height];
+            for (int i = 0; i < Height; i++)
+                for (int j = 0; j < Width; j++)
+                    data[i * Width + j] = image.GetPixel(j, i);
         }
 
         public Color Getcolor(int x, int y, int methode) {
-            if (x < 0 || y < 0 || x > width || y > height)
+            if (x < 0 || y < 0 || x > Width || y > Height)
                 switch (methode) {
                     case 2:
                         break;
@@ -40,16 +42,20 @@ namespace SkyView.Image {
                     default:
                         return Color.FromArgb(0, 0, 0, 0);
                 }
-            if (x > width)
-                x = width - 1;
-            if (y > height)
-                y = height - 1;
+            if (x > Width)
+                x = Width - 1;
+            if (y > Height)
+                y = Height - 1;
             if (x < 0)
                 x = 0;
             if (y < 0)
                 y = 0;
 
-            return data[y * width + x];
+            return data[y * Width + x];
+        }
+
+        public int Size() {
+            return Width * Height;
         }
     }
 }

@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SkyView.Tabs {
     /// <summary>
@@ -20,7 +10,20 @@ namespace SkyView.Tabs {
     public partial class ImageViewer : UserControl {
         public ImageViewer() {
             InitializeComponent();
+            GlobalCanvas.DataContext = this;
         }
+
+        #region SourceProperty
+        public Image.Image Source {
+            get { return (Image.Image)GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
+        }
+        public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
+                "Source",
+                typeof(Image.Image),
+                typeof(ImageViewer),
+                new PropertyMetadata(new Image.Image(0, 0)));
+        #endregion PropertiesProperty
 
         #region Déplacement de l'image dans l'éditeur
 
@@ -33,7 +36,7 @@ namespace SkyView.Tabs {
         {
             if (e.LeftButton != MouseButtonState.Pressed) return;
 
-            image.CaptureMouse();
+            Image.CaptureMouse();
             StartDragPoint = Mouse.GetPosition(this);
             IsGraphMoving = true;
         }
@@ -51,7 +54,7 @@ namespace SkyView.Tabs {
         {
             if (e.LeftButton != MouseButtonState.Released) return;
 
-            image.ReleaseMouseCapture();
+            Image.ReleaseMouseCapture();
             IsGraphMoving = false;
         }
 
@@ -64,14 +67,14 @@ namespace SkyView.Tabs {
         {
             if (CurrentGraphPoint.X < 0)
                 CurrentGraphPoint.X = 0;
-            if (CurrentGraphPoint.X > imageCanvas.ActualWidth)
-                CurrentGraphPoint.X = imageCanvas.ActualWidth;
+            if (CurrentGraphPoint.X > GlobalCanvas.ActualWidth)
+                CurrentGraphPoint.X = GlobalCanvas.ActualWidth;
             if (CurrentGraphPoint.Y < 0)
                 CurrentGraphPoint.Y = 0;
-            if (CurrentGraphPoint.Y > imageCanvas.ActualHeight)
-                CurrentGraphPoint.Y = imageCanvas.ActualHeight;
-            Canvas.SetTop(image, CurrentGraphPoint.Y);
-            Canvas.SetLeft(image, CurrentGraphPoint.X);
+            if (CurrentGraphPoint.Y > GlobalCanvas.ActualHeight)
+                CurrentGraphPoint.Y = GlobalCanvas.ActualHeight;
+            Canvas.SetTop(Image, CurrentGraphPoint.Y);
+            Canvas.SetLeft(Image, CurrentGraphPoint.X);
         }
         #endregion
 
@@ -82,11 +85,11 @@ namespace SkyView.Tabs {
         private void image_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             Zoom += e.Delta > 0 ? 0.1 : -0.1 ;
-            Matrix matrix = image.RenderTransform.Value;
+            Matrix matrix = Image.RenderTransform.Value;
 
             matrix.ScaleAt(Zoom, Zoom, 0.5, 0.5);
 
-            image.RenderTransform = new MatrixTransform(matrix);
+            Image.RenderTransform = new MatrixTransform(matrix);
         }
         #endregion
     }

@@ -21,7 +21,7 @@ namespace SkyView.Tabs {
             GlobalCanvas.DataContext = this;
         }
 
-        private List<UserControl> TempLink;
+        private List<UserControl> TempLink = new List<UserControl>();
         private int IndexFirstPin;
         private PinType TypeFirstPin;
 
@@ -31,13 +31,15 @@ namespace SkyView.Tabs {
                 TypeFirstPin = type;
                 IndexFirstPin = index;
             }
-            if (TempLink.Count == 2 && TypeFirstPin != type) {
-                if (TypeFirstPin == PinType.Input)
-                    NodesAssemblyNodeEditor.Love((TempLink[0] as InputPin).InputPinData, IndexFirstPin, (TempLink[1] as OutputPin).OutputPinData, index);
-                else if (TypeFirstPin == PinType.Output)
-                    NodesAssemblyNodeEditor.Love((TempLink[1] as InputPin).InputPinData, IndexFirstPin, (TempLink[0] as OutputPin).OutputPinData, index);
+            if (TempLink.Count == 2) {
+                if (TypeFirstPin != type) {
+                    if (TypeFirstPin == PinType.Input)
+                        NodesAssemblyNodeEditor.Love((TempLink[0] as InputPin).InputPinData, IndexFirstPin, (TempLink[1] as OutputPin).OutputPinData, index);
+                    else if (TypeFirstPin == PinType.Output)
+                        NodesAssemblyNodeEditor.Love((TempLink[1] as InputPin).InputPinData, IndexFirstPin, (TempLink[0] as OutputPin).OutputPinData, index);
+                }
+                TempLink = new List<UserControl>();
             }
-            TempLink = new List<UserControl>();
         }
 
         #region NodesAssembly Property

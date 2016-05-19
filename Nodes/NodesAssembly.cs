@@ -10,6 +10,7 @@ namespace SkyView.Nodes {
 
         public NodesAssembly() {
             NodesCollection = new Collection<LogicalNode>( () => new LogicalNode() );
+            LinksCollection = new Collection<LogicalLink>( () => new LogicalLink() );
             IdSelected = 0;
         }
 
@@ -49,9 +50,12 @@ namespace SkyView.Nodes {
 
         public void Love(LogicalInputPin input, int indexInput, LogicalOutputPin output, int indexOutput) {
             LogicalLink link = new LogicalLink();
-            link.input = input;
-            link.output = output;
+            link.Input = input;
+            link.Output = output;
             LinksCollection.Add(link);
+            if (input.SourcePin != null) {
+                LinksCollection.Remove( LinksCollection.FindAtIndex( x => x.Input == input) );
+            }
             input.SourcePin = link;
             output.TargetPins.Add(link);
         }

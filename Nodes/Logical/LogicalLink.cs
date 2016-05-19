@@ -8,7 +8,7 @@ namespace SkyView.Nodes {
 
     [Serializable]
     public class LogicalLink {
-        public LogicalInputPin input;
-        public LogicalOutputPin output;
+        public LogicalInputPin Input { get; set; }
+        public LogicalOutputPin Output { get; set; }
     }
 }

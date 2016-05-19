@@ -84,6 +84,8 @@ namespace SkyView.Nodes {
                     newProperties.Add(new NodeProperty("File path", PropertyType.FilePath));
                     break;
                 case NodeType.Output:
+                    newProperties.Add(new NodeProperty("Width", PropertyType.Number));
+                    newProperties.Add(new NodeProperty("Height", PropertyType.Number));
                     break;
                 case NodeType.Add:
                     break;
@@ -148,37 +150,37 @@ namespace SkyView.Nodes {
         }
 
         public Collection<LogicalInputPin> getInputPinsFromType(NodeType type) {
-            Collection<LogicalInputPin> newInputPins = new Collection<LogicalInputPin>(() => new LogicalInputPin(""));
+            Collection<LogicalInputPin> newInputPins = new Collection<LogicalInputPin>(() => new LogicalInputPin(this, ""));
             switch (type) {
                 case NodeType.Unknown:
                     break;
                 case NodeType.Image:
                     break;
                 case NodeType.Output:
-                    newInputPins.Add(new LogicalInputPin("Image"));
+                    newInputPins.Add(new LogicalInputPin(this, "Image"));
                     break;
                 case NodeType.Add:
-                    newInputPins.Add(new LogicalInputPin("A"));
-                    newInputPins.Add(new LogicalInputPin("B"));
+                    newInputPins.Add(new LogicalInputPin(this, "A"));
+                    newInputPins.Add(new LogicalInputPin(this, "B"));
                     break;
                 case NodeType.Substract:
-                    newInputPins.Add(new LogicalInputPin("A"));
-                    newInputPins.Add(new LogicalInputPin("B"));
+                    newInputPins.Add(new LogicalInputPin(this, "A"));
+                    newInputPins.Add(new LogicalInputPin(this, "B"));
                     break;
                 case NodeType.Multiply:
-                    newInputPins.Add(new LogicalInputPin("A"));
-                    newInputPins.Add(new LogicalInputPin("B"));
+                    newInputPins.Add(new LogicalInputPin(this, "A"));
+                    newInputPins.Add(new LogicalInputPin(this, "B"));
                     break;
                 case NodeType.Divide:
-                    newInputPins.Add(new LogicalInputPin("A"));
-                    newInputPins.Add(new LogicalInputPin("B"));
+                    newInputPins.Add(new LogicalInputPin(this, "A"));
+                    newInputPins.Add(new LogicalInputPin(this, "B"));
                     break;
                 case NodeType.Over:
-                    newInputPins.Add(new LogicalInputPin("A"));
-                    newInputPins.Add(new LogicalInputPin("B"));
+                    newInputPins.Add(new LogicalInputPin(this, "A"));
+                    newInputPins.Add(new LogicalInputPin(this, "B"));
                     break;
                 case NodeType.Invert:
-                    newInputPins.Add(new LogicalInputPin("Image"));
+                    newInputPins.Add(new LogicalInputPin(this, "Image"));
                     break;
                 case NodeType.Constant:
                     break;
@@ -189,27 +191,28 @@ namespace SkyView.Nodes {
                 case NodeType.RadialRamp:
                     break;
                 case NodeType.Channels:
+                    newInputPins.Add(new LogicalInputPin(this, "Image"));
                     break;
                 case NodeType.CombineChannels:
-                    newInputPins.Add(new LogicalInputPin("Red"));
-                    newInputPins.Add(new LogicalInputPin("Green"));
-                    newInputPins.Add(new LogicalInputPin("Blue"));
-                    newInputPins.Add(new LogicalInputPin("Alpha"));
+                    newInputPins.Add(new LogicalInputPin(this, "Red"));
+                    newInputPins.Add(new LogicalInputPin(this, "Green"));
+                    newInputPins.Add(new LogicalInputPin(this, "Blue"));
+                    newInputPins.Add(new LogicalInputPin(this, "Alpha"));
                     break;
                 case NodeType.GrayScale:
-                    newInputPins.Add(new LogicalInputPin("Image"));
+                    newInputPins.Add(new LogicalInputPin(this, "Image"));
                     break;
                 case NodeType.Blur:
-                    newInputPins.Add(new LogicalInputPin("Image"));
+                    newInputPins.Add(new LogicalInputPin(this, "Image"));
                     break;
                 case NodeType.Luminosity:
-                    newInputPins.Add(new LogicalInputPin("Image"));
+                    newInputPins.Add(new LogicalInputPin(this, "Image"));
                     break;
                 case NodeType.Threshold:
-                    newInputPins.Add(new LogicalInputPin("Image"));
+                    newInputPins.Add(new LogicalInputPin(this, "Image"));
                     break;
                 case NodeType.ColorSelection:
-                    newInputPins.Add(new LogicalInputPin("Image"));
+                    newInputPins.Add(new LogicalInputPin(this, "Image"));
                     break;
                 default:
                     break;
@@ -218,68 +221,68 @@ namespace SkyView.Nodes {
         }
 
         public Collection<LogicalOutputPin> getOutputPinsFromType(NodeType type) {
-            Collection<LogicalOutputPin> newOutputPins = new Collection<LogicalOutputPin>(() => new LogicalOutputPin("", Filters.NoFilter));
+            Collection<LogicalOutputPin> newOutputPins = new Collection<LogicalOutputPin>(() => new LogicalOutputPin(this, "", Filters.NoFilter));
             switch (type) {
                 case NodeType.Unknown:
                     break;
                 case NodeType.Image:
-                    newOutputPins.Add( new LogicalOutputPin("Image", Filters.LoadImage) );
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.LoadImage));
                     break;
                 case NodeType.Output:
                     break;
                 case NodeType.Add:
-                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.AddFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.AddFilter));
                     break;
                 case NodeType.Substract:
-                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.SubstractFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.SubstractFilter));
                     break;
                 case NodeType.Multiply:
-                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.MultiplyFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.MultiplyFilter));
                     break;
                 case NodeType.Divide:
-                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.DivideFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.DivideFilter));
                     break;
                 case NodeType.Over:
-                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.NoFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.NoFilter));
                     break;
                 case NodeType.Invert:
-                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.InvertFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.InvertFilter));
                     break;
                 case NodeType.Constant:
-                    newOutputPins.Add(new LogicalOutputPin("Constant", Filters.ConstantFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Constant", Filters.ConstantFilter));
                     break;
                 case NodeType.Noise:
-                    newOutputPins.Add(new LogicalOutputPin("Noise", Filters.NoFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Noise", Filters.NoFilter));
                     break;
                 case NodeType.LinearRamp:
-                    newOutputPins.Add(new LogicalOutputPin("Ramp", Filters.LinearRampFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Ramp", Filters.LinearRampFilter));
                     break;
                 case NodeType.RadialRamp:
-                    newOutputPins.Add(new LogicalOutputPin("Ramp", Filters.RadialRampFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Ramp", Filters.RadialRampFilter));
                     break;
                 case NodeType.Channels:
-                    newOutputPins.Add(new LogicalOutputPin("Red", Filters.GetRedChannel));
-                    newOutputPins.Add(new LogicalOutputPin("Green", Filters.GetGreenChannel));
-                    newOutputPins.Add(new LogicalOutputPin("Blue", Filters.GetBlueChannel));
-                    newOutputPins.Add(new LogicalOutputPin("Alpha", Filters.GetAlphaChannel));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Red", Filters.GetRedChannel));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Green", Filters.GetGreenChannel));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Blue", Filters.GetBlueChannel));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Alpha", Filters.GetAlphaChannel));
                     break;
                 case NodeType.CombineChannels:
-                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.CombineChannels));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.CombineChannels));
                     break;
                 case NodeType.GrayScale:
-                    newOutputPins.Add(new LogicalOutputPin("GrayScale", Filters.GrayScaleFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "GrayScale", Filters.GrayScaleFilter));
                     break;
                 case NodeType.Blur:
-                    newOutputPins.Add(new LogicalOutputPin("Blur", Filters.NoFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Blur", Filters.NoFilter));
                     break;
                 case NodeType.Luminosity:
-                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.LuminosityFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.LuminosityFilter));
                     break;
                 case NodeType.Threshold:
-                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.ThresholdFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.ThresholdFilter));
                     break;
                 case NodeType.ColorSelection:
-                    newOutputPins.Add(new LogicalOutputPin("Image", Filters.ColorSelectionFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.ColorSelectionFilter));
                     break;
                 default:
                     break;

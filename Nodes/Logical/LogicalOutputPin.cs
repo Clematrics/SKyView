@@ -2,15 +2,20 @@
 using SkyView.Image;
 using System;
 using System.ComponentModel;
+using System.Windows;
 
 namespace SkyView.Nodes {
 
     [Serializable]
     public class LogicalOutputPin : INotifyPropertyChanged {
-        public LogicalOutputPin(string name, Filter filter) {
+        public LogicalOutputPin(LogicalNode parent, string name, Filter filter) {
+            Parent = parent;
             Filter = filter;
             Name = name;
+            TargetPins = new List<LogicalLink>();
         }
+
+        public LogicalNode Parent;
 
         public Filter Filter {
             get { return _Filter; }
@@ -28,11 +33,16 @@ namespace SkyView.Nodes {
             get { return _Name; }
             set { _Name = value; RaisePropertyChanged("Name"); }
         }
+        public Point Coordinates {
+            get { return _Coordinates; }
+            set { _Coordinates = value; RaisePropertyChanged("Coordinates"); }
+        }
 
         private Filter _Filter;
         private string _Shader;
         private List<LogicalLink> _TargetPins;
         private string _Name;
+        private Point _Coordinates;
 
         #region INotifyPropertyChanged
         protected void RaisePropertyChanged(string propertyName) {

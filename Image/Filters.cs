@@ -1,23 +1,25 @@
 ﻿using SkyView.Nodes;
+using SkyView.Utils;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace SkyView.Image {
 
     [Serializable]
-    public delegate Image Filter(int height, int width, Image[] inputImages, NodeProperty[] parameters);
+    public delegate Image Filter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters);
 
     public static class Filters {
 
-        public static Image NoFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
-            return new Image(height, width);
+        public static Image NoFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
+            return new Image(width, height);
         }
 
-        public static Image LoadImage(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image LoadImage( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             return new Image(parameters[0].Value);
         }
 
-        public static Image AddFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image AddFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
@@ -34,7 +36,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image SubstractFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image SubstractFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
@@ -51,7 +53,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image MultiplyFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image MultiplyFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
@@ -68,7 +70,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image DivideFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image DivideFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
@@ -85,7 +87,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image InvertFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image InvertFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
@@ -101,14 +103,14 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image ConstantFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image ConstantFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             int A, R, G, B;
             try {
-                A = int.Parse(parameters[0].Value);
-                R = int.Parse(parameters[1].Value);
-                G = int.Parse(parameters[2].Value);
-                B = int.Parse(parameters[3].Value);
+                R = int.Parse(parameters[0].Value);
+                G = int.Parse(parameters[1].Value);
+                B = int.Parse(parameters[2].Value);
+                A = int.Parse(parameters[3].Value);
             }
             catch (Exception e) {
                 throw e;
@@ -119,7 +121,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image LinearRampFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image LinearRampFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             int x1, y1, x0, y0;
             try {
@@ -145,7 +147,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image RadialRampFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image RadialRampFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             int x1, y1, x0, y0;
             try {
@@ -170,7 +172,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image GetAlphaChannel(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image GetAlphaChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
@@ -181,7 +183,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image GetRedChannel(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image GetRedChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
@@ -192,7 +194,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image GetGreenChannel(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image GetGreenChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
@@ -203,7 +205,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image GetBlueChannel(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image GetBlueChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
@@ -214,7 +216,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image CombineChannels(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image CombineChannels( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
@@ -228,7 +230,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image GrayScaleFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image GrayScaleFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
 
             for (int y = 0; y < height; y++)
@@ -241,7 +243,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image LuminosityFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image LuminosityFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
 
             int brightness;
@@ -270,7 +272,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image ThresholdFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image ThresholdFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
 
             int threshold;
@@ -294,7 +296,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image ColorSelectionFilter(int height, int width, Image[] inputImages, NodeProperty[] parameters) {
+        public static Image ColorSelectionFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(height, width);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {

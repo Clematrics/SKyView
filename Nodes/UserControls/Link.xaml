@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SkyView.Nodes.Link"
+﻿<UserControl x:Class="SkyView.Link"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,5 +6,5 @@
              xmlns:local="clr-namespace:SkyView.Nodes"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Line x:Name="line" StrokeThickness="3" Stroke="White" X1="{Binding startPoint.X}" Y1="{Binding startPoint.Y}" X2="{Binding finishPoint.X}" Y2="{Binding finishPoint.Y}"/>
+    <Line x:Name="Line" StrokeThickness="3" Stroke="White" X1="{Binding LinkData.Input.Coordinates.X}" Y1="{Binding LinkData.Input.Coordinates.Y}" X2="{Binding LinkData.Output.Coordinates.X}" Y2="{Binding LinkData.Output.Coordinates.Y}"/>
 </UserControl>

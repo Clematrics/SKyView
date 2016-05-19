@@ -1,5 +1,6 @@
 ﻿using SkyView.Nodes;
 using SkyView.Utils;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,7 +11,7 @@ namespace SkyView {
     /// </summary>
     public partial class Node : UserControl {
 
-        public Node() { InitializeComponent(); GlobalNode.DataContext = this; }
+        public Node() { InitializeComponent(); GlobalNode.DataContext = this; Loaded += delegate { PositionChanged?.Invoke(this, new EventArgs()); }; }
 
         #region NodeData
         public LogicalNode NodeData {
@@ -40,6 +41,8 @@ namespace SkyView {
         }
 
         #region Gestion du déplacement de la node
+
+        public event EventHandler PositionChanged;
 
         private Point CurrentGraphPoint;
         private Point Offset;
@@ -72,8 +75,24 @@ namespace SkyView {
                 CurrentGraphPoint.Y = 4096 - ActualHeight;
             NodeData.X = CurrentGraphPoint.X;
             NodeData.Y = CurrentGraphPoint.Y;
-
+            PositionChanged?.Invoke(this, new EventArgs());
         }
         #endregion
+
+        private void InputPin_Loaded(object sender, RoutedEventArgs e) {
+            PositionChanged += (sender as InputPin).UpdatePositionData;
+        }
+
+        private void OutputPin_Loaded(object sender, RoutedEventArgs e) {
+            PositionChanged += (sender as OutputPin).UpdatePositionData;
+        }
+
+        private void InputPin_Unloaded(object sender, RoutedEventArgs e) {
+            PositionChanged -= (sender as InputPin).UpdatePositionData;
+        }
+
+        private void OutputPin_Unloaded(object sender, RoutedEventArgs e) {
+            PositionChanged -= (sender as OutputPin).UpdatePositionData;
+        }
     }
 }

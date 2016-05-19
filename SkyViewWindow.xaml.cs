@@ -38,7 +38,7 @@ namespace SkyView {
             DependencyPropertyDescriptor.FromProperty(WindowStateProperty, typeof(Window)).AddValueChanged(this, OnWindowStateChanged);
             System.Windows.Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-            renderer = new RenderEngine.RenderEngine();
+            Renderer = new RenderEngine.RenderEngine();
 
             GlobalWindow.DataContext = this;
         }
@@ -50,7 +50,7 @@ namespace SkyView {
         #endregion
 
         #region Gestion du rendu
-        RenderEngine.RenderEngine renderer;
+        public RenderEngine.RenderEngine Renderer { get; set; }
         #endregion
 
         #region Gestion du clic sur le logo ou la barre de fenêtre
@@ -436,6 +436,10 @@ namespace SkyView {
 
         private void Del_Click(object sender, RoutedEventArgs e) {
             sharedNodesAssembly.RemoveNode();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e) {
+            Renderer.Render(sharedNodesAssembly);
         }
     }
 }

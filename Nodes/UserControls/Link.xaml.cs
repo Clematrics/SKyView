@@ -1,17 +1,27 @@
-﻿using System.Windows;
+﻿using SkyView.Nodes;
+using System.Windows;
 using System.Windows.Controls;
 
-namespace SkyView.Nodes {
+namespace SkyView {
     /// <summary>
     /// Logique d'interaction pour Link.xaml
     /// </summary>
     public partial class Link : UserControl {
         public Link() {
             InitializeComponent();
-            DataContext = this;
+            Line.DataContext = this;
         }
 
-        public Point startPoint { get; set; }
-        public Point finishPoint { get; set; }
+        #region LinkData Property
+        public LogicalLink LinkData {
+            get { return (LogicalLink)GetValue(LinkDataProperty); }
+            set { SetValue(LinkDataProperty, value); }
+        }
+        public static readonly DependencyProperty LinkDataProperty = DependencyProperty.Register(
+            "LinkData",
+            typeof(LogicalLink),
+            typeof(Link),
+            new PropertyMetadata(new LogicalLink()));
+        #endregion LinkData Property
     }
 }

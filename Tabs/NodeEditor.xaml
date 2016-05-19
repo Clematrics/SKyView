@@ -28,8 +28,17 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Canvas x:Name="LinksContainer" Width="4096" Height="4096">
-            
-        </Canvas>
+        <ItemsControl x:Name="LinksContainer" ItemsSource="{Binding NodesAssemblyNodeEditor.LinksCollection.List}" Width="4096" Height="4096">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <SkyView:Link LinkData="{Binding Member}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Canvas>
 </UserControl>

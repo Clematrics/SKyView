@@ -111,6 +111,8 @@
     <Compile Include="RenderEngine\Vk.cs" />
     <Compile Include="Utils\Bindable.cs" />
     <Compile Include="Utils\Collection.cs" />
+    <Compile Include="Utils\ColorArrayToImageConverter.cs" />
+    <Compile Include="Utils\Events.cs" />
     <Page Include="Nodes\UserControls\InputPin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

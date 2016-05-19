@@ -56,10 +56,9 @@
                 <MenuItem Header="Project" BorderBrush="{DynamicResource StrokeTheme}" Background="{DynamicResource FillTheme}" Foreground="{DynamicResource FontTheme}" Template="{DynamicResource ResourceKey=MenuItemStyle}">
                     <MenuItem Header="Load File" Background="{DynamicResource FillTheme}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="0" Width="55" Template="{DynamicResource MenuItemStyle}" Foreground="{DynamicResource FontTheme}" HorizontalAlignment="Left"/>
                     <MenuItem Header="Save File" Background="{DynamicResource FillTheme}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="0,2,0,0" Template="{DynamicResource MenuItemStyle}" Foreground="{DynamicResource FontTheme}" HorizontalAlignment="Left"/>
-                    <MenuItem Header="Change image size" Background="{DynamicResource FillTheme}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="0,2,0,0" Template="{DynamicResource MenuItemStyle}" Foreground="{DynamicResource FontTheme}" HorizontalAlignment="Left"/>
                 </MenuItem>
                 <MenuItem Header="Rendering" BorderBrush="{DynamicResource StrokeTheme}" Background="{DynamicResource FillTheme}" Foreground="{DynamicResource FontTheme}" Width="70" Template="{DynamicResource ResourceKey=MenuItemStyle}">
-                    <MenuItem Header="Render" Background="{DynamicResource FillTheme}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="0" Template="{DynamicResource MenuItemStyle}" Foreground="{DynamicResource FontTheme}" HorizontalAlignment="Left"/>
+                    <MenuItem Header="Render" Background="{DynamicResource FillTheme}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="0" Template="{DynamicResource MenuItemStyle}" Foreground="{DynamicResource FontTheme}" HorizontalAlignment="Left" Click="MenuItem_Click"/>
                 </MenuItem>
             </Menu>
 
@@ -237,7 +236,8 @@
                           HorizontalAlignment="Stretch" ResizeDirection="Columns" Margin="0,0,0,4"
                           Background="{DynamicResource FillTheme}" Foreground="{x:Null}" BorderBrush="{DynamicResource StrokeTheme}" BorderThickness="1,0"/>
             <Tabs:ImageViewer 
-                             Grid.Column="0" Grid.Row="0"/>
+                             Grid.Column="0" Grid.Row="0"
+                             Source="{Binding Renderer.Result}"/>
             <Tabs:NodeEditor x:Name="Editor"
                              Grid.ColumnSpan="3" Grid.Row="2" 
                              Margin="1" 

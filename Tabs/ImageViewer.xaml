@@ -5,12 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SkyView.Tabs"
              xmlns:SkyView="clr-namespace:SkyView" x:Class="SkyView.Tabs.ImageViewer"
+             xmlns:Converters="clr-namespace:SkyView.Utils"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              SizeChanged="ImageViewer_SizeChanged">
-    <Canvas x:Name="imageCanvas" ClipToBounds="True">
-        <Image x:Name="image" MouseDown="image_MouseDown" MouseUp="image_MouseUp" MouseMove="image_MouseMove" MouseWheel="image_MouseWheel" Source="pack://application:,,,/SkyView;component/Resources/Icons/SkyView.png" RenderTransformOrigin="0,4">
-
-        </Image>
+    <UserControl.Resources>
+        <Converters:ColorArrayToImageConverter x:Key="ConverterToSource" />
+    </UserControl.Resources>
+    <Canvas x:Name="GlobalCanvas" ClipToBounds="True">
+        <Image x:Name="Image" MouseDown="image_MouseDown" MouseUp="image_MouseUp" MouseMove="image_MouseMove" MouseWheel="image_MouseWheel" Source="{Binding Source, Converter={StaticResource ConverterToSource}}"/>
     </Canvas>
 </UserControl>
