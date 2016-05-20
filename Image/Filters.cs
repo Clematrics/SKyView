@@ -20,7 +20,7 @@ namespace SkyView.Image {
         }
 
         public static Image AddFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
@@ -37,7 +37,7 @@ namespace SkyView.Image {
         }
 
         public static Image SubstractFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
@@ -54,7 +54,7 @@ namespace SkyView.Image {
         }
 
         public static Image MultiplyFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
@@ -71,7 +71,7 @@ namespace SkyView.Image {
         }
 
         public static Image DivideFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
@@ -88,7 +88,7 @@ namespace SkyView.Image {
         }
 
         public static Image InvertFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
@@ -104,7 +104,7 @@ namespace SkyView.Image {
         }
 
         public static Image ConstantFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             int A, R, G, B;
             try {
                 R = int.Parse(parameters[0].Value);
@@ -122,7 +122,7 @@ namespace SkyView.Image {
         }
 
         public static Image LinearRampFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             int x1, y1, x0, y0;
             try {
                 x1 = int.Parse(parameters[0].Value);
@@ -148,7 +148,7 @@ namespace SkyView.Image {
         }
 
         public static Image RadialRampFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             int x1, y1, x0, y0;
             try {
                 x1 = int.Parse(parameters[0].Value);
@@ -173,7 +173,7 @@ namespace SkyView.Image {
         }
 
         public static Image GetAlphaChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
@@ -184,7 +184,7 @@ namespace SkyView.Image {
         }
 
         public static Image GetRedChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
@@ -195,7 +195,7 @@ namespace SkyView.Image {
         }
 
         public static Image GetGreenChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
@@ -206,7 +206,7 @@ namespace SkyView.Image {
         }
 
         public static Image GetBlueChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
@@ -217,7 +217,7 @@ namespace SkyView.Image {
         }
 
         public static Image CombineChannels( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
@@ -231,7 +231,7 @@ namespace SkyView.Image {
         }
 
         public static Image GrayScaleFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
 
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
@@ -244,7 +244,7 @@ namespace SkyView.Image {
         }
 
         public static Image LuminosityFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
 
             int brightness;
             try {
@@ -273,7 +273,7 @@ namespace SkyView.Image {
         }
 
         public static Image ThresholdFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
 
             int threshold;
             try {
@@ -297,7 +297,7 @@ namespace SkyView.Image {
         }
 
         public static Image ColorSelectionFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
@@ -316,13 +316,19 @@ namespace SkyView.Image {
         }
 
         public static Image SetAlpha(int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            Image finalImage = new Image(height, width);
+            Image finalImage = new Image(width, height);
+            int Alpha;
+            try {
+                Alpha = int.Parse(parameters[0].Value);
+            }
+            catch (Exception e) {
+                throw e;
+            }
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
-                    Color colorA = inputImages[0].Getcolor(x, y, 0);
-                    Color newColor = ;
-
-                    finalImage.data[y * width + x] = Color.FromArgb(255 - dist / 2, 255 - dist / 2, 255 - dist / 2, 255 - dist / 2);
+                    Color color = inputImages[0].Getcolor(x, y, 0);
+                    Color newColor = Color.FromArgb(Alpha, color.R, color.G, color.B);
+                    finalImage.data[y * width + x] = newColor;
                 }
             return finalImage;
         }
