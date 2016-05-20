@@ -32,5 +32,7 @@ namespace SkyView.Nodes {
         Threshold,
         
         ColorSelection,
+
+        SetAlpha,
     }
 }

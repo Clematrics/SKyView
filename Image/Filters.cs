@@ -314,5 +314,17 @@ namespace SkyView.Image {
                 }
             return finalImage;
         }
+
+        public static Image SetAlpha(int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
+            Image finalImage = new Image(height, width);
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++) {
+                    Color colorA = inputImages[0].Getcolor(x, y, 0);
+                    Color newColor = ;
+
+                    finalImage.data[y * width + x] = Color.FromArgb(255 - dist / 2, 255 - dist / 2, 255 - dist / 2, 255 - dist / 2);
+                }
+            return finalImage;
+        }
     }
 }

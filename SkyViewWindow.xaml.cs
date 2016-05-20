@@ -9,6 +9,8 @@ using System.Windows.Interop;
 
 using SkyView.Utils;
 using SkyView.Nodes;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace SkyView {
     /// <summary>
@@ -432,6 +434,13 @@ namespace SkyView {
             sharedNodesAssembly.AddNode(NodeType.ColorSelection, x, y);
         }
 
+
+        private void Alh_Click(object sender, RoutedEventArgs e) {
+            double x = -Editor.CurrentPosition.X + Editor.ActualWidth / 2;
+            double y = -Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
+            sharedNodesAssembly.AddNode(NodeType.SetAlpha, x, y);
+        }
+
         #endregion implémentation des ajouts de nouvelles nodes via l'InsertNodeTool
 
         private void Del_Click(object sender, RoutedEventArgs e) {
@@ -440,6 +449,84 @@ namespace SkyView {
 
         private void MenuItem_Click(object sender, RoutedEventArgs e) {
             Renderer.Render(sharedNodesAssembly);
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e) {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.DefaultExt = ".svp";
+            dialog.Filter = "SVP Files (*.svp)|*.svp|All Files (*.*)|*.*";
+
+            DialogResult Result = dialog.ShowDialog();
+            if (Result == System.Windows.Forms.DialogResult.OK) {
+                string filepath = dialog.FileName;
+
+                BinaryFormatter reader = new BinaryFormatter();
+                FileStream flux = null;
+                try {
+                    flux = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+                    sharedNodesAssembly = (NodesAssembly)reader.Deserialize(flux);
+                }
+                catch {
+                    sharedNodesAssembly = new NodesAssembly();
+                }
+                finally {
+                    if (flux != null)
+                        flux.Close();
+                }
+            }
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e) {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.DefaultExt = ".svp";
+
+            DialogResult Result = dialog.ShowDialog();
+            if (Result == System.Windows.Forms.DialogResult.OK) {
+                string filepath = dialog.FileName;
+
+                BinaryFormatter writer = new BinaryFormatter();
+                FileStream flux = null;
+                try {
+                    flux = new FileStream(filepath, FileMode.Create, FileAccess.Write);
+                    writer.Serialize(flux, sharedNodesAssembly);
+                }
+                catch {
+
+                }
+                finally {
+                    if (flux != null)
+                        flux.Close();
+                }
+            }
+        }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e) {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
+
+            DialogResult Result = dialog.ShowDialog();
+            if (Result == System.Windows.Forms.DialogResult.OK) {
+                string filepath = dialog.FileName;
+
+                Image.Image image = Renderer.Result;
+                Bitmap bmp = new Bitmap(image.Width, image.Height);
+                for (int i = 0; i < image.Width * image.Height; i++) {
+                    bmp.SetPixel(i % image.Width, (int)(i / image.Height), Color.FromArgb(image.data[i].A, image.data[i].R, image.data[i].G, image.data[i].B));
+                }
+                switch (dialog.FilterIndex) {
+                    case 1:
+                        bmp.Save(filepath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        break;
+                    case 2:
+                        bmp.Save(filepath, System.Drawing.Imaging.ImageFormat.Bmp);
+                        break;
+                    case 3:
+                        bmp.Save(filepath, System.Drawing.Imaging.ImageFormat.Gif);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }
