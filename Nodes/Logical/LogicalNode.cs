@@ -143,6 +143,9 @@ namespace SkyView.Nodes {
                     newProperties.Add(new NodeProperty("Blue constant", PropertyType.Number));
                     newProperties.Add(new NodeProperty("Alpha constant", PropertyType.Number));
                     break;
+                case NodeType.SetAlpha:
+                    newProperties.Add(new NodeProperty("Alpha", PropertyType.Number));
+                    break;
                 default:
                     return newProperties;
             }
@@ -214,6 +217,9 @@ namespace SkyView.Nodes {
                 case NodeType.ColorSelection:
                     newInputPins.Add(new LogicalInputPin(this, "Image"));
                     break;
+                case NodeType.SetAlpha:
+                    newInputPins.Add(new LogicalInputPin(this, "Image"));
+                    break;
                 default:
                     break;
             }
@@ -283,6 +289,9 @@ namespace SkyView.Nodes {
                     break;
                 case NodeType.ColorSelection:
                     newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.ColorSelectionFilter));
+                    break;
+                case NodeType.SetAlpha:
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.SetAlpha));
                     break;
                 default:
                     break;
