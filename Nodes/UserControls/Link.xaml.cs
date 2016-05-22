@@ -1,4 +1,5 @@
 ﻿using SkyView.Nodes;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,5 +24,12 @@ namespace SkyView {
             typeof(Link),
             new PropertyMetadata(new LogicalLink()));
         #endregion LinkData Property
+
+        private void Line_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            if (e.MiddleButton == System.Windows.Input.MouseButtonState.Pressed)
+                MustBeDestructed?.Invoke(LinkData, new EventArgs());
+        }
+
+        public event EventHandler MustBeDestructed;
     }
 }

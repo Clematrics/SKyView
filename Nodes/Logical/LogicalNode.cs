@@ -68,6 +68,7 @@ namespace SkyView.Nodes {
         protected void RaisePropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 

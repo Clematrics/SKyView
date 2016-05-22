@@ -3,6 +3,7 @@ using SkyView.Image;
 using System;
 using System.ComponentModel;
 using System.Windows;
+using SkyView.Utils;
 
 namespace SkyView.Nodes {
 
@@ -12,7 +13,7 @@ namespace SkyView.Nodes {
             Parent = parent;
             Filter = filter;
             Name = name;
-            TargetPins = new List<LogicalLink>();
+            TargetPins = new Collection<LogicalLink>( () => new LogicalLink() );
         }
 
         public LogicalNode Parent;
@@ -25,7 +26,7 @@ namespace SkyView.Nodes {
             get { return _Shader; }
             set { _Shader = value; RaisePropertyChanged("Shader"); }
         }
-        public List<LogicalLink> TargetPins {
+        public Collection<LogicalLink> TargetPins {
             get { return _TargetPins; }
             set { _TargetPins = value; RaisePropertyChanged("TargetPins"); }
         }
@@ -40,7 +41,7 @@ namespace SkyView.Nodes {
 
         private Filter _Filter;
         private string _Shader;
-        private List<LogicalLink> _TargetPins;
+        private Collection<LogicalLink> _TargetPins;
         private string _Name;
         private Point _Coordinates;
 
@@ -48,6 +49,7 @@ namespace SkyView.Nodes {
         protected void RaisePropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
     }

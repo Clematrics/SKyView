@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SkyView.Utils;
+using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace SkyView.Nodes {
@@ -38,6 +35,7 @@ namespace SkyView.Nodes {
         protected void RaisePropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
     }

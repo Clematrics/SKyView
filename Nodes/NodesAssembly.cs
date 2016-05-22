@@ -26,15 +26,10 @@ namespace SkyView.Nodes {
             get { return _IdSelected; }
             set { _IdSelected = value; RaisePropertyChanged("IdSelected"); }
         }
-        public Size ProjectSize {
-            get { return _ProjectSize; }
-            set { _ProjectSize = value; RaisePropertyChanged("ProjectSize"); }
-        }
 
         private Collection<LogicalNode> _NodesCollection;
         private Collection<LogicalLink> _LinksCollection;
         private long _IdSelected;
-        private Size _ProjectSize;
 
         public void AddNode(NodeType type, double x, double y) {
             LogicalNode newLogicalNode = new LogicalNode(type, x, y);
@@ -43,8 +38,15 @@ namespace SkyView.Nodes {
         }
 
         public void RemoveNode() {
-            NodesCollection.Remove(
-                NodesCollection.FindAtIndex(x => x.Id == IdSelected && x.Type != NodeType.Output));
+            int? index = NodesCollection.FindAtIndex(x => x.Id == IdSelected && x.Type != NodeType.Output);
+            if (index == null) return;
+            LogicalNode node = NodesCollection[ index ];
+            foreach (CollectionItem<LogicalInputPin> input in node.InputPins)
+                Divorce(input.Member.SourcePin);
+            foreach (CollectionItem<LogicalOutputPin> output in node.OutputPins)
+                foreach (CollectionItem<LogicalLink> link in output.Member.TargetPins)
+                    Divorce(link.Member);
+            NodesCollection.Remove( index );
             IdSelected = 0;
         }
 
@@ -54,16 +56,23 @@ namespace SkyView.Nodes {
             link.Output = output;
             LinksCollection.Add(link);
             if (input.SourcePin != null) {
-                LinksCollection.Remove( LinksCollection.FindAtIndex( x => x.Input == input) );
+                int? index = LinksCollection.FindAtIndex(x => x.Input == input);
+                if (index == null) return;
+                LinksCollection.Remove( (int)index );
             }
             input.SourcePin = link;
             output.TargetPins.Add(link);
+        }
+
+        public void Divorce(LogicalLink link) {
+            LinksCollection.Remove( LinksCollection.FindAtIndex( x => x == link));
         }
 
         #region INotifyPropertyChanged
         protected void RaisePropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
     }

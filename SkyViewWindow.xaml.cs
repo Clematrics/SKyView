@@ -16,8 +16,7 @@ namespace SkyView {
     /// <summary>
     /// Logique d'interaction pour SkyViewWindow.xaml
     /// </summary>
-    public partial class SkyViewWindow : Window
-    {
+    public partial class SkyViewWindow : Window, INotifyPropertyChanged {
         #region Constructeur
         /// <summary>
         /// Constructeur de la fenêtre principale de travail
@@ -26,13 +25,13 @@ namespace SkyView {
 
             InitializeComponent();
 
-            sharedNodesAssembly = new NodesAssembly();
+            SharedNodesAssembly = new NodesAssembly();
             //sharedNodesAssembly.OnNodeAdded += Editor.AddNode;
             //sharedNodesAssembly.OnNodeRemoved += Editor.RemoveNode;
-            sharedNodesAssembly.PropertyChanged += Properties.IdChanged;
+            SharedNodesAssembly.PropertyChanged += Properties.IdChanged;
 
-            sharedNodesAssembly.AddNode(NodeType.Output, 0, 0);
-            outputId = sharedNodesAssembly.IdSelected;
+            SharedNodesAssembly.AddNode(NodeType.Output, 0, 0);
+            outputId = SharedNodesAssembly.IdSelected;
 
 
             this.SourceInitialized += new EventHandler(win_SourceInitialized);
@@ -47,7 +46,11 @@ namespace SkyView {
         #endregion
 
         #region Propriétés partagées
-        public NodesAssembly sharedNodesAssembly { get; set; }
+        public NodesAssembly SharedNodesAssembly {
+            get { return _SharedNodesAssembly; }
+            set { _SharedNodesAssembly = value;  RaisePropertyChanged("SharedNodesAssembly"); }
+        }
+        private NodesAssembly _SharedNodesAssembly;
         public long outputId { get; }
         #endregion
 
@@ -169,6 +172,13 @@ namespace SkyView {
             if (actualScreen == -1) throw new InvalidOperationException();
             return actualScreen;
         }
+        #endregion
+
+        #region INotifyPropertyChanged
+        protected void RaisePropertyChanged(string propertyName) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
         #region Correction du masquage de la barre des tâches lors de la maximisation de la fenêtre.
@@ -330,125 +340,125 @@ namespace SkyView {
         private void Img_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Image, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Image, x, y);
         }
 
         private void Add_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Add, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Add, x, y);
         }
 
         private void Sub_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Substract, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Substract, x, y);
         }
 
         private void Mul_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Multiply, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Multiply, x, y);
         }
 
         private void Div_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Divide, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Divide, x, y);
         }
 
         private void Ovr_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Over, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Over, x, y);
         }
 
         private void Inv_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Invert, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Invert, x, y);
         }
 
         private void Con_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Constant, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Constant, x, y);
         }
 
         private void Noi_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Noise, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Noise, x, y);
         }
 
         private void Lrp_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.LinearRamp, x, y);
+            SharedNodesAssembly.AddNode(NodeType.LinearRamp, x, y);
         }
 
         private void Rrp_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.RadialRamp, x, y);
+            SharedNodesAssembly.AddNode(NodeType.RadialRamp, x, y);
         }
 
         private void Chn_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Channels, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Channels, x, y);
         }
 
         private void Com_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.CombineChannels, x, y);
+            SharedNodesAssembly.AddNode(NodeType.CombineChannels, x, y);
         }
 
         private void Grs_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.GrayScale, x, y);
+            SharedNodesAssembly.AddNode(NodeType.GrayScale, x, y);
         }
         private void Blr_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Blur, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Blur, x, y);
         }
 
         private void Lum_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Luminosity, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Luminosity, x, y);
         }
 
         private void Thr_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.Threshold, x, y);
+            SharedNodesAssembly.AddNode(NodeType.Threshold, x, y);
         }
 
         private void Sel_Click(object sender, RoutedEventArgs e) {
             double x =  -  Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = - Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.ColorSelection, x, y);
+            SharedNodesAssembly.AddNode(NodeType.ColorSelection, x, y);
         }
 
 
         private void Alh_Click(object sender, RoutedEventArgs e) {
             double x = -Editor.CurrentPosition.X + Editor.ActualWidth / 2;
             double y = -Editor.CurrentPosition.Y + Editor.ActualHeight / 2;
-            sharedNodesAssembly.AddNode(NodeType.SetAlpha, x, y);
+            SharedNodesAssembly.AddNode(NodeType.SetAlpha, x, y);
         }
 
         #endregion implémentation des ajouts de nouvelles nodes via l'InsertNodeTool
 
         private void Del_Click(object sender, RoutedEventArgs e) {
-            sharedNodesAssembly.RemoveNode();
+            SharedNodesAssembly.RemoveNode();
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e) {
-            Renderer.Render(sharedNodesAssembly);
+            Renderer.Render(SharedNodesAssembly);
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e) {
@@ -461,24 +471,19 @@ namespace SkyView {
                 string filepath = dialog.FileName;
 
                 BinaryFormatter reader = new BinaryFormatter();
-                FileStream flux = null;
-                try {
-                    flux = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-                    sharedNodesAssembly = (NodesAssembly)reader.Deserialize(flux);
+                using (FileStream flux = new FileStream(filepath, FileMode.Open, FileAccess.Read)) {
+                    flux.Seek(0, SeekOrigin.Begin);
+                    SharedNodesAssembly = (NodesAssembly)reader.Deserialize(flux);
+                    flux.Close();
                 }
-                catch {
-                    sharedNodesAssembly = new NodesAssembly();
-                }
-                finally {
-                    if (flux != null)
-                        flux.Close();
-                }
+                SharedNodesAssembly.PropertyChanged += Properties.IdChanged;
             }
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e) {
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.DefaultExt = ".svp";
+            dialog.Filter = "SVP Files (*.svp)|*.svp";
 
             DialogResult Result = dialog.ShowDialog();
             if (Result == System.Windows.Forms.DialogResult.OK) {
@@ -488,7 +493,7 @@ namespace SkyView {
                 FileStream flux = null;
                 try {
                     flux = new FileStream(filepath, FileMode.Create, FileAccess.Write);
-                    writer.Serialize(flux, sharedNodesAssembly);
+                    writer.Serialize(flux, SharedNodesAssembly);
                 }
                 catch {
 

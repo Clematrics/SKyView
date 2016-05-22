@@ -31,17 +31,17 @@ namespace SkyView.Image {
         }
 
         public Color Getcolor(int x, int y, int methode) {
-            if (x < 0 || y < 0 || x > Width || y > Height)
+            if (x < 0 || y < 0 || x >= Width || y >= Height) {
                 switch (methode) {
                     case 2:
                         break;
                     case 1:
                         return Color.FromArgb(255, 255, 255, 255);
-
                     case 0:
                     default:
                         return Color.FromArgb(0, 0, 0, 0);
                 }
+            }
             if (x > Width)
                 x = Width - 1;
             if (y > Height)

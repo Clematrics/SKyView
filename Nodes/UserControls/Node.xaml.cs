@@ -11,7 +11,7 @@ namespace SkyView {
     /// </summary>
     public partial class Node : UserControl {
 
-        public Node() { InitializeComponent(); GlobalNode.DataContext = this; Loaded += delegate { PositionChanged?.Invoke(this, new EventArgs()); }; }
+        public Node() { InitializeComponent(); GlobalNode.DataContext = this; }
 
         #region NodeData
         public LogicalNode NodeData {
@@ -81,10 +81,12 @@ namespace SkyView {
 
         private void InputPin_Loaded(object sender, RoutedEventArgs e) {
             PositionChanged += (sender as InputPin).UpdatePositionData;
+            PositionChanged?.Invoke(this, new EventArgs());
         }
 
         private void OutputPin_Loaded(object sender, RoutedEventArgs e) {
             PositionChanged += (sender as OutputPin).UpdatePositionData;
+            PositionChanged?.Invoke(this, new EventArgs());
         }
 
         private void InputPin_Unloaded(object sender, RoutedEventArgs e) {

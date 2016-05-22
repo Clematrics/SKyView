@@ -57,13 +57,13 @@ namespace SkyView.Image {
             Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
-                    Color colorA = inputImages[0].Getcolor(x, y, 1);
+                    Color colorA = inputImages[0].Getcolor(x, y, 0);
                     Color colorB = inputImages[1].Getcolor(x, y, 1);
 
-                    int A = colorA.A / 255 * colorB.A;
-                    int R = colorA.R / 255 * colorB.R;
-                    int G = colorA.G / 255 * colorB.G;
-                    int B = colorA.B / 255 * colorB.B;
+                    int A = colorA.A * colorB.A / 255;
+                    int R = colorA.R * colorB.R / 255;
+                    int G = colorA.G * colorB.G / 255;
+                    int B = colorA.B * colorB.B / 255;
 
                     finalImage.data[y * width + x] = Color.FromArgb(A, R, G, B);
                 }
@@ -220,10 +220,10 @@ namespace SkyView.Image {
             Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
-                    Color colorA = inputImages[0].Getcolor(x, y, 0);
                     Color colorR = inputImages[0].Getcolor(x, y, 0);
-                    Color colorG = inputImages[0].Getcolor(x, y, 0);
-                    Color colorB = inputImages[0].Getcolor(x, y, 0);
+                    Color colorG = inputImages[1].Getcolor(x, y, 0);
+                    Color colorB = inputImages[2].Getcolor(x, y, 0);
+                    Color colorA = inputImages[3].Getcolor(x, y, 0);
 
                     finalImage.data[y * width + x] = Color.FromArgb(colorA.A, colorR.R, colorG.G, colorB.B);
                 }

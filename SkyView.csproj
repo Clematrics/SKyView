@@ -109,7 +109,6 @@
       <DependentUpon>PropertiesEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="RenderEngine\Vk.cs" />
-    <Compile Include="Utils\Bindable.cs" />
     <Compile Include="Utils\Collection.cs" />
     <Compile Include="Utils\ColorArrayToImageConverter.cs" />
     <Compile Include="Utils\Events.cs" />

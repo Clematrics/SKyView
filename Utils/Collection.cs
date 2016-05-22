@@ -28,10 +28,10 @@ namespace SkyView.Utils {
             List.Remove(new CollectionItem<T>(item, new_object));
             RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
         }
-        public void Remove(int index) {
-            if (List.Count == 0 || List.Count < index || index < 0) return;
-            CollectionItem<T> item = List[index];
-            List.RemoveAt(index);
+        public void Remove(int? index) {
+            if (List.Count == 0 || List.Count < index || index < 0 || index == null) return;
+            CollectionItem<T> item = List[(int)index];
+            List.RemoveAt((int)index);
             RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
         }
         public void Add(CollectionItem<T> item) {
@@ -51,18 +51,18 @@ namespace SkyView.Utils {
             return default(T);
         }
 
-        public int FindAtIndex(Predicate<T> match) {
+        public int? FindAtIndex(Predicate<T> match) {
             int index = 0;
             foreach (CollectionItem<T> item in List) {
                 if (match(item.Member))
                     return index;
                 else index++;
             }
-            return -1;
+            return null;
         }
 
-        public T this[int index] {
-            get { return List[index].Member; }
+        public T this[int? index] {
+            get { if (index != null) return List[(int)index].Member; return default(T); }
         }
         public CollectionItem<T> AtIndex(int index) {
              return List[index];
@@ -72,6 +72,7 @@ namespace SkyView.Utils {
         private void RaiseCollectionChanged(NotifyCollectionChangedEventArgs args) {
             CollectionChanged?.Invoke(this, args);
         }
+        [field: NonSerialized]
         public event NotifyCollectionChangedEventHandler CollectionChanged;
         #endregion
 
@@ -79,6 +80,7 @@ namespace SkyView.Utils {
         protected void RaisePropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
@@ -110,7 +112,6 @@ namespace SkyView.Utils {
                 RaisePropertyChanged("Member");
             }
         }
-
     }
 
     [Serializable]
@@ -119,6 +120,7 @@ namespace SkyView.Utils {
         protected void RaisePropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
     }

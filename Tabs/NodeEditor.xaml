@@ -36,7 +36,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <SkyView:Link LinkData="{Binding Member}"/>
+                    <SkyView:Link LinkData="{Binding Member}" MustBeDestructed="Link_MustBeDestructed"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

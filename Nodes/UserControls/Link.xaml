@@ -6,5 +6,5 @@
              xmlns:local="clr-namespace:SkyView.Nodes"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Line x:Name="Line" StrokeThickness="3" Stroke="White" X1="{Binding LinkData.Input.Coordinates.X}" Y1="{Binding LinkData.Input.Coordinates.Y}" X2="{Binding LinkData.Output.Coordinates.X}" Y2="{Binding LinkData.Output.Coordinates.Y}"/>
+    <Line x:Name="Line" StrokeThickness="3" Stroke="{DynamicResource FontTheme}" X1="{Binding LinkData.Input.Coordinates.X}" Y1="{Binding LinkData.Input.Coordinates.Y}" X2="{Binding LinkData.Output.Coordinates.X}" Y2="{Binding LinkData.Output.Coordinates.Y}" MouseDown="Line_MouseDown"/>
 </UserControl>

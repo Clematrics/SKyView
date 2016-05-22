@@ -1,12 +1,9 @@
 ﻿using SkyView.Nodes;
 using SkyView.Utils;
 using System;
-using System.Collections;
-using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Shapes;
 using System.Collections.Generic;
 
 namespace SkyView.Tabs {
@@ -106,6 +103,10 @@ namespace SkyView.Tabs {
 
         private void Node_MustBeSelected(object sender) {
             NodesAssemblyNodeEditor.IdSelected = (sender as LogicalNode).Id;
+        }
+
+        private void Link_MustBeDestructed(object sender, EventArgs e) {
+            NodesAssemblyNodeEditor.Divorce(sender as LogicalLink);
         }
     }
 }
