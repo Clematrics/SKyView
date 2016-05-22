@@ -75,6 +75,7 @@
     </ApplicationDefinition>
     <Compile Include="Image\Filters.cs" />
     <Compile Include="Image\Image.cs" />
+    <Compile Include="Image\Noise.cs" />
     <Compile Include="Nodes\UserControls\InputPin.xaml.cs">
       <DependentUpon>InputPin.xaml</DependentUpon>
     </Compile>

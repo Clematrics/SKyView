@@ -121,6 +121,30 @@ namespace SkyView.Image {
             return finalImage;
         }
 
+        public static Image NoiseFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
+            Image finalImage = new Image(width, height);
+            int seed, octaves, persistence;
+            Perlin perlin = new Perlin();
+            try {
+                seed = int.Parse(parameters[0].Value);
+                octaves = int.Parse(parameters[1].Value);
+                persistence = int.Parse(parameters[2].Value);
+            }
+            catch (Exception e) {
+                throw e;
+            }
+
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++) {
+                    double number = perlin.OctavePerlin(x, y, seed, octaves, persistence);
+                    int value = (int)(number * 255);
+                    Color color = Color.FromArgb(value, value, value, value);
+
+                    finalImage.data[y * width + x] = color;
+                }
+            return finalImage;
+        }
+
         public static Image LinearRampFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
             int x1, y1, x0, y0;
@@ -230,7 +254,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image GrayScaleFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
+        public static Image GrayScaleFilter(int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
 
             for (int y = 0; y < height; y++)
@@ -242,6 +266,40 @@ namespace SkyView.Image {
                 }
             return finalImage;
         }
+        
+        public static Image BlurFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
+            Image finalImage = new Image(width, height);
+            int xBlur, yBlur, method;
+            try {
+                xBlur = int.Parse(parameters[0].Value);
+                yBlur = int.Parse(parameters[1].Value);
+                method = int.Parse(parameters[2].Value);
+            }
+            catch (Exception e) {
+                throw e;
+            }
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++) {
+
+                    int r = 0, g = 0, b = 0, a = 0;
+                    for (int i = x - xBlur; i < x + xBlur; i++)
+                        for (int j = y - yBlur; j < y + yBlur; j++) {
+                            Color color = inputImages[0].Getcolor(i, j, method);
+                            r += color.R;
+                            g += color.G;
+                            b += color.B;
+                            a += color.A;
+                        }
+                    r /= (xBlur * 2 + 1) * (yBlur * 2 + 1);
+                    g /= (xBlur * 2 + 1) * (yBlur * 2 + 1);
+                    b /= (xBlur * 2 + 1) * (yBlur * 2 + 1);
+                    a /= (xBlur * 2 + 1) * (yBlur * 2 + 1);
+
+                    finalImage.data[y * width + x] = Color.FromArgb(a, r, g, b);
+                }
+            return finalImage;
+        }
+
 
         public static Image LuminosityFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);

@@ -108,6 +108,8 @@ namespace SkyView.Nodes {
                     break;
                 case NodeType.Noise:
                     newProperties.Add(new NodeProperty("Seed", PropertyType.Number));
+                    newProperties.Add(new NodeProperty("Octaves", PropertyType.Number));
+                    newProperties.Add(new NodeProperty("Persistence", PropertyType.Number));
                     break;
                 case NodeType.LinearRamp:
                     newProperties.Add(new NodeProperty("White pixel X", PropertyType.Number));
@@ -259,7 +261,7 @@ namespace SkyView.Nodes {
                     newOutputPins.Add(new LogicalOutputPin(this, "Constant", Filters.ConstantFilter));
                     break;
                 case NodeType.Noise:
-                    newOutputPins.Add(new LogicalOutputPin(this, "Noise", Filters.NoFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Noise", Filters.NoiseFilter));
                     break;
                 case NodeType.LinearRamp:
                     newOutputPins.Add(new LogicalOutputPin(this, "Ramp", Filters.LinearRampFilter));
@@ -280,7 +282,7 @@ namespace SkyView.Nodes {
                     newOutputPins.Add(new LogicalOutputPin(this, "GrayScale", Filters.GrayScaleFilter));
                     break;
                 case NodeType.Blur:
-                    newOutputPins.Add(new LogicalOutputPin(this, "Blur", Filters.NoFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Blur", Filters.BlurFilter));
                     break;
                 case NodeType.Luminosity:
                     newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.LuminosityFilter));
