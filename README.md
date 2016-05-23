@@ -6,7 +6,7 @@
 
 ### English :
 
-	SkyView is an image processing software. He works essentially with a nodal workflow, to keep starting data and to reuse them.
+	SkyView is an image processing software. He works essentially with a nodal workflow, to keep starting datas and to reuse them.
 	
 ### Warning :
 
