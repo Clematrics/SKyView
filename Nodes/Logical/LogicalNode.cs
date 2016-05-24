@@ -110,6 +110,9 @@ namespace SkyView.Nodes {
                     newProperties.Add(new NodeProperty("Seed", PropertyType.Number));
                     newProperties.Add(new NodeProperty("Octaves", PropertyType.Number));
                     newProperties.Add(new NodeProperty("Persistence", PropertyType.Number));
+                    newProperties.Add(new NodeProperty("X Offset", PropertyType.Number));
+                    newProperties.Add(new NodeProperty("Y Offset", PropertyType.Number));
+                    newProperties.Add(new NodeProperty("Z Offset", PropertyType.Number));
                     break;
                 case NodeType.LinearRamp:
                     newProperties.Add(new NodeProperty("White pixel X", PropertyType.Number));

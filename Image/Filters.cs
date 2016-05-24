@@ -123,21 +123,28 @@ namespace SkyView.Image {
 
         public static Image NoiseFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            int seed, octaves, persistence;
-            Perlin perlin = new Perlin();
+            int seed; uint octaves; double persistence;
+            double xOffset, yOffset, zOffset;
+            Noise perlin = new Noise();
             try {
                 seed = int.Parse(parameters[0].Value);
-                octaves = int.Parse(parameters[1].Value);
-                persistence = int.Parse(parameters[2].Value);
+                octaves = uint.Parse(parameters[1].Value);
+                persistence = double.Parse(parameters[2].Value);
+                xOffset = double.Parse(parameters[3].Value);
+                yOffset = double.Parse(parameters[4].Value);
+                zOffset = double.Parse(parameters[5].Value);
             }
             catch (Exception e) {
                 throw e;
             }
 
+            perlin.SetParameters(octaves, persistence, seed);
+            perlin.SetOffset(xOffset, yOffset, zOffset);
+
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
-                    double number = perlin.OctavePerlin(x, y, seed, octaves, persistence);
-                    int value = (int)(number * 255);
+                    double number = (perlin.GetNoise(x, y) + 1)*0.5*255;
+                    int value = (int)(number);
                     Color color = Color.FromArgb(value, value, value, value);
 
                     finalImage.data[y * width + x] = color;

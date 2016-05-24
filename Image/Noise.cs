@@ -1,79 +1,51 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SkyView.Image {
-    //public static class Noise {
-    //    public static double ImprovedNoise(int x, int y, int seed, int octaves, int persistence) {
-    //        double value = 0;
-    //        Random r = new Random(seed);
-    //        int xOffset = r.Next();
-    //        int yOffset = r.Next();
-    //        for (int i = 0; i < octaves - 1; i++) {
-    //            int frequency = (int)Math.Pow(2, i);
-    //            int amplitude = (int)Math.Pow(persistence, i);
 
-    //            value += InterpolatedNoise(x * frequency + xOffset, y * frequency + yOffset) * amplitude;
-    //        }
-    //        return value;
-    //    }
+    public class Noise {
 
-    //    internal static double InterpolatedNoise(int x, int y) {
-    //        int integer_X = (int)x;
-    //        float fractional_X = x - integer_X;
+        struct Vector {
+            public double X;
+            public double Y;
+            public double Z;
 
-    //        int integer_Y = (int)y;
-    //        float fractional_Y = y - integer_Y;
-
-    //        double v1 = SmoothNoise(integer_X, integer_Y);
-    //        double v2 = SmoothNoise(integer_X + 1, integer_Y);
-    //        double v3 = SmoothNoise(integer_X, integer_Y + 1);
-    //        double v4 = SmoothNoise(integer_X + 1, integer_Y + 1);
-
-    //        double i1 = Interpolate(v1, v2, fractional_X);
-    //        double i2 = Interpolate(v3, v4, fractional_X);
-
-    //        return Interpolate(i1, i2, fractional_Y);
-    //    }
-
-    //    internal static double Interpolate(double i, double j, double k) {
-    //        return (k * k * k * (k * (k * 6 - 15)) + 10) * (j - i);
-    //    }
-
-
-    //    internal static double SmoothNoise(int x, int y) {
-    //        double corners = (BasicNoise(x - 1, y - 1) + BasicNoise(x + 1, y - 1) + BasicNoise(x - 1, y + 1) + BasicNoise(x + 1, y + 1)) / 16;
-    //        double sides = (BasicNoise(x - 1, y) + BasicNoise(x + 1, y) + BasicNoise(x, y - 1) + BasicNoise(x, y + 1)) / 8;
-    //        double center = BasicNoise(x, y) / 4;
-    //        return corners + sides + center;
-    //    }
-
-    //    internal static double BasicNoise(int x, int y) {
-    //        int n = x + y * 57;
-    //        n = (n << 13) ^ n;
-    //        return (1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
-    //    }
-    //}
-    public class Perlin {
-
-        public double OctavePerlin(double x, double y, double z, int octaves, double persistence) {
-            double total = 0;
-            double frequency = 1;
-            double amplitude = 1;
-            double maxValue = 0;            // Used for normalizing result to 0.0 - 1.0
-            for (int i = 0; i < octaves; i++) {
-                total += perlin(x * frequency, y * frequency, z * frequency) * amplitude;
-
-                maxValue += amplitude;
-
-                amplitude *= persistence;
-                frequency *= 2;
+            public Vector(double x, double y, double z) : this() {
+                X = x;
+                Y = y;
+                Z = z;
             }
 
-            return total / maxValue;
+            public static Vector operator +(Vector p, Vector q) {
+                return new Vector( p.X + q.X, p.Y + q.Y, p.Z + q.Z );
+            }
+            public static Vector operator -(Vector p, Vector q) {
+                return new Vector(p.X - q.X, p.Y - q.Y, p.Z - q.Z);
+            }
+            public static double operator *(Vector p, Vector q) {
+                return p.X * q.X + p.Y * q.Y + p.Z * q.Z;
+            }
         }
 
-        private static readonly int[] permutation = { 151,160,137,91,90,15,					// Hash lookup table as defined by Ken Perlin.  This is a randomly
-	    	131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,	// arranged array of all numbers from 0-255 inclusive.
-	    	190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,
+        private uint octave = 1;
+        private double persistence = 1;
+        private int seed = 0;
+
+        private double XOffset = 0;
+        private double YOffset = 0;
+        private double ZOffset = 0;
+
+        private double amplitude = 0;
+        private double initialFrequency = 1;
+        private int tileSize = 256;
+        private double unit = 16;
+
+        public Noise() {
+        }
+
+        private readonly byte[] initTab = { 151,160,137,91,90,15,
+            131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
+            190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,
             88,237,149,56,87,174,20,125,136,171,168, 68,175,74,165,71,134,139,48,27,166,
             77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,
             102,143,54, 65,25,63,161, 1,216,80,73,209,76,132,187,208, 89,18,169,200,196,
@@ -85,88 +57,146 @@ namespace SkyView.Image {
             49,192,214, 31,181,199,106,157,184, 84,204,176,115,121,50,45,127, 4,150,254,
             138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
         };
+        private List<int> permutationsTable = new List<int>();
 
-        private readonly int[] p;                                                    // Doubled permutation to avoid overflow
+        private readonly Vector[] Gradients = new Vector[16] { 
+           new Vector( 1, 1, 0 ), new Vector( -1, 1, 0 ), new Vector( 1, -1, 0 ), new Vector( -1, -1, 0 ) ,
+           new Vector( 1, 0, 1 ), new Vector( -1, 0, 1 ), new Vector( 1, 0, -1 ), new Vector( -1, 0, -1 ) ,
+           new Vector( 0, 1, 1 ), new Vector( 0, -1, 1 ), new Vector( 0, 1, -1 ), new Vector( 0, -1, -1 ) ,
+           new Vector( 1, 1, 0 ), new Vector( -1, 1, 0 ), new Vector( 0, -1, 1 ), new Vector( 0, -1,  1 )
+        };
 
-        public Perlin() {
-            p = new int[512];
-            for (int x = 0; x < 512; x++) {
-                p[x] = permutation[x % 256];
+        public void SetParameters(uint octave, double persistence, int seed) {
+            if (octave == 0)
+                throw new Exception("Octave must be different than zero");
+            this.octave = octave;
+            this.persistence = persistence == 0 ? 1 : persistence;
+
+            // Table initiale si la seed vaut 0
+            if (seed == 0 && tileSize == 256) {
+                permutationsTable = new List<int>();
+                for (int i = 0; i < 512; i++)
+                    permutationsTable.Add( initTab[i & 255] );
+            } else {  // Sinon rebrassage de la table
+                this.seed = seed;
+                Random r = new Random(seed);
+                List<int> initNumbers = new List<int>(tileSize);
+                permutationsTable = new List<int>(tileSize * 2);
+                for (int i = 0; i < tileSize; i++)
+                    initNumbers[i] = i;
+                for (int i = 0; i < tileSize; i++) {
+                    permutationsTable[i] = initNumbers[r.Next(tileSize - i)];
+                    permutationsTable[i + tileSize] = permutationsTable[i];
+                    initNumbers.Remove(permutationsTable[i]);
+                }
             }
         }
 
-        public double perlin(double x, double y, double z) {
-            int xi = (int)x & 255;                              // Calculate the "unit cube" that the point asked will be located in
-            int yi = (int)y & 255;                              // The left bound is ( |_x_|,|_y_|,|_z_| ) and the right bound is that
-            int zi = (int)z & 255;                              // plus 1.  Next we calculate the location (from 0.0 to 1.0) in that cube.
-            double xf = x - (int)x;                             // We also fade the location to smooth the result.
-            double yf = y - (int)y;
-    
-            double zf = z - (int)z;
-            double u = fade(xf);
-            double v = fade(yf);
-            double w = fade(zf);
-
-            int aaa, aba, aab, abb, baa, bba, bab, bbb;
-            aaa = p[p[p[xi] + yi] + zi];
-            aba = p[p[p[xi] + inc(yi)] + zi];
-            aab = p[p[p[xi] + yi] + inc(zi)];
-            abb = p[p[p[xi] + inc(yi)] + inc(zi)];
-            baa = p[p[p[inc(xi)] + yi] + zi];
-            bba = p[p[p[inc(xi)] + inc(yi)] + zi];
-            bab = p[p[p[inc(xi)] + yi] + inc(zi)];
-            bbb = p[p[p[inc(xi)] + inc(yi)] + inc(zi)];
-
-            double x1, x2, y1, y2;
-            x1 = lerp(grad(aaa, xf, yf, zf),                // The gradient function calculates the dot product between a pseudorandom
-                        grad(baa, xf - 1, yf, zf),              // gradient vector and the vector from the input coordinate to the 8
-                        u);                                     // surrounding points in its unit cube.
-            x2 = lerp(grad(aba, xf, yf - 1, zf),                // This is all then lerped together as a sort of weighted average based on the faded (u,v,w)
-                        grad(bba, xf - 1, yf - 1, zf),              // values we made earlier.
-                          u);
-            y1 = lerp(x1, x2, v);
-
-            x1 = lerp(grad(aab, xf, yf, zf - 1),
-                        grad(bab, xf - 1, yf, zf - 1),
-                        u);
-            x2 = lerp(grad(abb, xf, yf - 1, zf - 1),
-                          grad(bbb, xf - 1, yf - 1, zf - 1),
-                          u);
-            y2 = lerp(x1, x2, v);
-
-            return (lerp(y1, y2, w) + 1) / 2;                       // For convenience we bound it to 0 - 1 (theoretical min/max before is -1 - 1)
+        public void SetAdvanced(double initialFrequency, double amplitude, int tileSize, double unit) {
+            if (tileSize == 0)
+                throw new Exception("The tile size must be different than zero");
+            this.tileSize = tileSize;
+            if (unit == 0)
+                throw new Exception("The unit must be different than zero");
+            this.unit = unit;
+            this.initialFrequency = initialFrequency;
+            this.amplitude = amplitude;
         }
 
-        public static int inc(int num) {
-            return ++num;
+        public void SetOffset(double xOffset, double yOffset, double zOffset) {
+            XOffset = xOffset;
+            YOffset = yOffset;
+            ZOffset = zOffset;
         }
 
-        public static double grad(int hash, double x, double y, double z) {
-            int h = hash & 15;                                  // Take the hashed value and take the first 4 bits of it (15 == 0b1111)
-            double u = h < 8 /* 0b1000 */ ? x : y;              // If the most significant bit (MSB) of the hash is 0 then set u = x.  Otherwise y.
-
-            double v;                                           // In Ken Perlin's original implementation this was another conditional operator (?:).  I
-                                                                // expanded it for readability.
-
-            if (h < 4 /* 0b0100 */)                             // If the first and second significant bits are 0 set v = y
-                v = y;
-            else if (h == 12 /* 0b1100 */ || h == 14 /* 0b1110*/)// If the first and second significant bits are 1 set v = x
-                v = x;
-            else                                                // If the first and second significant bits are not equal (0/1, 1/0) set v = z
-                v = z;
-
-            return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v); // Use the last 2 bits to decide if u and v are positive or negative.  Then return their addition.
+        public double GetNoise(int x, int y) {
+            return GetNoise( x / unit, y / unit);
         }
 
-        public static double fade(double t) {
-            // Fade function as defined by Ken Perlin.  This eases coordinate values
-            // so that they will "ease" towards integral values.  This ends up smoothing
-            // the final output.
-            return t * t * t * (t * (t * 6 - 15) + 10);         // 6t^5 - 15t^4 + 10t^3
+        public double GetNoise(double x, double y) {
+
+            //double somme
+            //for (int o = 0; o < octave; o++) {
+
+                /*                           
+                 *            D2    C2  |            k2    l2
+                 *            +-----+   |            +-----+
+                 *            |     |   |            |     |
+                 *   D     C  |  .  |   |   k     l  |  .  |
+                 *   +-----+  |     |   |   +-----+  |     |
+                 *   |   P |  +-----+   |   |   P |  +-----+
+                 *   |  x  |  A2   B2   |   |  x  |  i2   j2
+                 *   |     |            |   |     |   
+                 *   +-----+            |   +-----+
+                 *   A     B            |   i     j
+                 *                        
+                 *  Toutes les coordonnées sont remises dans la plage de coordonnées définies par tileSize
+                 */
+
+                // Obtention du point A
+                Vector A = new Vector((int)(Math.Floor(x) % tileSize), (int)(Math.Floor(y) % tileSize), (int)(Math.Floor(ZOffset) % tileSize));
+                Vector P = new Vector(x % tileSize, y % tileSize, ZOffset % tileSize);
+                Vector AP = P - A;
+
+                //Obtention des gradients
+
+                int indexGradientA = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + permutationsTable[(int)A.Z]]] % 16;
+                int indexGradientA2 = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + permutationsTable[(int)A.Z + 1]]] % 16;
+                int indexGradientB = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + permutationsTable[(int)A.Z]]] % 16;
+                int indexGradientB2 = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + permutationsTable[(int)A.Z + 1]]] % 16;
+                int indexGradientC = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z]]] % 16;
+                int indexGradientC2 = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z + 1]]] % 16;
+                int indexGradientD = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z]]] % 16;
+                int indexGradientD2 = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z + 1]]] % 16;
+
+                Vector gradientA = Gradients[indexGradientA];
+                Vector gradientA2 = Gradients[indexGradientA2];
+                Vector gradientB = Gradients[indexGradientB];
+                Vector gradientB2 = Gradients[indexGradientB2];
+                Vector gradientC = Gradients[indexGradientC];
+                Vector gradientC2 = Gradients[indexGradientC2];
+                Vector gradientD = Gradients[indexGradientD];
+                Vector gradientD2 = Gradients[indexGradientD2];
+
+                // Obtention des poids de chaque gradient pour chaque point
+
+                double i = gradientA * (AP - new Vector(0, 0, 0));
+                double i2 = gradientA2 * (AP - new Vector(0, 0, 1));
+                double j = gradientB * (AP - new Vector(1, 0, 0));
+                double j2 = gradientB2 * (AP - new Vector(1, 0, 1));
+                double k = gradientC * (AP - new Vector(0, 1, 0));
+                double k2 = gradientC2 * (AP - new Vector(0, 1, 1));
+                double l = gradientD * (AP - new Vector(1, 1, 0));
+                double l2 = gradientD2 * (AP - new Vector(1, 1, 1));
+
+                //
+                // Interpolation en utilisant la fonction 6t^5 - 15t^4 + 10t^3
+                //            
+                double xCoeff = Interpolate(AP.X);
+                double yCoeff = Interpolate(AP.Y);
+                double zCoeff = Interpolate(AP.Z);
+
+                // Interpolation sur X
+                double Inter_i_j = i + xCoeff * (j - i);
+                double Inter_i2_j2 = i2 + xCoeff * (j2 - i2);
+                double Inter_k_l = k + xCoeff * (l - k);
+                double Inter_k2_l2 = k2 + xCoeff * (l2 - k2);
+
+                // Interpolation sur Y
+                double Inter_ij_kl = Inter_i_j + yCoeff * (Inter_k_l - Inter_i_j);
+                double Inter_i2j2_k2l2 = Inter_i2_j2 + yCoeff * (Inter_k2_l2 - Inter_i2_j2);
+
+                // Interpolation sur Z
+                double Inter_ijkl_i2j2k2l2 = Inter_ij_kl + zCoeff * (Inter_i2j2_k2l2 - Inter_ij_kl);
+
+                return Inter_ijkl_i2j2k2l2;
+            //}
         }
 
-        public static double lerp(double a, double b, double x) {
-            return a + x * (b - a);
+        internal double Interpolate(double t) {
+            return t * t * t * ( t * ( 6 * t - 15 ) + 10 ) ;
         }
+
     }
+
 }
