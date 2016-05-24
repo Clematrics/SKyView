@@ -119,10 +119,10 @@ namespace SkyView.Image {
             //for (int o = 0; o < octave; o++) {
 
                 /*                           
-                 *            D2    C2  |            k2    l2
+                 *            C2    D2  |            k2    l2
                  *            +-----+   |            +-----+
                  *            |     |   |            |     |
-                 *   D     C  |  .  |   |   k     l  |  .  |
+                 *   C     D  |  .  |   |   k     l  |  .  |
                  *   +-----+  |     |   |   +-----+  |     |
                  *   |   P |  +-----+   |   |   P |  +-----+
                  *   |  x  |  A2   B2   |   |  x  |  i2   j2
@@ -144,10 +144,10 @@ namespace SkyView.Image {
                 int indexGradientA2 = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + permutationsTable[(int)A.Z + 1]]] % 16;
                 int indexGradientB = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + permutationsTable[(int)A.Z]]] % 16;
                 int indexGradientB2 = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + permutationsTable[(int)A.Z + 1]]] % 16;
-                int indexGradientC = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z]]] % 16;
-                int indexGradientC2 = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z + 1]]] % 16;
-                int indexGradientD = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z]]] % 16;
-                int indexGradientD2 = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z + 1]]] % 16;
+                int indexGradientC = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z]]] % 16;
+                int indexGradientC2 = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z + 1]]] % 16;
+                int indexGradientD = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z]]] % 16;
+                int indexGradientD2 = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z + 1]]] % 16;
 
                 Vector gradientA = Gradients[indexGradientA];
                 Vector gradientA2 = Gradients[indexGradientA2];
