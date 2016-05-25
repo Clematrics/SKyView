@@ -33,11 +33,9 @@ namespace SkyView.Image {
 
         private double XOffset = 0;
         private double YOffset = 0;
-        private double ZOffset = 0;
+        private double Depth = 0;
 
-        private double amplitude = 0;
-        private double initialFrequency = 1;
-        private int tileSize = 256;
+        private uint tileSize = 256;
         private double unit = 16;
 
         public Noise() {
@@ -57,7 +55,7 @@ namespace SkyView.Image {
             49,192,214, 31,181,199,106,157,184, 84,204,176,115,121,50,45,127, 4,150,254,
             138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
         };
-        private List<int> permutationsTable = new List<int>();
+        private int[] permutationsTable = new int[512];
 
         private readonly Vector[] Gradients = new Vector[16] { 
            new Vector( 1, 1, 0 ), new Vector( -1, 1, 0 ), new Vector( 1, -1, 0 ), new Vector( -1, -1, 0 ) ,
@@ -70,43 +68,41 @@ namespace SkyView.Image {
             if (octave == 0)
                 throw new Exception("Octave must be different than zero");
             this.octave = octave;
-            this.persistence = persistence == 0 ? 1 : persistence;
+            this.persistence = persistence;
 
             // Table initiale si la seed vaut 0
             if (seed == 0 && tileSize == 256) {
-                permutationsTable = new List<int>();
+                permutationsTable = new int[512];
                 for (int i = 0; i < 512; i++)
-                    permutationsTable.Add( initTab[i & 255] );
+                    permutationsTable[i] = initTab[i & 255];
             } else {  // Sinon rebrassage de la table
                 this.seed = seed;
                 Random r = new Random(seed);
-                List<int> initNumbers = new List<int>(tileSize);
-                permutationsTable = new List<int>(tileSize * 2);
+                List<int> initNumbers = new List<int>();
+                permutationsTable = new int[tileSize * 2];
                 for (int i = 0; i < tileSize; i++)
-                    initNumbers[i] = i;
+                    initNumbers.Add(i);
                 for (int i = 0; i < tileSize; i++) {
-                    permutationsTable[i] = initNumbers[r.Next(tileSize - i)];
+                    permutationsTable[i] = initNumbers[r.Next((int)tileSize - i)];
                     permutationsTable[i + tileSize] = permutationsTable[i];
                     initNumbers.Remove(permutationsTable[i]);
                 }
             }
         }
 
-        public void SetAdvanced(double initialFrequency, double amplitude, int tileSize, double unit) {
-            if (tileSize == 0)
+        public void SetAdvanced(uint tileSize, double unit) {
+            if (tileSize <= 0)
                 throw new Exception("The tile size must be different than zero");
             this.tileSize = tileSize;
             if (unit == 0)
                 throw new Exception("The unit must be different than zero");
             this.unit = unit;
-            this.initialFrequency = initialFrequency;
-            this.amplitude = amplitude;
         }
 
-        public void SetOffset(double xOffset, double yOffset, double zOffset) {
+        public void SetOffset(double xOffset, double yOffset, double depth) {
             XOffset = xOffset;
             YOffset = yOffset;
-            ZOffset = zOffset;
+            Depth = depth;
         }
 
         public double GetNoise(int x, int y) {
@@ -115,8 +111,10 @@ namespace SkyView.Image {
 
         public double GetNoise(double x, double y) {
 
-            //double somme
-            //for (int o = 0; o < octave; o++) {
+            double sum = 0;
+            double amplitude = 1;
+            double frequency = 1;
+            for (int o = 0; o < octave; o++) {
 
                 /*                           
                  *            C2    D2  |            k2    l2
@@ -134,39 +132,39 @@ namespace SkyView.Image {
                  */
 
                 // Obtention du point A
-                Vector A = new Vector((int)(Math.Floor(x) % tileSize), (int)(Math.Floor(y) % tileSize), (int)(Math.Floor(ZOffset) % tileSize));
-                Vector P = new Vector(x % tileSize, y % tileSize, ZOffset % tileSize);
+                Vector A = new Vector((int)(Math.Floor(x * frequency + XOffset) % tileSize), (int)(Math.Floor(y * frequency + YOffset) % tileSize), (int)(Math.Floor(Depth * frequency) % tileSize));
+                Vector P = new Vector((x * frequency + XOffset) % tileSize, (y * frequency + YOffset) % tileSize, (Depth * frequency) % tileSize);
                 Vector AP = P - A;
 
                 //Obtention des gradients
 
-                int indexGradientA = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + permutationsTable[(int)A.Z]]] % 16;
-                int indexGradientA2 = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + permutationsTable[(int)A.Z + 1]]] % 16;
-                int indexGradientB = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + permutationsTable[(int)A.Z]]] % 16;
-                int indexGradientB2 = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + permutationsTable[(int)A.Z + 1]]] % 16;
-                int indexGradientC = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z]]] % 16;
-                int indexGradientC2 = permutationsTable[(int)A.X + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z + 1]]] % 16;
-                int indexGradientD = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z]]] % 16;
-                int indexGradientD2 = permutationsTable[(int)A.X + 1 + permutationsTable[(int)A.Y + 1 + permutationsTable[(int)A.Z + 1]]] % 16;
+                int indexGradientA  = permutationsTable[ (int)A.X +     permutationsTable[ (int)A.Y +     permutationsTable[ (int)A.Z     ]]] % 16;
+                int indexGradientA2 = permutationsTable[ (int)A.X +     permutationsTable[ (int)A.Y +     permutationsTable[ (int)A.Z + 1 ]]] % 16;
+                int indexGradientB  = permutationsTable[ (int)A.X + 1 + permutationsTable[ (int)A.Y +     permutationsTable[ (int)A.Z     ]]] % 16;
+                int indexGradientB2 = permutationsTable[ (int)A.X + 1 + permutationsTable[ (int)A.Y +     permutationsTable[ (int)A.Z + 1 ]]] % 16;
+                int indexGradientC  = permutationsTable[ (int)A.X +     permutationsTable[ (int)A.Y + 1 + permutationsTable[ (int)A.Z     ]]] % 16;
+                int indexGradientC2 = permutationsTable[ (int)A.X +     permutationsTable[ (int)A.Y + 1 + permutationsTable[ (int)A.Z + 1 ]]] % 16;
+                int indexGradientD  = permutationsTable[ (int)A.X + 1 + permutationsTable[ (int)A.Y + 1 + permutationsTable[ (int)A.Z     ]]] % 16;
+                int indexGradientD2 = permutationsTable[ (int)A.X + 1 + permutationsTable[ (int)A.Y + 1 + permutationsTable[ (int)A.Z + 1 ]]] % 16;
 
-                Vector gradientA = Gradients[indexGradientA];
+                Vector gradientA  = Gradients[indexGradientA];
                 Vector gradientA2 = Gradients[indexGradientA2];
-                Vector gradientB = Gradients[indexGradientB];
+                Vector gradientB  = Gradients[indexGradientB];
                 Vector gradientB2 = Gradients[indexGradientB2];
-                Vector gradientC = Gradients[indexGradientC];
+                Vector gradientC  = Gradients[indexGradientC];
                 Vector gradientC2 = Gradients[indexGradientC2];
-                Vector gradientD = Gradients[indexGradientD];
+                Vector gradientD  = Gradients[indexGradientD];
                 Vector gradientD2 = Gradients[indexGradientD2];
 
                 // Obtention des poids de chaque gradient pour chaque point
 
-                double i = gradientA * (AP - new Vector(0, 0, 0));
+                double i  = gradientA  * (AP - new Vector(0, 0, 0));
                 double i2 = gradientA2 * (AP - new Vector(0, 0, 1));
-                double j = gradientB * (AP - new Vector(1, 0, 0));
+                double j  = gradientB  * (AP - new Vector(1, 0, 0));
                 double j2 = gradientB2 * (AP - new Vector(1, 0, 1));
-                double k = gradientC * (AP - new Vector(0, 1, 0));
+                double k  = gradientC  * (AP - new Vector(0, 1, 0));
                 double k2 = gradientC2 * (AP - new Vector(0, 1, 1));
-                double l = gradientD * (AP - new Vector(1, 1, 0));
+                double l  = gradientD  * (AP - new Vector(1, 1, 0));
                 double l2 = gradientD2 * (AP - new Vector(1, 1, 1));
 
                 //
@@ -177,20 +175,27 @@ namespace SkyView.Image {
                 double zCoeff = Interpolate(AP.Z);
 
                 // Interpolation sur X
-                double Inter_i_j = i + xCoeff * (j - i);
+                double Inter_i_j   = i + xCoeff * (j - i);
                 double Inter_i2_j2 = i2 + xCoeff * (j2 - i2);
-                double Inter_k_l = k + xCoeff * (l - k);
+                double Inter_k_l   = k + xCoeff * (l - k);
                 double Inter_k2_l2 = k2 + xCoeff * (l2 - k2);
 
                 // Interpolation sur Y
-                double Inter_ij_kl = Inter_i_j + yCoeff * (Inter_k_l - Inter_i_j);
+                double Inter_ij_kl     = Inter_i_j + yCoeff * (Inter_k_l - Inter_i_j);
                 double Inter_i2j2_k2l2 = Inter_i2_j2 + yCoeff * (Inter_k2_l2 - Inter_i2_j2);
 
                 // Interpolation sur Z
                 double Inter_ijkl_i2j2k2l2 = Inter_ij_kl + zCoeff * (Inter_i2j2_k2l2 - Inter_ij_kl);
 
-                return Inter_ijkl_i2j2k2l2;
-            //}
+                sum += amplitude * (Inter_ijkl_i2j2k2l2 + 1) * 0.5;
+
+                amplitude *= persistence;
+                frequency *= 2;
+            }
+
+            if (persistence == 1)
+                return sum / octave;
+            else return sum * (1 - persistence) / (1 - amplitude);
         }
 
         internal double Interpolate(double t) {

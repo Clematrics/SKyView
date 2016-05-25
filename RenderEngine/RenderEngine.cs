@@ -22,7 +22,9 @@ namespace SkyView.RenderEngine {
             int Width = int.Parse(OutputNode.Properties[0].Value);
             int Height = int.Parse(OutputNode.Properties[1].Value);
 
+            if (OutputNode.InputPins[0].SourcePin == null) return;
             LogicalOutputPin StartingPoint = OutputNode.InputPins[0].SourcePin.Output;
+            if (StartingPoint == null) return;
 
             Result = GetFilteredImage(StartingPoint, Width, Height);
         }

@@ -87,6 +87,23 @@ namespace SkyView.Image {
             return finalImage;
         }
 
+        public static Image OverlayFilter(int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
+            Image finalImage = new Image(width, height);
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++) {
+                    Color colorA = inputImages[0].Getcolor(x, y, 0);
+                    Color colorB = inputImages[1].Getcolor(x, y, 0);
+                    
+                    double A = 255 * ( (double)colorA.A / 255 * (double)colorA.A / 255 + (double)colorB.A / 255 * (double)colorB.A / 255 * (1 - (double)colorA.A / 255) );
+                    double R = 255 * ( (double)colorA.R / 255 * (double)colorA.A / 255 + (double)colorB.R / 255 * (double)colorB.A / 255 * (1 - (double)colorA.A / 255) );
+                    double G = 255 * ( (double)colorA.G / 255 * (double)colorA.A / 255 + (double)colorB.G / 255 * (double)colorB.A / 255 * (1 - (double)colorA.A / 255) );
+                    double B = 255 * ( (double)colorA.B / 255 * (double)colorA.A / 255 + (double)colorB.B / 255 * (double)colorB.A / 255 * (1 - (double)colorA.A / 255) );
+
+                    finalImage.data[y * width + x] = Color.FromArgb((int)A, (int)R, (int)G, (int)B);
+                }
+            return finalImage;
+        }
+
         public static Image InvertFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
             for (int y = 0; y < height; y++)
@@ -123,27 +140,30 @@ namespace SkyView.Image {
 
         public static Image NoiseFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            int seed; uint octaves; double persistence;
-            double xOffset, yOffset, zOffset;
+            int seed; uint octaves, tileSize; double persistence, unit;
+            double xOffset, yOffset, depth;
             Noise perlin = new Noise();
             try {
-                seed = int.Parse(parameters[0].Value);
-                octaves = uint.Parse(parameters[1].Value);
-                persistence = double.Parse(parameters[2].Value);
-                xOffset = double.Parse(parameters[3].Value);
-                yOffset = double.Parse(parameters[4].Value);
-                zOffset = double.Parse(parameters[5].Value);
+                seed        = int.Parse     (parameters[0].Value);
+                octaves     = uint.Parse    (parameters[1].Value);
+                persistence = double.Parse  (parameters[2].Value);
+                xOffset     = double.Parse  (parameters[3].Value);
+                yOffset     = double.Parse  (parameters[4].Value);
+                depth       = double.Parse  (parameters[5].Value);
+                tileSize    = uint.Parse    (parameters[6].Value);
+                unit        = double.Parse  (parameters[7].Value);
             }
             catch (Exception e) {
                 throw e;
             }
 
             perlin.SetParameters(octaves, persistence, seed);
-            perlin.SetOffset(xOffset, yOffset, zOffset);
+            perlin.SetAdvanced(tileSize, unit);
+            perlin.SetOffset(xOffset, yOffset, depth);
 
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
-                    double number = (perlin.GetNoise(x, y) + 1)*0.5*255;
+                    double number = (perlin.GetNoise(x, y) ) * 255;
                     int value = (int)(number);
                     Color color = Color.FromArgb(value, value, value, value);
 
@@ -363,15 +383,24 @@ namespace SkyView.Image {
 
         public static Image ColorSelectionFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
+            int Alpha, Red, Green, Blue;
+            try {
+                Alpha = int.Parse(parameters[0].Value);
+                Red   = int.Parse(parameters[1].Value);
+                Green = int.Parse(parameters[2].Value);
+                Blue  = int.Parse(parameters[3].Value);
+            }
+            catch (Exception e) {
+                throw e;
+            }
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
-                    Color colorB = inputImages[1].Getcolor(x, y, 0);
 
-                    int A = (colorA.A - colorB.A < 0) ? 255 : colorA.A - colorB.A;
-                    int R = (colorA.R - colorB.R < 0) ? 255 : colorA.R - colorB.R;
-                    int G = (colorA.G - colorB.G < 0) ? 255 : colorA.G - colorB.G;
-                    int B = (colorA.B - colorB.B < 0) ? 255 : colorA.B - colorB.B;
+                    int A = (colorA.A - Alpha < 0)  ? 255 : colorA.A - Alpha;
+                    int R = (colorA.R - Red < 0)    ? 255 : colorA.R - Red;
+                    int G = (colorA.G - Green < 0)  ? 255 : colorA.G - Green;
+                    int B = (colorA.B - Blue < 0)   ? 255 : colorA.B - Blue;
 
                     int dist = (int)Math.Sqrt(A * A + R * R + G * G + B * B);
 
@@ -380,7 +409,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image SetAlpha(int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
+        public static Image SetAlphaFilter(int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
             int Alpha;
             try {

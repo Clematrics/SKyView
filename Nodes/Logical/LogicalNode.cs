@@ -112,7 +112,9 @@ namespace SkyView.Nodes {
                     newProperties.Add(new NodeProperty("Persistence", PropertyType.Number));
                     newProperties.Add(new NodeProperty("X Offset", PropertyType.Number));
                     newProperties.Add(new NodeProperty("Y Offset", PropertyType.Number));
-                    newProperties.Add(new NodeProperty("Z Offset", PropertyType.Number));
+                    newProperties.Add(new NodeProperty("Depth", PropertyType.Number));
+                    newProperties.Add(new NodeProperty("Tile size", PropertyType.Number));
+                    newProperties.Add(new NodeProperty("Unit", PropertyType.Number));
                     break;
                 case NodeType.LinearRamp:
                     newProperties.Add(new NodeProperty("White pixel X", PropertyType.Number));
@@ -255,7 +257,7 @@ namespace SkyView.Nodes {
                     newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.DivideFilter));
                     break;
                 case NodeType.Over:
-                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.NoFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.OverlayFilter));
                     break;
                 case NodeType.Invert:
                     newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.InvertFilter));
@@ -297,7 +299,7 @@ namespace SkyView.Nodes {
                     newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.ColorSelectionFilter));
                     break;
                 case NodeType.SetAlpha:
-                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.SetAlpha));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.SetAlphaFilter));
                     break;
                 default:
                     break;

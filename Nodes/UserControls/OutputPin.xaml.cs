@@ -41,7 +41,7 @@ namespace SkyView.Nodes {
 
         public void UpdatePositionData(object sender, EventArgs e) {
             Canvas ParentCanvas = FindParent<Canvas>(this);
-            Point RelativePosition = slot.TransformToAncestor(ParentCanvas).Transform(new Point(4, 5));
+            Point RelativePosition = slot.TransformToAncestor(ParentCanvas).Transform(new Point(8, 5));
             OutputPinData.Coordinates = RelativePosition;
         }
 

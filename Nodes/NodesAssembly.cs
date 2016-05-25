@@ -51,15 +51,15 @@ namespace SkyView.Nodes {
         }
 
         public void Love(LogicalInputPin input, int indexInput, LogicalOutputPin output, int indexOutput) {
+
+            int? index = LinksCollection.FindAtIndex(x => x.Input == input);
+            if (index != null)
+                LinksCollection.Remove( (int)index );
+            
             LogicalLink link = new LogicalLink();
             link.Input = input;
             link.Output = output;
             LinksCollection.Add(link);
-            if (input.SourcePin != null) {
-                int? index = LinksCollection.FindAtIndex(x => x.Input == input);
-                if (index == null) return;
-                LinksCollection.Remove( (int)index );
-            }
             input.SourcePin = link;
             output.TargetPins.Add(link);
         }
