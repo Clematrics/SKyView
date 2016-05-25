@@ -409,7 +409,7 @@ namespace SkyView.Image {
             return finalImage;
         }
 
-        public static Image SetAlphaFilter(int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
+        public static Image SetAlpha(int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
             int Alpha;
             try {

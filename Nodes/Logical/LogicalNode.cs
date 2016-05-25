@@ -299,7 +299,7 @@ namespace SkyView.Nodes {
                     newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.ColorSelectionFilter));
                     break;
                 case NodeType.SetAlpha:
-                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.SetAlphaFilter));
+                    newOutputPins.Add(new LogicalOutputPin(this, "Image", Filters.SetAlpha));
                     break;
                 default:
                     break;

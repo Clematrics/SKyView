@@ -58,10 +58,10 @@ namespace SkyView.Image {
         private int[] permutationsTable = new int[512];
 
         private readonly Vector[] Gradients = new Vector[16] { 
-           new Vector( 1, 1, 0 ), new Vector( -1, 1, 0 ), new Vector( 1, -1, 0 ), new Vector( -1, -1, 0 ) ,
-           new Vector( 1, 0, 1 ), new Vector( -1, 0, 1 ), new Vector( 1, 0, -1 ), new Vector( -1, 0, -1 ) ,
-           new Vector( 0, 1, 1 ), new Vector( 0, -1, 1 ), new Vector( 0, 1, -1 ), new Vector( 0, -1, -1 ) ,
-           new Vector( 1, 1, 0 ), new Vector( -1, 1, 0 ), new Vector( 0, -1, 1 ), new Vector( 0, -1,  1 )
+           new Vector( 1,  1,  0 ), new Vector( -1,  1,  0 ), new Vector( 1, -1,  0 ), new Vector( -1, -1,  0 ) ,
+           new Vector( 1,  0,  1 ), new Vector( -1,  0,  1 ), new Vector( 1,  0, -1 ), new Vector( -1,  0, -1 ) ,
+           new Vector( 0,  1,  1 ), new Vector(  0, -1,  1 ), new Vector( 0,  1, -1 ), new Vector(  0, -1, -1 ) ,
+           new Vector( 1,  1,  0 ), new Vector( -1,  1,  0 ), new Vector( 0, -1,  1 ), new Vector(  0, -1,  1 )
         };
 
         public void SetParameters(uint octave, double persistence, int seed) {
@@ -91,12 +91,12 @@ namespace SkyView.Image {
         }
 
         public void SetAdvanced(uint tileSize, double unit) {
-            if (tileSize <= 0)
-                throw new Exception("The tile size must be different than zero");
-            this.tileSize = tileSize;
+            if (tileSize == 0)
+                tileSize = 256;
+            else this.tileSize = tileSize;
             if (unit == 0)
-                throw new Exception("The unit must be different than zero");
-            this.unit = unit;
+                unit = 16;
+            else this.unit = unit;
         }
 
         public void SetOffset(double xOffset, double yOffset, double depth) {
