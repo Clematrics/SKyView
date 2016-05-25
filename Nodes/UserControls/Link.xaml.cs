@@ -10,7 +10,7 @@ namespace SkyView {
     public partial class Link : UserControl {
         public Link() {
             InitializeComponent();
-            Line.DataContext = this;
+            Path.DataContext = this;
         }
 
         #region LinkData Property

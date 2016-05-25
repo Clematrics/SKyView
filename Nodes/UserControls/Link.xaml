@@ -4,7 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SkyView.Nodes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:Converters="clr-namespace:SkyView.Utils"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Line x:Name="Line" StrokeThickness="3" Stroke="{DynamicResource FontTheme}" X1="{Binding LinkData.Input.Coordinates.X}" Y1="{Binding LinkData.Input.Coordinates.Y}" X2="{Binding LinkData.Output.Coordinates.X}" Y2="{Binding LinkData.Output.Coordinates.Y}" MouseDown="Line_MouseDown"/>
+    <UserControl.Resources>
+        <Converters:AnchorToControlConverter x:Key="Converter"/>
+        <sys:Int32 x:Key="Cent"> 100 </sys:Int32>
+        <sys:Int32 x:Key="moinsCent"> -100 </sys:Int32>
+    </UserControl.Resources>
+    <Path x:Name="Path" StrokeThickness="3" Stroke="{DynamicResource FontTheme}" MouseDown="Line_MouseDown">
+        <Path.Data>
+            <PathGeometry>
+                <PathGeometry.Figures>
+                    <PathFigure StartPoint="{Binding LinkData.Input.Coordinates}">
+                        <BezierSegment Point1="{Binding LinkData.Input.Coordinates, Converter={StaticResource Converter},ConverterParameter={StaticResource Cent}}"  Point2="{Binding LinkData.Output.Coordinates,Converter={StaticResource Converter},ConverterParameter={StaticResource moinsCent}}"  Point3="{Binding LinkData.Output.Coordinates}"/>
+                    </PathFigure>
+                </PathGeometry.Figures>
+            </PathGeometry>
+        </Path.Data>
+    </Path>
+    
 </UserControl>

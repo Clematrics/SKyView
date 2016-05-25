@@ -96,7 +96,6 @@
       <DependentUpon>OutputPin.xaml</DependentUpon>
     </Compile>
     <Compile Include="RenderEngine\RenderEngine.cs" />
-    <Compile Include="RenderEngine\UnsafeVk.cs" />
     <Compile Include="SkyViewManager.xaml.cs">
       <DependentUpon>SkyViewManager.xaml</DependentUpon>
     </Compile>
@@ -110,6 +109,7 @@
       <DependentUpon>PropertiesEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="RenderEngine\Vk.cs" />
+    <Compile Include="Utils\AnchorToControlConverter.cs" />
     <Compile Include="Utils\Collection.cs" />
     <Compile Include="Utils\ColorArrayToImageConverter.cs" />
     <Compile Include="Utils\Events.cs" />
