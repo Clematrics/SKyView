@@ -18,7 +18,7 @@
             <PathGeometry>
                 <PathGeometry.Figures>
                     <PathFigure StartPoint="{Binding LinkData.Input.Coordinates}">
-                        <BezierSegment Point1="{Binding LinkData.Input.Coordinates, Converter={StaticResource Converter},ConverterParameter={StaticResource Cent}}"  Point2="{Binding LinkData.Output.Coordinates,Converter={StaticResource Converter},ConverterParameter={StaticResource moinsCent}}"  Point3="{Binding LinkData.Output.Coordinates}"/>
+                        <BezierSegment Point1="{Binding LinkData.Input.Coordinates, Converter={StaticResource Converter},ConverterParameter={StaticResource moinsCent}}"  Point2="{Binding LinkData.Output.Coordinates,Converter={StaticResource Converter},ConverterParameter={StaticResource Cent}}"  Point3="{Binding LinkData.Output.Coordinates}"/>
                     </PathFigure>
                 </PathGeometry.Figures>
             </PathGeometry>
