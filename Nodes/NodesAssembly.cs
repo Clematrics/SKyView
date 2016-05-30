@@ -50,7 +50,7 @@ namespace SkyView.Nodes {
             IdSelected = 0;
         }
 
-        public void Love(LogicalInputPin input, int indexInput, LogicalOutputPin output, int indexOutput) {
+        public void Love(LogicalInputPin input, LogicalOutputPin output) {
 
             int? index = LinksCollection.FindAtIndex(x => x.Input == input);
             if (index != null)

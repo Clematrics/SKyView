@@ -22,22 +22,18 @@ namespace SkyView.Nodes {
             typeof(InputPin),
             new PropertyMetadata(new LogicalInputPin(null, "")));
 
-        public int Index {
-            get { return (int)GetValue(InputIndexProperty); }
-            set { SetValue(InputIndexProperty, value); }
-        }
-        public static readonly DependencyProperty InputIndexProperty = DependencyProperty.Register(
-            "Index",
-            typeof(int),
-            typeof(InputPin),
-            new PropertyMetadata(-1));
-
-        public event PinSelectionEventHandler PinSelected;
+        public event LinkDraggingEventHandler BeginDrag;
         private void slot_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            PinSelected?.Invoke(this, PinType.Input, Index);
+            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+                BeginDrag?.Invoke(this, PinType.Input);
         }
 
-        public void UpdatePositionData(object sender, EventArgs e) {
+        public event LinkDraggingEventHandler EndDrag;
+        public void ForceEndDragging() {
+            EndDrag?.Invoke(this, PinType.Input);
+        }
+
+        public void UpdatePositionData(object sender, Vector vector) {
             Canvas ParentCanvas = FindParent<Canvas>(this);
             Point RelativePosition = slot.TransformToAncestor(ParentCanvas).Transform(new Point(0, 5));
             InputPinData.Coordinates = RelativePosition;
@@ -57,5 +53,6 @@ namespace SkyView.Nodes {
             else
                 return FindParent<T>(parentObject);
         }
+
     }
 }

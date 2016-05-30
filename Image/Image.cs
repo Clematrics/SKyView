@@ -13,7 +13,7 @@ namespace SkyView.Image {
             Height = height;
             data = new Color[Width * Height];
         }
-        public Image(string path) {
+        public Image(string path, int width, int height) {
             Bitmap image;
             try {
                 image = new Bitmap(path);
@@ -22,12 +22,12 @@ namespace SkyView.Image {
                 throw e;
             }
 
-            Width = image.Width;
-            Height = image.Height;
+            Width = width;
+            Height = height;
             data = new Color[Width * Height];
-            for (int i = 0; i < Height; i++)
-                for (int j = 0; j < Width; j++)
-                    data[i * Width + j] = image.GetPixel(j, i);
+            for (int j = 0; j < Height; j++)
+                for (int i = 0; i < Width; i++)
+                        data[j * Width + i] = i < image.Width && j < image.Height ? image.GetPixel(i, j) : Color.FromArgb(0, 0, 0, 0);
         }
 
         public Color Getcolor(int x, int y, int methode) {
@@ -42,9 +42,9 @@ namespace SkyView.Image {
                         return Color.FromArgb(0, 0, 0, 0);
                 }
             }
-            if (x > Width)
+            if (x >= Width)
                 x = Width - 1;
-            if (y > Height)
+            if (y >= Height)
                 y = Height - 1;
             if (x < 0)
                 x = 0;

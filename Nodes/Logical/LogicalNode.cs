@@ -19,7 +19,7 @@ namespace SkyView.Nodes {
             Properties = getPropertiesFromType(type);
             InputPins = getInputPinsFromType(type);
             OutputPins = getOutputPinsFromType(type);
-            X = x; Y = y;
+            X = x; Y = y; Z = 0; IsSelected = false;
         }
 
         public Collection<NodeProperty> Properties {
@@ -42,6 +42,10 @@ namespace SkyView.Nodes {
             get { return _Id; }
             set { _Id = value; RaisePropertyChanged("Id"); }
         }
+        public bool IsSelected {
+            get { return _IsSelected; }
+            set { _IsSelected = value; RaisePropertyChanged("IsSelected"); }
+        }
         public NodeType Type {
             get { return _Type; }
             set { _Type = value; RaisePropertyChanged("Type"); }
@@ -54,15 +58,21 @@ namespace SkyView.Nodes {
             get { return _Y; }
             set { _Y = value; RaisePropertyChanged("Y"); }
         }
+        public int Z {
+            get { return _Z; }
+            set { _Z = value; RaisePropertyChanged("Z"); }
+        }
 
         private Collection<NodeProperty> _Properties;
         private Collection<LogicalInputPin> _InputPins;
         private Collection<LogicalOutputPin> _OutputPins;
         private string _Name;
         private long _Id;
+        private bool _IsSelected;
         private NodeType _Type;
         private double _X;
         private double _Y;
+        private int _Z;
 
         #region INotifyPropertyChanged
         protected void RaisePropertyChanged(string propertyName) {

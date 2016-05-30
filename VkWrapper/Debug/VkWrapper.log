@@ -1,0 +1,5 @@
+﻿  shared.cpp
+c:\users\clematrics\source\repos\skyview\vkwrapper\shared.h(27): warning C4091: 'static ' : ignoré à gauche de 'VkWrapper::shared' quand aucune variable n'est déclarée
+  AssemblyInfo.obj : /DEBUG:FASTLINK n'est pas pris en charge en présence de code managé ; redémarrage de l'édition des liens avec /DEBUG:FULL
+  VkWrapper.vcxproj -> C:\Users\Clematrics\Source\Repos\SkyView\Debug\VkWrapper.dll
+  VkWrapper.vcxproj -> C:\Users\Clematrics\Source\Repos\SkyView\Debug\VkWrapper.pdb (Partial PDB)

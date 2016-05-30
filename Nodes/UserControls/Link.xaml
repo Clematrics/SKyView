@@ -8,21 +8,34 @@
              xmlns:Converters="clr-namespace:SkyView.Utils"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <Converters:AnchorToControlConverter x:Key="Converter"/>
-        <sys:Int32 x:Key="Cent"> 100 </sys:Int32>
-        <sys:Int32 x:Key="moinsCent"> -100 </sys:Int32>
-    </UserControl.Resources>
-    <Path x:Name="Path" StrokeThickness="3" Stroke="{DynamicResource FontTheme}" MouseDown="Line_MouseDown">
-        <Path.Data>
-            <PathGeometry>
-                <PathGeometry.Figures>
-                    <PathFigure StartPoint="{Binding LinkData.Input.Coordinates}">
-                        <BezierSegment Point1="{Binding LinkData.Input.Coordinates, Converter={StaticResource Converter},ConverterParameter={StaticResource moinsCent}}"  Point2="{Binding LinkData.Output.Coordinates,Converter={StaticResource Converter},ConverterParameter={StaticResource Cent}}"  Point3="{Binding LinkData.Output.Coordinates}"/>
-                    </PathFigure>
-                </PathGeometry.Figures>
-            </PathGeometry>
-        </Path.Data>
-    </Path>
-    
+    <Grid x:Name="Path">
+        <Path StrokeThickness="4" Stroke="Black"  MouseDown="Line_MouseDown" Opacity="0.5">
+            <Path.Data>
+                <PathGeometry>
+                    <PathGeometry.Figures>
+                        <PathFigure StartPoint="{Binding LinkData.Output.Coordinates}">
+                            <BezierSegment Point1="{Binding AnchorFromPin}"  Point2="{Binding AnchorToPin}"  Point3="{Binding LinkData.Input.Coordinates}"/>
+                        </PathFigure>
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
+        <Path StrokeThickness="3"  MouseDown="Line_MouseDown" >
+            <Path.Stroke>
+                <LinearGradientBrush StartPoint="{Binding LinkData.Output.Coordinates}" EndPoint="{Binding LinkData.Input.Coordinates}" MappingMode="Absolute">
+                    <GradientStop Color="Silver"  Offset="0" />
+                    <GradientStop Color="#808080" Offset="1"/>
+                </LinearGradientBrush>
+            </Path.Stroke>
+            <Path.Data>
+                <PathGeometry>
+                    <PathGeometry.Figures>
+                        <PathFigure StartPoint="{Binding LinkData.Output.Coordinates}">
+                            <BezierSegment Point1="{Binding AnchorFromPin}"  Point2="{Binding AnchorToPin}"  Point3="{Binding LinkData.Input.Coordinates}"/>
+                        </PathFigure>
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
+    </Grid>
 </UserControl>

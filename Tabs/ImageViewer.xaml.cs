@@ -84,12 +84,11 @@ namespace SkyView.Tabs {
         private double Zoom = 1;
         private void image_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            Zoom += e.Delta > 0 ? 0.1 : -0.1 ;
-            Matrix matrix = Image.RenderTransform.Value;
-
-            matrix.ScaleAt(Zoom, Zoom, 0.5, 0.5);
-
-            Image.RenderTransform = new MatrixTransform(matrix);
+            Zoom += e.Delta > 0 ? .2 : -.2;
+            Zoom = Zoom < .2 ? .2 : Zoom;
+            Zoom = Zoom > 10 ? 10 : Zoom;
+            ScaleTransform scale = new ScaleTransform(Zoom, Zoom);
+            Image.LayoutTransform = scale;
         }
         #endregion
     }

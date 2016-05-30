@@ -11,6 +11,7 @@ using SkyView.Utils;
 using SkyView.Nodes;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Threading;
 
 namespace SkyView {
     /// <summary>
@@ -26,20 +27,15 @@ namespace SkyView {
             InitializeComponent();
 
             SharedNodesAssembly = new NodesAssembly();
-            //sharedNodesAssembly.OnNodeAdded += Editor.AddNode;
-            //sharedNodesAssembly.OnNodeRemoved += Editor.RemoveNode;
             SharedNodesAssembly.PropertyChanged += Properties.IdChanged;
-
             SharedNodesAssembly.AddNode(NodeType.Output, 0, 0);
-            outputId = SharedNodesAssembly.IdSelected;
+            Renderer = new RenderEngine.RenderEngine();
 
-
-            this.SourceInitialized += new EventHandler(win_SourceInitialized);
+            SourceInitialized += win_SourceInitialized;
             // Ajout d'un événement lorsque WindowState change d'état
             DependencyPropertyDescriptor.FromProperty(WindowStateProperty, typeof(Window)).AddValueChanged(this, OnWindowStateChanged);
             System.Windows.Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-            Renderer = new RenderEngine.RenderEngine();
 
             GlobalWindow.DataContext = this;
         }
@@ -51,7 +47,6 @@ namespace SkyView {
             set { _SharedNodesAssembly = value;  RaisePropertyChanged("SharedNodesAssembly"); }
         }
         private NodesAssembly _SharedNodesAssembly;
-        public long outputId { get; }
         #endregion
 
         #region Gestion du rendu
@@ -458,7 +453,9 @@ namespace SkyView {
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e) {
-            Renderer.Render(SharedNodesAssembly);
+            Renderer.Assembly = SharedNodesAssembly;
+            Thread thread = new Thread( new ThreadStart( Renderer.Render ));
+            thread.Start();
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e) {
@@ -516,7 +513,7 @@ namespace SkyView {
                 Image.Image image = Renderer.Result;
                 Bitmap bmp = new Bitmap(image.Width, image.Height);
                 for (int i = 0; i < image.Width * image.Height; i++) {
-                    bmp.SetPixel(i % image.Width, (int)(i / image.Height), Color.FromArgb(image.data[i].A, image.data[i].R, image.data[i].G, image.data[i].B));
+                    bmp.SetPixel(i % image.Width, (i / image.Width), Color.FromArgb(image.data[i].A, image.data[i].R, image.data[i].G, image.data[i].B));
                 }
                 switch (dialog.FilterIndex) {
                     case 1:

@@ -2,6 +2,7 @@
 using SkyView.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace SkyView.RenderEngine {
 
@@ -11,13 +12,14 @@ namespace SkyView.RenderEngine {
             Result = new Image.Image(100, 100);
         }
 
+        public NodesAssembly Assembly;
         public Image.Image Result {
             get { return _Result; }
             set { _Result = value;  RaisePropertyChanged("Result"); }
         }
         private Image.Image _Result;
 
-        public void Render (NodesAssembly Assembly) {
+        public void Render () {
             LogicalNode OutputNode = Assembly.NodesCollection.Find(x => x.Type == NodeType.Output);
             int Width = int.Parse(OutputNode.Properties[0].Value);
             int Height = int.Parse(OutputNode.Properties[1].Value);
@@ -32,8 +34,8 @@ namespace SkyView.RenderEngine {
         private Image.Image GetFilteredImage(LogicalOutputPin current, int width, int height) {
             List<Image.Image> inputImages = new List<Image.Image>();
             Collection<NodeProperty> parameters = current.Parent.Properties;
-            foreach (CollectionItem<LogicalInputPin> input in current.Parent.InputPins )
-                inputImages.Add(GetFilteredImage( input.Member.SourcePin.Output, width, height ));
+            Parallel.ForEach(current.Parent.InputPins.List, (input) => { inputImages.Add(GetFilteredImage(input.Member.SourcePin.Output, width, height)); });
+                
             return current.Filter(width, height, inputImages, parameters);
         }
 

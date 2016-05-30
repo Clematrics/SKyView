@@ -3,6 +3,7 @@ using SkyView.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace SkyView.Image {
 
@@ -16,13 +17,13 @@ namespace SkyView.Image {
         }
 
         public static Image LoadImage( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
-            return new Image(parameters[0].Value);
+            return new Image(parameters[0].Value, width, height);
         }
 
         public static Image AddFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
                     Color colorB = inputImages[1].Getcolor(x, y, 0);
 
@@ -31,15 +32,16 @@ namespace SkyView.Image {
                     int G = (colorA.G + colorB.G > 255) ? 255 : colorA.G + colorB.G;
                     int B = (colorA.B + colorB.B > 255) ? 255 : colorA.B + colorB.B;
 
-                    finalImage.data[y * width + x] = Color.FromArgb(A, R, G, B) ;
-                }
+                    finalImage.data[y * width + x] = Color.FromArgb(A, R, G, B);
+                });
+            });
             return finalImage;
         }
 
         public static Image SubstractFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
                     Color colorB = inputImages[1].Getcolor(x, y, 0);
 
@@ -49,14 +51,15 @@ namespace SkyView.Image {
                     int B = (colorA.B - colorB.B < 0) ? 255 : colorA.B - colorB.B;
 
                     finalImage.data[y * width + x] = Color.FromArgb(A, R, G, B);
-                }
+                });
+            });
             return finalImage;
         }
 
         public static Image MultiplyFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
                     Color colorB = inputImages[1].Getcolor(x, y, 1);
 
@@ -66,14 +69,15 @@ namespace SkyView.Image {
                     int B = colorA.B * colorB.B / 255;
 
                     finalImage.data[y * width + x] = Color.FromArgb(A, R, G, B);
-                }
+                });
+            });
             return finalImage;
         }
 
         public static Image DivideFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
                     Color colorB = inputImages[1].Getcolor(x, y, 1);
 
@@ -83,14 +87,15 @@ namespace SkyView.Image {
                     int B = (colorB.B == 0) ? 255 : colorA.B / colorB.B;
 
                     finalImage.data[y * width + x] = Color.FromArgb(A, R, G, B);
-                }
+                });
+            });
             return finalImage;
         }
 
         public static Image OverlayFilter(int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
                     Color colorB = inputImages[1].Getcolor(x, y, 0);
                     
@@ -100,14 +105,15 @@ namespace SkyView.Image {
                     double B = 255 * ( (double)colorA.B / 255 * (double)colorA.A / 255 + (double)colorB.B / 255 * (double)colorB.A / 255 * (1 - (double)colorA.A / 255) );
 
                     finalImage.data[y * width + x] = Color.FromArgb((int)A, (int)R, (int)G, (int)B);
-                }
+                });
+            });
             return finalImage;
         }
 
         public static Image InvertFilter( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
 
                     int A = 255 - colorA.A;
@@ -116,7 +122,8 @@ namespace SkyView.Image {
                     int B = 255 - colorA.B;
 
                     finalImage.data[y * width + x] = Color.FromArgb(A, R, G, B);
-                }
+                });
+            });
             return finalImage;
         }
 
@@ -132,9 +139,11 @@ namespace SkyView.Image {
             catch (Exception e) {
                 throw e;
             }
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++)
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     finalImage.data[y * width + x] = Color.FromArgb(A, R, G, B);
+                });
+            });
             return finalImage;
         }
 
@@ -161,14 +170,15 @@ namespace SkyView.Image {
             perlin.SetAdvanced(tileSize, unit);
             perlin.SetOffset(xOffset, yOffset, depth);
 
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     double number = (perlin.GetNoise(x, y) ) * 255;
                     int value = (int)(number);
                     Color color = Color.FromArgb(value, value, value, value);
 
                     finalImage.data[y * width + x] = color;
-                }
+                });
+            });
             return finalImage;
         }
 
@@ -185,16 +195,17 @@ namespace SkyView.Image {
                 throw e;
             }
             double norm = Math.Sqrt(Math.Pow((x0 - x1), 2) + Math.Pow((y0 - y1), 2));
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
 
-                    double scalaire = x*(x0 - x1) + y*(y0 - y1);
+                    double scalaire = (x - x1)*(x0 - x1) + (y - y1)*(y0 - y1);
                     int color = (int)(255 - (255 * scalaire / (norm * norm)) );
                     color = (color > 255) ? 255 : color;
                     color = (color < 0) ? 0 : color;
 
                     finalImage.data[y * width + x] = Color.FromArgb(color, color, color, color);
-                }
+                });
+            });
             return finalImage;
         }
 
@@ -211,86 +222,93 @@ namespace SkyView.Image {
                 throw e;
             }
             double norm = Math.Sqrt( Math.Pow((x0 - x1), 2) + Math.Pow((y0 - y1), 2));
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
 
                     double normPixel = Math.Sqrt(Math.Pow((x - x1), 2) + Math.Pow((y - y1), 2));
                     int color = (int)( 255 - (255*normPixel/norm) );
                     color = (color < 0) ? 0 : color;
 
                     finalImage.data[y * width + x] = Color.FromArgb(color, color, color, color);
-                }
+                });
+            });
             return finalImage;
         }
 
         public static Image GetAlphaChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
 
                     finalImage.data[y * width + x] = Color.FromArgb(colorA.A, colorA.A, colorA.A, colorA.A);
-                }
+                });
+            });
             return finalImage;
         }
 
         public static Image GetRedChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
 
                     finalImage.data[y * width + x] = Color.FromArgb(colorA.R, colorA.R, colorA.R, colorA.R);
-                }
+                });
+            });
             return finalImage;
         }
 
         public static Image GetGreenChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
 
                     finalImage.data[y * width + x] = Color.FromArgb(colorA.G, colorA.G, colorA.G, colorA.G);
-                }
+                });
+            });
             return finalImage;
         }
 
         public static Image GetBlueChannel( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 1);
 
                     finalImage.data[y * width + x] = Color.FromArgb(colorA.B, colorA.B, colorA.B, colorA.B);
-                }
+                });
+            });
             return finalImage;
         }
 
         public static Image CombineChannels( int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorR = inputImages[0].Getcolor(x, y, 0);
                     Color colorG = inputImages[1].Getcolor(x, y, 0);
                     Color colorB = inputImages[2].Getcolor(x, y, 0);
                     Color colorA = inputImages[3].Getcolor(x, y, 0);
 
                     finalImage.data[y * width + x] = Color.FromArgb(colorA.A, colorR.R, colorG.G, colorB.B);
-                }
+                });
+            });
             return finalImage;
         }
 
         public static Image GrayScaleFilter(int width, int height, List<Image> inputImages, Collection<NodeProperty> parameters) {
             Image finalImage = new Image(width, height);
 
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
                     int grey = (int)(.299 * colorA.R + .587 * colorA.G + .114 * colorA.B);
 
                     finalImage.data[y * width + x] = Color.FromArgb(colorA.A, grey, grey, grey);
-                }
+                });
+            });
             return finalImage;
         }
         
@@ -305,8 +323,8 @@ namespace SkyView.Image {
             catch (Exception e) {
                 throw e;
             }
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
 
                     int r = 0, g = 0, b = 0, a = 0;
                     for (int i = x - xBlur; i < x + xBlur; i++)
@@ -323,7 +341,8 @@ namespace SkyView.Image {
                     a /= (xBlur * 2 + 1) * (yBlur * 2 + 1);
 
                     finalImage.data[y * width + x] = Color.FromArgb(a, r, g, b);
-                }
+                });
+            });
             return finalImage;
         }
 
@@ -338,8 +357,8 @@ namespace SkyView.Image {
             catch (Exception e) {
                 throw e;
             }
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
 
                     int A = (colorA.A + brightness > 255) ? 255 : colorA.A + brightness;
@@ -353,7 +372,8 @@ namespace SkyView.Image {
                     B = (B < 0) ? 0 : B;
 
                     finalImage.data[y * width + x] = Color.FromArgb(A, R, G, B);
-                }
+                });
+            });
             return finalImage;
         }
 
@@ -367,8 +387,8 @@ namespace SkyView.Image {
             catch (Exception e) {
                 throw e;
             }
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
 
                     int A = (colorA.A > threshold) ? 255 : 0;
@@ -377,7 +397,8 @@ namespace SkyView.Image {
                     int B = (colorA.B > threshold) ? 255 : 0;
 
                     finalImage.data[y * width + x] = Color.FromArgb(A, R, G, B);
-                }
+                });
+            });
             return finalImage;
         }
 
@@ -393,8 +414,8 @@ namespace SkyView.Image {
             catch (Exception e) {
                 throw e;
             }
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color colorA = inputImages[0].Getcolor(x, y, 0);
 
                     int A = (colorA.A - Alpha < 0)  ? 255 : colorA.A - Alpha;
@@ -405,7 +426,8 @@ namespace SkyView.Image {
                     int dist = (int)Math.Sqrt(A * A + R * R + G * G + B * B);
 
                     finalImage.data[y * width + x] = Color.FromArgb(255 - dist / 2, 255 - dist / 2, 255 - dist / 2, 255 - dist / 2);
-                }
+                });
+            });
             return finalImage;
         }
 
@@ -418,12 +440,13 @@ namespace SkyView.Image {
             catch (Exception e) {
                 throw e;
             }
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++) {
+            Parallel.For(0, height, y => {
+                Parallel.For(0, width, x => {
                     Color color = inputImages[0].Getcolor(x, y, 0);
                     Color newColor = Color.FromArgb(Alpha, color.R, color.G, color.B);
                     finalImage.data[y * width + x] = newColor;
-                }
+                });
+            });
             return finalImage;
         }
     }

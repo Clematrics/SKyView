@@ -8,8 +8,22 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" SizeChanged="NodeEditor_SizeChanged">
     <Canvas x:Name="GlobalCanvas" ClipToBounds="True">
-        
         <Border x:Name="BackgroundContainer" Width="4096" Height="4096" Background="{StaticResource NodeEditorBackgroundTiled}" MouseMove="BackgroundContainer_MouseMove" MouseLeftButtonDown="BackgroundContainer_MouseDown" MouseLeftButtonUp="BackgroundContainer_MouseUp"/>
+        <ItemsControl x:Name="LinksContainer" ItemsSource="{Binding NodesAssemblyNodeEditor.LinksCollection.List}" Width="4096" Height="4096">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <SkyView:Link LinkData="{Binding Member}" MustBeDestructed="Link_MustBeDestructed"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Canvas x:Name="TemporaryLinkContainer" Width="4096" Height="4096">
+            <SkyView:Link x:Name="TemporaryDisplayedLink" />
+        </Canvas>
         <ItemsControl x:Name="NodeContainer" ItemsSource="{Binding NodesAssemblyNodeEditor.NodesCollection.List, Mode=TwoWay}" Width="4096" Height="4096">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -20,23 +34,12 @@
                 <Style >
                     <Setter Property="Canvas.Left" Value="{Binding Member.X}" />
                     <Setter Property="Canvas.Top" Value="{Binding Member.Y}" />
+                    <Setter Property="Panel.ZIndex" Value="{Binding Member.Z}" />
                 </Style>
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <SkyView:Node NodeData="{Binding Member, Mode=TwoWay}" MustBeSelected="Node_MustBeSelected" PinSelection="Node_PinSelection"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <ItemsControl x:Name="LinksContainer" ItemsSource="{Binding NodesAssemblyNodeEditor.LinksCollection.List}" Width="4096" Height="4096">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <SkyView:Link LinkData="{Binding Member}" MustBeDestructed="Link_MustBeDestructed"/>
+                    <SkyView:Node NodeData="{Binding Member, Mode=TwoWay}" MustBeSelected="Node_MustBeSelected" PositionChanged="Node_PositionChanged" BeginDrag="Node_BeginDrag" EndDrag="Node_EndDrag"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
