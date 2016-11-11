@@ -1,8 +1,8 @@
 # SkyView
 
-![Screenshot](SkyView capture.jpg?raw=true "Example 1")
-![Screenshot](SkyView capture2.jpg?raw=true "Example 2")
-![Screenshot](SkyView capture3.jpg?raw=true "Example 3")
+![Screenshot](SkyView capture.png?raw=true "Example 1")
+![Screenshot](SkyView capture2.png?raw=true "Example 2")
+![Screenshot](SkyView capture3.png?raw=true "Example 3")
 
 ### Français :
 
