@@ -1,8 +1,8 @@
 # SkyView
 
-![Screenshot](SkyView capture.png?raw=true "Example 1")
-![Screenshot](SkyView capture2.png?raw=true "Example 2")
-![Screenshot](SkyView capture3.png?raw=true "Example 3")
+![Screenshot](https://github.com/Clematrics/SkyView/blob/master/SkyView%20capture.png)
+![Screenshot](https://github.com/Clematrics/SkyView/blob/master/SkyView%20capture2.png)
+![Screenshot](https://github.com/Clematrics/SkyView/blob/master/SkyView%20capture3.png)
 
 ### Français :
 
